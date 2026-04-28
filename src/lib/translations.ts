@@ -1,4 +1,3 @@
-
 export type Language = 'en' | 'ru';
 
 export const translations = {
@@ -46,6 +45,7 @@ export const translations = {
     status_checkmate_white: "Checkmate! White wins.",
     status_checkmate_black: "Checkmate! Black wins.",
     status_draw: "Draw! Stalemate.",
+    status_draw_material: "Draw! Insufficient material.",
     // Rules
     rules_title: "Tactical Protocols",
     rules_subtitle: "Standard 6x6 Combat Engagement",
@@ -133,6 +133,7 @@ export const translations = {
     status_checkmate_white: "Мат! Белые победили.",
     status_checkmate_black: "Мат! Черные победили.",
     status_draw: "Ничья! Пат.",
+    status_draw_material: "Ничья! Недостаточно фигур.",
     // Rules
     rules_title: "Тактические Протоколы",
     rules_subtitle: "Стандартный бой 6x6",

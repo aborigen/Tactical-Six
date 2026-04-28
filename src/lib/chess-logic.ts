@@ -251,9 +251,33 @@ export class ChessGame {
       } else {
         this.status = 'Draw! Stalemate.';
       }
+    } else if (this.isInsufficientMaterial()) {
+      this.isGameOver = true;
+      this.status = 'Draw! Insufficient material.';
     } else {
       this.status = `${this.turn.charAt(0).toUpperCase() + this.turn.slice(1)} to move${inCheck ? ' (Check!)' : ''}`;
     }
+  }
+
+  isInsufficientMaterial(): boolean {
+    const pieces: Piece[] = [];
+    for (let r = 0; r < BOARD_SIZE; r++) {
+      for (let c = 0; c < BOARD_SIZE; c++) {
+        const p = this.board[r][c];
+        if (p) pieces.push(p);
+      }
+    }
+
+    // King vs King
+    if (pieces.length === 2) return true;
+
+    // King + Minor Piece vs King
+    if (pieces.length === 3) {
+      const minorPieces = pieces.filter(p => p.type === 'n' || p.type === 'b');
+      if (minorPieces.length === 1) return true;
+    }
+
+    return false;
   }
 
   evaluate(): number {

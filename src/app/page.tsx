@@ -1,7 +1,6 @@
-
 "use client";
 
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { ChessGame, Move } from '@/lib/chess-logic';
 import Board from '@/components/chess/Board';
 import { Button } from '@/components/ui/button';
@@ -65,7 +64,7 @@ export default function Home() {
         nextScores.white += 1;
       } else if (status.includes('black wins')) {
         nextScores.black += 1;
-      } else if (status.includes('draw') || status.includes('stalemate')) {
+      } else if (status.includes('draw') || status.includes('stalemate') || status.includes('insufficient material')) {
         nextScores.draws += 1;
       }
       
@@ -78,6 +77,7 @@ export default function Home() {
     if (status.includes('Checkmate')) {
       return status.includes('White') ? t.status_checkmate_white : t.status_checkmate_black;
     }
+    if (status.includes('Insufficient material')) return t.status_draw_material;
     if (status.includes('Draw')) return t.status_draw;
     
     const isCheck = status.includes('(Check!)');
@@ -219,7 +219,6 @@ export default function Home() {
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
-          {/* Score Counter */}
           <div className="flex items-center gap-1 bg-secondary/40 border border-white/5 p-1 rounded-xl">
             <div className="px-3 py-1 flex flex-col items-center">
               <span className="text-[8px] font-black text-white/40 uppercase tracking-tighter leading-none mb-1">{t.score_white}</span>
