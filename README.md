@@ -70,29 +70,36 @@ If you need to reconnect your local repository to GitHub, follow these tactical 
 
 ## 🔐 Troubleshooting: Git Access Errors
 
-### Error: "403 Forbidden" or "Permission Denied to [User]"
-This usually means your local environment is using the wrong credentials for the `aborigen` account, or the credentials for another account are interfering.
+### Error: "403 Forbidden" or "Permission Denied to aborigen"
+This error occurs when Git tries to use cached credentials (like a Personal Access Token) from a different account or an expired token.
 
 #### Option A: Switch to SSH (Recommended)
-1. Ensure you have an SSH key added to your GitHub account.
-2. Update your remote URL to use SSH:
+SSH keys are more reliable than HTTPS tokens.
+1. Generate an SSH key and add it to your GitHub account.
+2. Update your remote URL:
    ```bash
    git remote set-url origin git@github.com:aborigen/Tactical-Six.git
    ```
-3. Attempt the push again: `git push -u origin main`.
+3. Push again: `git push -u origin main`.
 
 #### Option B: Clear Cached Credentials (HTTPS)
-If you must use HTTPS, your OS may be caching the wrong token:
-- **macOS**: Open "Keychain Access", search for `github.com` and delete the entry.
-- **Windows**: Open "Credential Manager", go to "Windows Credentials", find `git:https://github.com0`, and remove it.
-- **Next Push**: When you push again, Git will prompt for your username and password. Use your GitHub username and a **Personal Access Token (PAT)** as the password.
+If you prefer HTTPS, you must clear the stored credentials so Git asks for them again.
+- **macOS**: 
+  1. Open **Keychain Access**.
+  2. Search for `github.com`.
+  3. Delete the entries (Internet Password).
+- **Windows**: 
+  1. Open **Credential Manager**.
+  2. Select **Windows Credentials**.
+  3. Find `git:https://github.com` and click **Remove**.
 
-#### Option C: Verify Identity
-Ensure your local git config matches your GitHub profile:
+#### Option C: Force Authenticated URL
+You can force Git to use your username in the URL, which often triggers the credential prompt:
 ```bash
-git config --global user.name "aborigen"
-git config --global user.email "your-email@example.com"
+git remote set-url origin https://aborigen@github.com/aborigen/Tactical-Six.git
+git push -u origin main
 ```
+*Note: When prompted for a password, use a **Personal Access Token (PAT)**, not your GitHub password.*
 
 ## 📦 Static Export
 
@@ -103,3 +110,6 @@ npm run build
 ```
 
 This will create an `out` directory ready for deployment to any static web host.
+
+---
+*Tactical Operational Manual v1.2.0*

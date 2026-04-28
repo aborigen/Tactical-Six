@@ -21,11 +21,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`dark ${inter.variable}`}>
-      <body className="font-body antialiased bg-background text-foreground min-h-screen">
+      <head>
         <Script 
           src="https://yandex.ru/games/sdk/v2" 
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
         />
+      </head>
+      <body className="font-body antialiased bg-background text-foreground min-h-screen">
         {children}
       </body>
     </html>
