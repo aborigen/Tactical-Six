@@ -68,24 +68,31 @@ If you need to reconnect your local repository to GitHub, follow these tactical 
    git push -u origin main
    ```
 
-## 🔐 Troubleshooting: "No anonymous write access"
+## 🔐 Troubleshooting: Git Access Errors
 
-If you encounter a write access error, it is likely due to GitHub's removal of password authentication for HTTPS. Use one of these solutions:
+### Error: "403 Forbidden" or "Permission Denied to [User]"
+This usually means your local environment is using the wrong credentials for the `aborigen` account, or the credentials for another account are interfering.
 
-### Option A: Switch to SSH (Recommended)
+#### Option A: Switch to SSH (Recommended)
 1. Ensure you have an SSH key added to your GitHub account.
-2. Update your remote URL:
+2. Update your remote URL to use SSH:
    ```bash
    git remote set-url origin git@github.com:aborigen/Tactical-Six.git
    ```
-3. Attempt the push again.
+3. Attempt the push again: `git push -u origin main`.
 
-### Option B: Use a Personal Access Token (PAT)
-1. Generate a PAT on GitHub (Settings > Developer Settings > Personal Access Tokens).
-2. Use the token as your password when prompted during `git push`, or update your remote to include it:
-   ```bash
-   git remote set-url origin https://<TOKEN>@github.com/aborigen/Tactical-Six.git
-   ```
+#### Option B: Clear Cached Credentials (HTTPS)
+If you must use HTTPS, your OS may be caching the wrong token:
+- **macOS**: Open "Keychain Access", search for `github.com` and delete the entry.
+- **Windows**: Open "Credential Manager", go to "Windows Credentials", find `git:https://github.com0`, and remove it.
+- **Next Push**: When you push again, Git will prompt for your username and password. Use your GitHub username and a **Personal Access Token (PAT)** as the password.
+
+#### Option C: Verify Identity
+Ensure your local git config matches your GitHub profile:
+```bash
+git config --global user.name "aborigen"
+git config --global user.email "your-email@example.com"
+```
 
 ## 📦 Static Export
 
