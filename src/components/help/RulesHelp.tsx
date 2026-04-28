@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { translations, Language } from '@/lib/translations';
-import { BookOpen, Target, Shield, Zap, ChevronRight } from 'lucide-react';
+import { BookOpen, Target, Shield, Zap, ChevronRight, AlertCircle, Info } from 'lucide-react';
 import Piece from '@/components/chess/Piece';
 import { PieceType } from '@/lib/chess-logic';
 
@@ -64,16 +64,44 @@ const RulesHelp: React.FC<RulesHelpProps> = ({ lang }) => {
               <h3 className="text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
                 <Target className="w-3.5 h-3.5" /> {t.rules_win_title}
               </h3>
-              <div className="p-4 bg-secondary/30 rounded-xl border border-white/5">
-                <p className="text-sm font-medium leading-relaxed text-foreground/80">
-                  {t.rules_win_desc}
-                </p>
+              <div className="space-y-4">
+                <div className="p-4 bg-secondary/30 rounded-xl border border-white/5 space-y-2">
+                  <p className="text-sm font-medium leading-relaxed text-foreground/80">
+                    {t.rules_win_desc}
+                  </p>
+                </div>
+                
+                <div className="grid gap-4">
+                  <div className="p-4 bg-primary/5 rounded-xl border border-primary/20 flex gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                      <Zap className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-black text-primary uppercase mb-1">{t.rules_checkmate_title}</h4>
+                      <p className="text-[11px] font-medium text-muted-foreground leading-relaxed">
+                        {t.rules_checkmate_desc}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-accent/5 rounded-xl border border-accent/20 flex gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+                      <AlertCircle className="w-5 h-5 text-accent" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-black text-accent uppercase mb-1">{t.rules_stalemate_title}</h4>
+                      <p className="text-[11px] font-medium text-muted-foreground leading-relaxed">
+                        {t.rules_stalemate_desc}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </section>
 
             <section className="space-y-6">
               <h3 className="text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                <Zap className="w-3.5 h-3.5" /> {t.ob_protocol}
+                <Shield className="w-3.5 h-3.5" /> {t.ob_protocol}
               </h3>
               <div className="grid gap-4">
                 {pieceRules.map((piece) => (
@@ -95,9 +123,9 @@ const RulesHelp: React.FC<RulesHelpProps> = ({ lang }) => {
             </section>
 
             <div className="pt-4">
-              <div className="flex items-center gap-3 p-4 bg-accent/5 rounded-xl border border-accent/10">
-                <Shield className="w-5 h-5 text-accent shrink-0" />
-                <p className="text-[10px] font-bold text-accent/80 leading-tight uppercase tracking-wide">
+              <div className="flex items-center gap-3 p-4 bg-secondary/10 rounded-xl border border-white/5">
+                <Info className="w-5 h-5 text-muted-foreground shrink-0" />
+                <p className="text-[10px] font-bold text-muted-foreground leading-tight uppercase tracking-wide">
                   {t.op_intel}
                 </p>
               </div>
