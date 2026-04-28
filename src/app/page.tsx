@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, Languages } from 'lucide-react';
+import { RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, Volume2, VolumeX } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
 import { useToast } from '@/hooks/use-toast';
@@ -17,6 +17,7 @@ import { cn } from '@/lib/utils';
 import { translations, Language } from '@/lib/translations';
 import Onboarding from '@/components/onboarding/Onboarding';
 import RulesHelp from '@/components/help/RulesHelp';
+import { soundManager } from '@/lib/sounds';
 
 type GameMode = 'pvp' | 'pve';
 
@@ -27,6 +28,7 @@ export default function Home() {
   const [isSuggesting, setIsSuggesting] = useState(false);
   const [explanation, setExplanation] = useState<string | null>(null);
   const [lang, setLang] = useState<Language>('en');
+  const [isMuted, setIsMuted] = useState(false);
   const { toast } = useToast();
 
   const t = translations[lang];
@@ -53,14 +55,26 @@ export default function Home() {
   }, [toast, t]);
 
   const handleMove = useCallback((move: Move) => {
+    const isCapture = !!game.board[move.to.row][move.to.col];
     const nextGame = game.clone();
     const success = nextGame.makeMove(move);
     if (success) {
+      if (!isMuted) {
+        if (nextGame.isGameOver) {
+          soundManager.playGameOver();
+        } else if (nextGame.isInCheck(nextGame.turn)) {
+          soundManager.playCheck();
+        } else if (isCapture) {
+          soundManager.playCapture();
+        } else {
+          soundManager.playMove();
+        }
+      }
       setGame(nextGame);
       setHintMove(null);
       setExplanation(null);
     }
-  }, [game]);
+  }, [game, isMuted]);
 
   // AI Opponent Logic
   useEffect(() => {
@@ -154,6 +168,16 @@ export default function Home() {
 
         <div className="flex flex-wrap items-center justify-center gap-3">
           <RulesHelp lang={lang} />
+
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => setIsMuted(!isMuted)} 
+            className="text-muted-foreground hover:text-white"
+            title={isMuted ? t.unmute : t.mute}
+          >
+            {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+          </Button>
 
           <Tabs 
             value={lang} 
