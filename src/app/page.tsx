@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, Volume2, VolumeX } from 'lucide-react';
+import { RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, Volume2, VolumeX, Trash2 } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
 import { useToast } from '@/hooks/use-toast';
@@ -20,6 +20,9 @@ import RulesHelp from '@/components/help/RulesHelp';
 import { soundManager } from '@/lib/sounds';
 
 type GameMode = 'pvp' | 'pve';
+type Score = { white: number; black: number; draws: number };
+
+const SCORE_STORAGE_KEY = 'tactical_six_scores';
 
 export default function Home() {
   const [game, setGame] = useState(new ChessGame());
@@ -29,9 +32,47 @@ export default function Home() {
   const [explanation, setExplanation] = useState<string | null>(null);
   const [lang, setLang] = useState<Language>('en');
   const [isMuted, setIsMuted] = useState(false);
+  const [scores, setScores] = useState<Score>({ white: 0, black: 0, draws: 0 });
+  const [gameCounted, setGameCounted] = useState(false);
   const { toast } = useToast();
 
   const t = translations[lang];
+
+  // Load scores
+  useEffect(() => {
+    const saved = localStorage.getItem(SCORE_STORAGE_KEY);
+    if (saved) {
+      try {
+        setScores(JSON.parse(saved));
+      } catch (e) {
+        console.error('Failed to load scores', e);
+      }
+    }
+  }, []);
+
+  // Save scores
+  useEffect(() => {
+    localStorage.setItem(SCORE_STORAGE_KEY, JSON.stringify(scores));
+  }, [scores]);
+
+  // Update score on game over
+  useEffect(() => {
+    if (game.isGameOver && !gameCounted) {
+      const status = game.status.toLowerCase();
+      let nextScores = { ...scores };
+      
+      if (status.includes('white wins')) {
+        nextScores.white += 1;
+      } else if (status.includes('black wins')) {
+        nextScores.black += 1;
+      } else if (status.includes('draw') || status.includes('stalemate')) {
+        nextScores.draws += 1;
+      }
+      
+      setScores(nextScores);
+      setGameCounted(true);
+    }
+  }, [game.isGameOver, game.status, gameCounted, scores]);
 
   const getLocalizedStatus = useCallback((status: string) => {
     if (status.includes('Checkmate')) {
@@ -48,9 +89,20 @@ export default function Home() {
     setGame(new ChessGame());
     setHintMove(null);
     setExplanation(null);
+    setGameCounted(false);
     toast({
       title: t.toast_reset_title,
       description: t.toast_reset_desc,
+    });
+  }, [toast, t]);
+
+  const resetScores = useCallback(() => {
+    const defaultScore = { white: 0, black: 0, draws: 0 };
+    setScores(defaultScore);
+    localStorage.setItem(SCORE_STORAGE_KEY, JSON.stringify(defaultScore));
+    toast({
+      title: t.score_reset,
+      description: t.toast_score_reset,
     });
   }, [toast, t]);
 
@@ -167,6 +219,33 @@ export default function Home() {
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
+          {/* Score Counter */}
+          <div className="flex items-center gap-1 bg-secondary/40 border border-white/5 p-1 rounded-xl">
+            <div className="px-3 py-1 flex flex-col items-center">
+              <span className="text-[8px] font-black text-white/40 uppercase tracking-tighter leading-none mb-1">{t.score_white}</span>
+              <span className="text-sm font-black text-white">{scores.white}</span>
+            </div>
+            <div className="w-px h-6 bg-white/5" />
+            <div className="px-3 py-1 flex flex-col items-center">
+              <span className="text-[8px] font-black text-accent/40 uppercase tracking-tighter leading-none mb-1">{t.score_black}</span>
+              <span className="text-sm font-black text-accent">{scores.black}</span>
+            </div>
+            <div className="w-px h-6 bg-white/5" />
+            <div className="px-3 py-1 flex flex-col items-center">
+              <span className="text-[8px] font-black text-muted-foreground uppercase tracking-tighter leading-none mb-1">{t.score_draw}</span>
+              <span className="text-sm font-bold text-muted-foreground">{scores.draws}</span>
+            </div>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={resetScores} 
+              className="h-8 w-8 text-white/20 hover:text-destructive transition-colors ml-1"
+              title={t.score_reset}
+            >
+              <Trash2 className="w-3 h-3" />
+            </Button>
+          </div>
+
           <RulesHelp lang={lang} />
 
           <Button 

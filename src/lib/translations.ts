@@ -80,7 +80,14 @@ export const translations = {
     ob_step3_title: "Tactical Engine",
     ob_step3_desc: "Utilize the built-in local engine for instant move suggestions or challenge it in 'VS AI' mode to hone your strategies.",
     ob_step4_title: "Command Controls",
-    ob_step4_desc: "Drag and drop pieces directly on the board or use click-to-move. Switch between languages and game modes in the header command center."
+    ob_step4_desc: "Drag and drop pieces directly on the board or use click-to-move. Switch between languages and game modes in the header command center.",
+    // Score
+    score_label: "Tally",
+    score_reset: "Reset Scores",
+    score_white: "White",
+    score_black: "Black",
+    score_draw: "Draw",
+    toast_score_reset: "Mission tally cleared."
   },
   ru: {
     title: "TACTICAL SIX",
@@ -160,6 +167,13 @@ export const translations = {
     ob_step3_title: "Тактический движок",
     ob_step3_desc: "Используйте встроенный локальный движок для мгновенных подсказок или бросьте ему вызов в режиме «Против ИИ».",
     ob_step4_title: "Управление штабом",
-    ob_step4_desc: "Перетаскивайте фигуры по доске или используйте клики. Переключайте языки и режимы игры в верхнем командном центре."
+    ob_step4_desc: "Перетаскивайте фигуры по доске или используйте клики. Переключайте языки и режимы игры в верхнем командном центре.",
+    // Score
+    score_label: "Итоги",
+    score_reset: "Сбросить счет",
+    score_white: "Белые",
+    score_black: "Черные",
+    score_draw: "Ничьи",
+    toast_score_reset: "История сражений очищена."
   }
 };
