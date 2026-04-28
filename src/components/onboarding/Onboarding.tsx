@@ -88,7 +88,7 @@ export default function Onboarding({ lang }: OnboardingProps) {
           <DialogHeader>
             <div className="flex justify-between items-center mb-2">
               <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">
-                Manoeuvre Protocol {step + 1}/{steps.length}
+                {t.ob_protocol} {step + 1}/{steps.length}
               </span>
               <Button variant="ghost" size="sm" onClick={handleFinish} className="h-6 text-[10px] font-bold uppercase tracking-wider text-muted-foreground hover:text-white">
                 {t.ob_skip}
