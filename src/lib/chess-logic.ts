@@ -231,8 +231,18 @@ export class ChessGame {
 
     if (!isLegal) return false;
 
-    this.board[move.to.row][move.to.col] = this.board[move.from.row][move.from.col];
+    // Execute move
+    const piece = this.board[move.from.row][move.from.col];
+    this.board[move.to.row][move.to.col] = piece;
     this.board[move.from.row][move.from.col] = null;
+
+    // Pawn Promotion Logic
+    if (piece?.type === 'p') {
+      if ((piece.color === 'white' && move.to.row === 0) || (piece.color === 'black' && move.to.row === BOARD_SIZE - 1)) {
+        piece.type = 'q';
+      }
+    }
+
     this.history.push(move);
     this.turn = this.turn === 'white' ? 'black' : 'white';
 
@@ -309,8 +319,17 @@ export class ChessGame {
 
     for (const move of moves) {
       const cloned = this.clone();
-      cloned.board[move.to.row][move.to.col] = cloned.board[move.from.row][move.from.col];
+      const piece = cloned.board[move.from.row][move.from.col];
+      cloned.board[move.to.row][move.to.col] = piece;
       cloned.board[move.from.row][move.from.col] = null;
+      
+      // AI Awareness of promotion
+      if (piece?.type === 'p') {
+        if ((piece.color === 'white' && move.to.row === 0) || (piece.color === 'black' && move.to.row === BOARD_SIZE - 1)) {
+          piece.type = 'q';
+        }
+      }
+
       cloned.turn = cloned.turn === 'white' ? 'black' : 'white';
 
       const score = this.minimax(cloned, depth - 1, -Infinity, Infinity, false);
@@ -341,8 +360,14 @@ export class ChessGame {
       let maxEval = -Infinity;
       for (const move of moves) {
         const cloned = game.clone();
-        cloned.board[move.to.row][move.to.col] = cloned.board[move.from.row][move.from.col];
+        const piece = cloned.board[move.from.row][move.from.col];
+        cloned.board[move.to.row][move.to.col] = piece;
         cloned.board[move.from.row][move.from.col] = null;
+        if (piece?.type === 'p') {
+          if ((piece.color === 'white' && move.to.row === 0) || (piece.color === 'black' && move.to.row === BOARD_SIZE - 1)) {
+            piece.type = 'q';
+          }
+        }
         cloned.turn = 'black';
         const evaluation = this.minimax(cloned, depth - 1, alpha, beta, false);
         maxEval = Math.max(maxEval, evaluation);
@@ -354,8 +379,14 @@ export class ChessGame {
       let minEval = Infinity;
       for (const move of moves) {
         const cloned = game.clone();
-        cloned.board[move.to.row][move.to.col] = cloned.board[move.from.row][move.from.col];
+        const piece = cloned.board[move.from.row][move.from.col];
+        cloned.board[move.to.row][move.to.col] = piece;
         cloned.board[move.from.row][move.from.col] = null;
+        if (piece?.type === 'p') {
+          if ((piece.color === 'white' && move.to.row === 0) || (piece.color === 'black' && move.to.row === BOARD_SIZE - 1)) {
+            piece.type = 'q';
+          }
+        }
         cloned.turn = 'white';
         const evaluation = this.minimax(cloned, depth - 1, alpha, beta, true);
         minEval = Math.min(minEval, evaluation);
