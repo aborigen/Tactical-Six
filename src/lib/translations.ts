@@ -42,7 +42,20 @@ export const translations = {
     status_check: "(Check!)",
     status_checkmate_white: "Checkmate! White wins.",
     status_checkmate_black: "Checkmate! Black wins.",
-    status_draw: "Draw! Stalemate."
+    status_draw: "Draw! Stalemate.",
+    // Onboarding
+    ob_next: "Next",
+    ob_prev: "Back",
+    ob_finish: "Begin Mission",
+    ob_skip: "Skip",
+    ob_step1_title: "Welcome to the Matrix",
+    ob_step1_desc: "Tactical Six is a condensed, high-intensity chess variant played on a 6x6 grid. Speed and precision are paramount.",
+    ob_step2_title: "The 6x6 Battlefield",
+    ob_step2_desc: "The board features a standard back rank (R-N-B-Q-K-R) but with only 6 files. Engagement happens fast—protect your King at all costs.",
+    ob_step3_title: "Tactical Engine",
+    ob_step3_desc: "Utilize the built-in local engine for instant move suggestions or challenge it in 'VS AI' mode to hone your strategies.",
+    ob_step4_title: "Command Controls",
+    ob_step4_desc: "Drag and drop pieces directly on the board or use click-to-move. Switch between languages and game modes in the header command center."
   },
   ru: {
     title: "TACTICAL SIX",
@@ -84,6 +97,19 @@ export const translations = {
     status_check: "(Шах!)",
     status_checkmate_white: "Мат! Белые победили.",
     status_checkmate_black: "Мат! Черные победили.",
-    status_draw: "Ничья! Пат."
+    status_draw: "Ничья! Пат.",
+    // Onboarding
+    ob_next: "Далее",
+    ob_prev: "Назад",
+    ob_finish: "Начать миссию",
+    ob_skip: "Пропустить",
+    ob_step1_title: "Добро пожаловать в Матрицу",
+    ob_step1_desc: "Tactical Six — это компактный и интенсивный вариант шахмат на доске 6x6. Скорость и точность здесь решают всё.",
+    ob_step2_title: "Поле боя 6x6",
+    ob_step2_desc: "Доска имеет стандартный задний ряд (R-N-B-Q-K-R), но всего 6 вертикалей. Сражения начинаются быстро — защищайте Короля любой ценой.",
+    ob_step3_title: "Тактический движок",
+    ob_step3_desc: "Используйте встроенный локальный движок для мгновенных подсказок или бросьте ему вызов в режиме «Против ИИ».",
+    ob_step4_title: "Управление штабом",
+    ob_step4_desc: "Перетаскивайте фигуры по доске или используйте клики. Переключайте языки и режимы игры в верхнем командном центре."
   }
 };

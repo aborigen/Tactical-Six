@@ -15,6 +15,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { translations, Language } from '@/lib/translations';
+import Onboarding from '@/components/onboarding/Onboarding';
 
 type GameMode = 'pvp' | 'pve';
 
@@ -132,6 +133,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col p-4 md:p-8">
+      <Onboarding lang={lang} />
+      
       <header className="max-w-6xl mx-auto w-full mb-8 flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="flex items-center gap-4">
           <div className="bg-primary p-3 rounded-2xl shadow-xl shadow-primary/20 ring-1 ring-white/10 group">
