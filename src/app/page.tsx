@@ -1,20 +1,25 @@
+
 "use client";
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { ChessGame, Move } from '@/lib/chess-logic';
 import Board from '@/components/chess/Board';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { RotateCcw, Lightbulb, Trophy, History, BrainCircuit, ChevronRight, Cpu } from 'lucide-react';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { RotateCcw, Lightbulb, Trophy, History, BrainCircuit, ChevronRight, Cpu, User, UserCheck, Users } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 
+type GameMode = 'pvp' | 'pve';
+
 export default function Home() {
   const [game, setGame] = useState(new ChessGame());
+  const [gameMode, setGameMode] = useState<GameMode>('pvp');
   const [hintMove, setHintMove] = useState<Move | null>(null);
   const [isSuggesting, setIsSuggesting] = useState(false);
   const [explanation, setExplanation] = useState<string | null>(null);
@@ -39,6 +44,44 @@ export default function Home() {
       setExplanation(null);
     }
   }, [game]);
+
+  // AI Opponent Logic
+  useEffect(() => {
+    if (gameMode === 'pve' && game.turn === 'black' && !game.isGameOver && !isSuggesting) {
+      const triggerAiOpponent = async () => {
+        setIsSuggesting(true);
+        // Small delay for natural feel
+        await new Promise(resolve => setTimeout(resolve, 800));
+        
+        try {
+          const boardStr = game.exportToString();
+          const legalMoves = game.getLegalMoves(game.turn).map(ChessGame.toAlgebraic);
+          const suggestion = await aiMoveSuggestion({
+            boardState: boardStr,
+            currentPlayer: 'black',
+            legalMoves: legalMoves
+          });
+
+          if (suggestion.suggestedMove) {
+            const move = ChessGame.fromAlgebraic(suggestion.suggestedMove);
+            handleMove(move);
+            setExplanation(suggestion.explanation);
+          }
+        } catch (error) {
+          console.error('AI Opponent Error:', error);
+          toast({
+            variant: 'destructive',
+            title: 'AI Command Failure',
+            description: 'The tactical engine failed to respond.'
+          });
+        } finally {
+          setIsSuggesting(false);
+        }
+      };
+
+      triggerAiOpponent();
+    }
+  }, [game.turn, gameMode, game.isGameOver, handleMove, toast, game]);
 
   const getAiHint = async () => {
     if (game.isGameOver || isSuggesting) return;
@@ -91,17 +134,36 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Button variant="secondary" onClick={resetGame} className="gap-2 bg-secondary/80 border-border hover:bg-secondary font-bold px-6">
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <Tabs 
+            value={gameMode} 
+            onValueChange={(v) => {
+              setGameMode(v as GameMode);
+              resetGame();
+            }}
+            className="bg-secondary/40 border border-white/5 p-1 rounded-xl"
+          >
+            <TabsList className="bg-transparent gap-1">
+              <TabsTrigger value="pvp" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold gap-2 rounded-lg transition-all px-4">
+                <Users className="w-4 h-4" /> 2P
+              </TabsTrigger>
+              <TabsTrigger value="pve" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-bold gap-2 rounded-lg transition-all px-4">
+                <Cpu className="w-4 h-4" /> VS AI
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+
+          <Button variant="secondary" onClick={resetGame} className="gap-2 bg-secondary/80 border-border hover:bg-secondary font-bold px-4 h-10">
             <RotateCcw className="w-4 h-4" /> Reset
           </Button>
+          
           <Button 
             onClick={getAiHint} 
             disabled={game.isGameOver || isSuggesting} 
-            className="gap-2 bg-primary hover:bg-primary/90 text-white font-black px-8 shadow-lg shadow-primary/30"
+            className="gap-2 bg-primary hover:bg-primary/90 text-white font-black px-6 shadow-lg shadow-primary/30 h-10"
           >
-            {isSuggesting ? <Cpu className="w-5 h-5 animate-spin" /> : <Lightbulb className="w-5 h-5" />}
-            STRATEGY HINT
+            {isSuggesting && game.turn === 'white' ? <Cpu className="w-5 h-5 animate-spin" /> : <Lightbulb className="w-5 h-5" />}
+            HINT
           </Button>
         </div>
       </header>
@@ -155,16 +217,22 @@ export default function Home() {
               game.turn === 'white' ? "bg-white/10 ring-1 ring-white/20" : "opacity-40 grayscale"
             )}>
               <div className="w-3 h-3 rounded-full bg-white shadow-[0_0_10px_white]" />
-              <span className="text-sm font-black tracking-tighter">WHITE COMMAND</span>
+              <div className="flex flex-col">
+                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Player One</span>
+                <span className="text-sm font-black tracking-tighter">WHITE COMMAND</span>
+              </div>
             </div>
             
-            <div className="h-0.5 flex-1 mx-6 bg-gradient-to-r from-white/10 via-primary/20 to-accent/10" />
+            <div className="h-0.5 flex-1 mx-4 bg-gradient-to-r from-white/10 via-primary/20 to-accent/10" />
 
             <div className={cn(
               "flex items-center gap-3 transition-all duration-300 px-4 py-2 rounded-xl",
               game.turn === 'black' ? "bg-accent/10 ring-1 ring-accent/20" : "opacity-40 grayscale"
             )}>
-              <span className="text-sm font-black tracking-tighter text-accent">BLACK COMMAND</span>
+              <div className="flex flex-col items-end">
+                <span className="text-[10px] font-bold text-accent/60 uppercase tracking-wider">{gameMode === 'pve' ? 'Local Engine' : 'Player Two'}</span>
+                <span className="text-sm font-black tracking-tighter text-accent">BLACK COMMAND</span>
+              </div>
               <div className="w-3 h-3 rounded-full bg-accent shadow-[0_0_10px_hsl(var(--accent))]" />
             </div>
           </div>
@@ -189,7 +257,12 @@ export default function Home() {
               ) : (
                 <div className="flex items-center justify-center gap-4">
                   <div className="w-2 h-2 rounded-full bg-primary animate-ping" />
-                  <span className="text-xl font-bold tracking-tight text-foreground/90 italic">{game.status}</span>
+                  <span className="text-xl font-bold tracking-tight text-foreground/90 italic">
+                    {isSuggesting && gameMode === 'pve' && game.turn === 'black' 
+                      ? "ENGINE CALCULATING..." 
+                      : game.status
+                    }
+                  </span>
                 </div>
               )}
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-primary/10 transition-colors" />
@@ -218,7 +291,10 @@ export default function Home() {
                     <div className="space-y-2">
                       <p className="text-sm font-bold text-white uppercase tracking-wider">Awaiting Directives</p>
                       <p className="text-muted-foreground text-xs font-medium px-4 leading-relaxed">
-                        Deploy the Strategy Hint tool to receive instant tactical analysis from the local computational matrix.
+                        {gameMode === 'pve' 
+                          ? "The engine will automatically engage when it's Black's turn. Request a hint for White anytime."
+                          : "Deploy the Strategy Hint tool to receive instant tactical analysis from the local computational matrix."
+                        }
                       </p>
                     </div>
                     <Button variant="outline" size="sm" onClick={getAiHint} className="border-accent/30 hover:bg-accent/10 hover:text-accent">
@@ -243,7 +319,7 @@ export default function Home() {
                     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-700">
                       <div className="flex items-center justify-between border-b border-white/5 pb-4">
                         <Badge className="bg-accent text-accent-foreground font-black tracking-widest px-4 py-1 text-xs">
-                          MOVE: {hintMove ? ChessGame.toAlgebraic(hintMove) : 'N/A'}
+                          {gameMode === 'pve' && game.turn === 'white' ? 'ENGINE LOG' : 'SUGGESTION'}
                         </Badge>
                         <ChevronRight className="w-4 h-4 text-accent/50" />
                       </div>
@@ -281,7 +357,7 @@ export default function Home() {
           <div className="h-px w-24 bg-gradient-to-l from-transparent to-white/10" />
         </div>
         <p className="text-muted-foreground text-[9px] font-mono opacity-30">
-          V1.2.0 // 6X6_STRAT_ENG // LOCAL_INIT_COMPLETE
+          V1.2.0 // 6X6_STRAT_ENG // LOCAL_INIT_COMPLETE // MODE: {gameMode.toUpperCase()}
         </p>
       </footer>
       <Toaster />
