@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useCallback, useEffect } from 'react';
@@ -8,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, Volume2, VolumeX, Trash2 } from 'lucide-react';
+import { RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, Volume2, VolumeX, Trash2, Copy, Check } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
 import { useToast } from '@/hooks/use-toast';
@@ -22,6 +23,7 @@ type GameMode = 'pvp' | 'pve';
 type Score = { white: number; black: number; draws: number };
 
 const SCORE_STORAGE_KEY = 'tactical_six_scores';
+const HISTORY_STORAGE_KEY = 'tactical_six_history';
 
 export default function Home() {
   const [game, setGame] = useState(new ChessGame());
@@ -33,26 +35,61 @@ export default function Home() {
   const [isMuted, setIsMuted] = useState(false);
   const [scores, setScores] = useState<Score>({ white: 0, black: 0, draws: 0 });
   const [gameCounted, setGameCounted] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [hasCopied, setHasCopied] = useState(false);
   const { toast } = useToast();
 
   const t = translations[lang];
 
-  // Load scores
+  // Load scores and history on mount
   useEffect(() => {
-    const saved = localStorage.getItem(SCORE_STORAGE_KEY);
-    if (saved) {
+    const savedScores = localStorage.getItem(SCORE_STORAGE_KEY);
+    if (savedScores) {
       try {
-        setScores(JSON.parse(saved));
+        setScores(JSON.parse(savedScores));
       } catch (e) {
         console.error('Failed to load scores', e);
       }
     }
+
+    const savedHistory = localStorage.getItem(HISTORY_STORAGE_KEY);
+    if (savedHistory) {
+      try {
+        const moves = JSON.parse(savedHistory) as Move[];
+        const newGame = new ChessGame();
+        let successCount = 0;
+        for (const move of moves) {
+          if (newGame.makeMove(move)) {
+            successCount++;
+          } else {
+            break;
+          }
+        }
+        if (successCount > 0) {
+          setGame(newGame);
+        }
+      } catch (e) {
+        console.error('Failed to load history', e);
+      }
+    }
+    setIsInitialized(true);
   }, []);
 
   // Save scores
   useEffect(() => {
+    if (!isInitialized) return;
     localStorage.setItem(SCORE_STORAGE_KEY, JSON.stringify(scores));
-  }, [scores]);
+  }, [scores, isInitialized]);
+
+  // Save history
+  useEffect(() => {
+    if (!isInitialized) return;
+    if (game.history.length > 0) {
+      localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(game.history));
+    } else {
+      localStorage.removeItem(HISTORY_STORAGE_KEY);
+    }
+  }, [game.history, isInitialized]);
 
   // Update score on game over
   useEffect(() => {
@@ -90,6 +127,7 @@ export default function Home() {
     setHintMove(null);
     setExplanation(null);
     setGameCounted(false);
+    localStorage.removeItem(HISTORY_STORAGE_KEY);
     toast({
       title: t.toast_reset_title,
       description: t.toast_reset_desc,
@@ -198,6 +236,20 @@ export default function Home() {
     }
   };
 
+  const copyHistory = () => {
+    const historyText = game.history
+      .map((move, i) => `${i % 2 === 0 ? Math.floor(i / 2) + 1 + '.' : ''} ${ChessGame.toAlgebraic(move)}`)
+      .join(' ');
+    
+    navigator.clipboard.writeText(historyText);
+    setHasCopied(true);
+    setTimeout(() => setHasCopied(false), 2000);
+    toast({
+      title: "History Copied",
+      description: "Tactical logs have been copied to clipboard.",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col p-4 md:p-8">
       <Onboarding lang={lang} />
@@ -304,10 +356,21 @@ export default function Home() {
       <main className="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div className="lg:col-span-3 flex flex-col gap-6 h-full">
           <Card className="bg-card border-border shadow-2xl ring-1 ring-white/5 overflow-hidden">
-            <CardHeader className="pb-4 bg-secondary/30">
+            <CardHeader className="pb-4 bg-secondary/30 flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-bold uppercase tracking-widest flex items-center gap-2 text-primary">
                 <History className="w-4 h-4" /> {t.history_title}
               </CardTitle>
+              {game.history.length > 0 && (
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={copyHistory} 
+                  className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors"
+                  title="Copy Logs"
+                >
+                  {hasCopied ? <Check className="w-3 h-3 text-accent" /> : <Copy className="w-3 h-3" />}
+                </Button>
+              )}
             </CardHeader>
             <CardContent className="pt-4">
               <ScrollArea className="h-[300px] lg:h-[450px] pr-4">
