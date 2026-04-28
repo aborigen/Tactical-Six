@@ -21,7 +21,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`dark ${inter.variable}`}>
-      <head />
       <body className="font-body antialiased bg-background text-foreground min-h-screen">
         {children}
         <Script 

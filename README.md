@@ -85,15 +85,16 @@ This occurs when Git uses expired or incorrect cached credentials.
 - **Windows**: Remove `git:https://github.com` in **Credential Manager**.
 
 ### Error: "ECONNREFUSED /tmp/vscode-git-..."
-This error indicates the VS Code Git credential helper socket is broken.
+This error indicates the VS Code Git credential helper socket is broken or disconnected.
 
-1. **Restart VS Code**: Close all windows and relaunch.
-2. **Sign Out/In**: Go to the Accounts icon in VS Code, sign out of GitHub, and sign back in.
-3. **Use External Terminal**: Try running `git push` in your OS terminal (Terminal.app or PowerShell) instead of the integrated VS Code terminal.
-4. **Unset Helper**: If the issue persists, temporarily bypass the helper:
+1. **Restart VS Code**: Completely close and relaunch the application. This often refreshes the socket connection.
+2. **The "Nuclear Option"**: If the error persists, unset the global helper which is likely pointing to the dead socket:
    ```bash
    git config --global --unset credential.helper
    ```
+3. **Sign Out/In**: Go to the **Accounts** icon (bottom left) in VS Code, sign out of GitHub, and sign back in.
+4. **Use OS Terminal**: Avoid the VS Code integrated terminal. Open **Terminal.app** (macOS) or **PowerShell** (Windows) and run `git push` there. This bypasses the VS Code bridge entirely.
+5. **Check Remote URL**: Ensure you aren't trying to push to a URL that doesn't exist or is misspelled.
 
 ## 📦 Static Export
 
