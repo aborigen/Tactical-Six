@@ -72,6 +72,20 @@ export class ChessGame {
     return newGame;
   }
 
+  /**
+   * Reconstructs a game state from a specific point in history.
+   * @param history The full history of moves.
+   * @param moveIndex The index (0-based) up to which moves should be applied.
+   */
+  static fromHistory(history: Move[], moveIndex?: number): ChessGame {
+    const game = new ChessGame();
+    const limit = moveIndex !== undefined ? moveIndex + 1 : history.length;
+    for (let i = 0; i < limit; i++) {
+      game.makeMove(history[i]);
+    }
+    return game;
+  }
+
   getLegalMoves(player: PlayerColor): Move[] {
     const moves: Move[] = [];
     for (let row = 0; row < BOARD_SIZE; row++) {

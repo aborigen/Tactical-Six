@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { ChessGame, Move } from '@/lib/chess-logic';
 import Board from '@/components/chess/Board';
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, Volume2, VolumeX, Trash2, Copy, Check } from 'lucide-react';
+import { 
+  RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, 
+  Volume2, VolumeX, Trash2, Copy, Check, ChevronLeft, ChevronLast, ChevronFirst,
+  PlayCircle
+} from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
 import { useToast } from '@/hooks/use-toast';
@@ -37,6 +41,7 @@ export default function Home() {
   const [gameCounted, setGameCounted] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [hasCopied, setHasCopied] = useState(false);
+  const [viewIndex, setViewIndex] = useState<number>(-1); // -1 means live game
   const { toast } = useToast();
 
   const t = translations[lang];
@@ -56,16 +61,8 @@ export default function Home() {
     if (savedHistory) {
       try {
         const moves = JSON.parse(savedHistory) as Move[];
-        const newGame = new ChessGame();
-        let successCount = 0;
-        for (const move of moves) {
-          if (newGame.makeMove(move)) {
-            successCount++;
-          } else {
-            break;
-          }
-        }
-        if (successCount > 0) {
+        const newGame = ChessGame.fromHistory(moves);
+        if (moves.length > 0) {
           setGame(newGame);
         }
       } catch (e) {
@@ -110,6 +107,15 @@ export default function Home() {
     }
   }, [game.isGameOver, game.status, gameCounted, scores]);
 
+  const displayedGame = useMemo(() => {
+    if (viewIndex === -1 || viewIndex >= game.history.length - 1) {
+      return game;
+    }
+    return ChessGame.fromHistory(game.history, viewIndex);
+  }, [game, viewIndex]);
+
+  const isReviewMode = viewIndex !== -1 && viewIndex < game.history.length - 1;
+
   const getLocalizedStatus = useCallback((status: string) => {
     if (status.includes('Checkmate')) {
       return status.includes('White') ? t.status_checkmate_white : t.status_checkmate_black;
@@ -127,6 +133,7 @@ export default function Home() {
     setHintMove(null);
     setExplanation(null);
     setGameCounted(false);
+    setViewIndex(-1);
     localStorage.removeItem(HISTORY_STORAGE_KEY);
     toast({
       title: t.toast_reset_title,
@@ -145,6 +152,9 @@ export default function Home() {
   }, [toast, t]);
 
   const handleMove = useCallback((move: Move) => {
+    // Cannot move while reviewing history
+    if (isReviewMode) return;
+
     const isCapture = !!game.board[move.to.row][move.to.col];
     const nextGame = game.clone();
     const success = nextGame.makeMove(move);
@@ -164,11 +174,11 @@ export default function Home() {
       setHintMove(null);
       setExplanation(null);
     }
-  }, [game, isMuted]);
+  }, [game, isMuted, isReviewMode]);
 
   // AI Opponent Logic
   useEffect(() => {
-    if (gameMode === 'pve' && game.turn === 'black' && !game.isGameOver && !isSuggesting) {
+    if (gameMode === 'pve' && game.turn === 'black' && !game.isGameOver && !isSuggesting && !isReviewMode) {
       const triggerAiOpponent = async () => {
         setIsSuggesting(true);
         await new Promise(resolve => setTimeout(resolve, 800));
@@ -201,10 +211,10 @@ export default function Home() {
 
       triggerAiOpponent();
     }
-  }, [game.turn, gameMode, game.isGameOver, handleMove, toast, game, t]);
+  }, [game.turn, gameMode, game.isGameOver, handleMove, toast, game, t, isSuggesting, isReviewMode]);
 
   const getAiHint = async () => {
-    if (game.isGameOver || isSuggesting) return;
+    if (game.isGameOver || isSuggesting || isReviewMode) return;
 
     setIsSuggesting(true);
     setExplanation(null);
@@ -249,6 +259,9 @@ export default function Home() {
       description: "Tactical logs have been copied to clipboard.",
     });
   };
+
+  const setLive = () => setViewIndex(-1);
+  const setStep = (idx: number) => setViewIndex(idx);
 
   return (
     <div className="min-h-screen bg-background flex flex-col p-4 md:p-8">
@@ -344,7 +357,7 @@ export default function Home() {
           
           <Button 
             onClick={getAiHint} 
-            disabled={game.isGameOver || isSuggesting} 
+            disabled={game.isGameOver || isSuggesting || isReviewMode} 
             className="gap-2 bg-primary hover:bg-primary/90 text-white font-black px-6 shadow-lg shadow-primary/30 h-10"
           >
             {isSuggesting && game.turn === 'white' ? <Cpu className="w-5 h-5 animate-spin" /> : <Lightbulb className="w-5 h-5" />}
@@ -361,19 +374,47 @@ export default function Home() {
                 <History className="w-4 h-4" /> {t.history_title}
               </CardTitle>
               {game.history.length > 0 && (
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={copyHistory} 
-                  className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors"
-                  title="Copy Logs"
-                >
-                  {hasCopied ? <Check className="w-3 h-3 text-accent" /> : <Copy className="w-3 h-3" />}
-                </Button>
+                <div className="flex gap-1">
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    onClick={copyHistory} 
+                    className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors"
+                    title="Copy Logs"
+                  >
+                    {hasCopied ? <Check className="w-3 h-3 text-accent" /> : <Copy className="w-3 h-3" />}
+                  </Button>
+                </div>
               )}
             </CardHeader>
-            <CardContent className="pt-4">
-              <ScrollArea className="h-[300px] lg:h-[450px] pr-4">
+            <CardContent className="pt-4 flex flex-col gap-4">
+              {game.history.length > 0 && (
+                <div className="grid grid-cols-5 gap-1 pb-4 border-b border-border/40">
+                  <Button variant="outline" size="icon" className="h-8 w-full" onClick={() => setStep(0)} disabled={viewIndex === 0} title={t.history_playback_first}>
+                    <ChevronFirst className="w-3.5 h-3.5" />
+                  </Button>
+                  <Button variant="outline" size="icon" className="h-8 w-full" onClick={() => setStep(Math.max(0, (viewIndex === -1 ? game.history.length - 1 : viewIndex) - 1))} disabled={viewIndex === 0} title={t.history_playback_prev}>
+                    <ChevronLeft className="w-3.5 h-3.5" />
+                  </Button>
+                  <Button 
+                    variant={isReviewMode ? "default" : "outline"} 
+                    size="icon" 
+                    className={cn("h-8 w-full", !isReviewMode && "opacity-40")}
+                    onClick={setLive}
+                    title={t.history_playback_back}
+                  >
+                    <PlayCircle className="w-3.5 h-3.5" />
+                  </Button>
+                  <Button variant="outline" size="icon" className="h-8 w-full" onClick={() => setStep(Math.min(game.history.length - 1, (viewIndex === -1 ? game.history.length - 1 : viewIndex) + 1))} disabled={viewIndex === -1 || viewIndex === game.history.length - 1} title={t.history_playback_next}>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </Button>
+                  <Button variant="outline" size="icon" className="h-8 w-full" onClick={() => setStep(game.history.length - 1)} disabled={viewIndex === game.history.length - 1} title={t.history_playback_last}>
+                    <ChevronLast className="w-3.5 h-3.5" />
+                  </Button>
+                </div>
+              )}
+              
+              <ScrollArea className="h-[250px] lg:h-[350px] pr-4">
                 <div className="space-y-3">
                   {game.history.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-12 text-center">
@@ -386,12 +427,28 @@ export default function Home() {
                     <div className="space-y-2">
                       {Array.from({ length: Math.ceil(game.history.length / 2) }).map((_, i) => (
                         <div key={i} className="grid grid-cols-2 gap-2">
-                          <div className="flex justify-between items-center bg-secondary/20 p-2.5 rounded-lg border border-border/40 text-sm font-mono transition-colors hover:bg-secondary/40">
+                          <div 
+                            onClick={() => setStep(i * 2)}
+                            className={cn(
+                              "flex justify-between items-center p-2.5 rounded-lg border text-sm font-mono cursor-pointer transition-all",
+                              viewIndex === i * 2 
+                                ? "bg-primary/20 border-primary ring-1 ring-primary/50" 
+                                : "bg-secondary/20 border-border/40 hover:bg-secondary/40"
+                            )}
+                          >
                             <span className="text-muted-foreground/60 text-[10px] font-bold">{i + 1}W</span>
                             <span className="font-bold">{ChessGame.toAlgebraic(game.history[i * 2])}</span>
                           </div>
                           {game.history[i * 2 + 1] && (
-                            <div className="flex justify-between items-center bg-accent/10 p-2.5 rounded-lg border border-accent/20 text-sm font-mono transition-colors hover:bg-accent/20">
+                            <div 
+                              onClick={() => setStep(i * 2 + 1)}
+                              className={cn(
+                                "flex justify-between items-center p-2.5 rounded-lg border text-sm font-mono cursor-pointer transition-all",
+                                viewIndex === i * 2 + 1
+                                  ? "bg-accent/20 border-accent ring-1 ring-accent/50" 
+                                  : "bg-accent/10 border-accent/20 hover:bg-accent/20"
+                              )}
+                            >
                               <span className="text-accent/60 text-[10px] font-bold">{i + 1}B</span>
                               <span className="text-accent font-black">{ChessGame.toAlgebraic(game.history[i * 2 + 1])}</span>
                             </div>
@@ -402,6 +459,11 @@ export default function Home() {
                   )}
                 </div>
               </ScrollArea>
+              {isReviewMode && (
+                <Button size="sm" variant="secondary" className="w-full font-bold gap-2" onClick={setLive}>
+                   <PlayCircle className="w-4 h-4" /> {t.history_playback_back}
+                </Button>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -410,7 +472,7 @@ export default function Home() {
           <div className="mb-8 flex justify-between w-full items-center px-4 py-3 bg-secondary/20 rounded-2xl border border-border/50 backdrop-blur-sm">
             <div className={cn(
               "flex items-center gap-3 transition-all duration-300 px-4 py-2 rounded-xl",
-              game.turn === 'white' ? "bg-white/10 ring-1 ring-white/20" : "opacity-40 grayscale"
+              displayedGame.turn === 'white' ? "bg-white/10 ring-1 ring-white/20" : "opacity-40 grayscale"
             )}>
               <div className="w-3 h-3 rounded-full bg-white shadow-[0_0_10px_white]" />
               <div className="flex flex-col">
@@ -423,7 +485,7 @@ export default function Home() {
 
             <div className={cn(
               "flex items-center gap-3 transition-all duration-300 px-4 py-2 rounded-xl",
-              game.turn === 'black' ? "bg-accent/10 ring-1 ring-accent/20" : "opacity-40 grayscale"
+              displayedGame.turn === 'black' ? "bg-accent/10 ring-1 ring-accent/20" : "opacity-40 grayscale"
             )}>
               <div className="flex flex-col items-end">
                 <span className="text-[10px] font-bold text-accent/60 uppercase tracking-wider">{gameMode === 'pve' ? t.player_black_ai_label : t.player_black_label}</span>
@@ -433,30 +495,41 @@ export default function Home() {
             </div>
           </div>
 
-          <Board game={game} onMove={handleMove} hintMove={hintMove} />
+          <div className="relative">
+            <Board game={displayedGame} onMove={handleMove} hintMove={hintMove} />
+            {isReviewMode && (
+              <div className="absolute inset-0 bg-background/20 backdrop-blur-[1px] pointer-events-none z-10 rounded-2xl flex items-center justify-center">
+                <div className="bg-primary/90 text-white px-6 py-2 rounded-full shadow-2xl font-black text-xs uppercase tracking-[0.2em] border border-white/20 animate-pulse">
+                  Reviewing Mission Log
+                </div>
+              </div>
+            )}
+          </div>
 
           <div className="mt-10 w-full">
             <div className={cn(
               "p-6 rounded-2xl border transition-all duration-700 backdrop-blur-md relative overflow-hidden group",
-              game.isGameOver 
+              displayedGame.isGameOver 
                 ? "bg-primary/10 border-primary/50 shadow-2xl shadow-primary/20 ring-4 ring-primary/5" 
                 : "bg-secondary/40 border-border shadow-lg"
             )}>
-              {game.isGameOver ? (
+              {displayedGame.isGameOver ? (
                 <div className="flex flex-col items-center gap-4 relative z-10 animate-in zoom-in duration-500">
                   <div className="bg-primary/20 p-4 rounded-full">
                     <Trophy className="w-12 h-12 text-primary" />
                   </div>
-                  <h2 className="text-3xl font-black text-white tracking-tight uppercase italic">{getLocalizedStatus(game.status)}</h2>
-                  <Button size="lg" onClick={resetGame} className="mt-2 bg-primary text-white font-black px-10">{t.replay}</Button>
+                  <h2 className="text-3xl font-black text-white tracking-tight uppercase italic">{getLocalizedStatus(displayedGame.status)}</h2>
+                  {!isReviewMode && (
+                    <Button size="lg" onClick={resetGame} className="mt-2 bg-primary text-white font-black px-10">{t.replay}</Button>
+                  )}
                 </div>
               ) : (
                 <div className="flex items-center justify-center gap-4">
-                  <div className="w-2 h-2 rounded-full bg-primary animate-ping" />
+                  <div className={cn("w-2 h-2 rounded-full bg-primary", !isReviewMode && "animate-ping")} />
                   <span className="text-xl font-bold tracking-tight text-foreground/90 italic">
-                    {isSuggesting && gameMode === 'pve' && game.turn === 'black' 
+                    {isSuggesting && gameMode === 'pve' && displayedGame.turn === 'black' && !isReviewMode
                       ? t.engine_calculating
-                      : getLocalizedStatus(game.status)
+                      : getLocalizedStatus(displayedGame.status)
                     }
                   </span>
                 </div>
@@ -476,68 +549,82 @@ export default function Home() {
             </CardHeader>
             <CardContent className="flex-1 pt-6">
               <div className="h-full min-h-[300px] bg-secondary/10 rounded-2xl p-5 border border-white/5 relative overflow-hidden group flex flex-col">
-                {!explanation && !isSuggesting && (
+                {isReviewMode ? (
                   <div className="flex flex-col items-center justify-center h-full text-center space-y-6">
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-accent/20 rounded-full blur-xl animate-pulse" />
-                      <div className="relative w-16 h-16 rounded-3xl bg-accent/10 flex items-center justify-center border border-accent/20 transition-all group-hover:scale-110">
-                        <Lightbulb className="w-8 h-8 text-accent" />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <p className="text-sm font-bold text-white uppercase tracking-wider">{t.engine_awaiting}</p>
-                      <p className="text-muted-foreground text-xs font-medium px-4 leading-relaxed">
-                        {gameMode === 'pve' 
-                          ? t.engine_awaiting_desc_pve
-                          : t.engine_awaiting_desc_pvp
-                        }
-                      </p>
-                    </div>
-                    <Button variant="outline" size="sm" onClick={getAiHint} className="border-accent/30 hover:bg-accent/10 hover:text-accent">
-                      {t.engine_initiate}
+                    <History className="w-12 h-12 text-muted-foreground/30" />
+                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest leading-relaxed">
+                      Analysis tools are disabled while reviewing tactical logs. Return to live combat to engage engine.
+                    </p>
+                    <Button variant="outline" size="sm" onClick={setLive}>
+                      {t.history_playback_back}
                     </Button>
                   </div>
-                )}
-                {isSuggesting && (
-                  <div className="flex flex-col items-center justify-center h-full space-y-6">
-                    <div className="relative w-12 h-12">
-                      <div className="absolute inset-0 border-4 border-accent/20 rounded-full" />
-                      <div className="absolute inset-0 border-4 border-t-accent rounded-full animate-spin" />
-                    </div>
-                    <div className="text-center space-y-2">
-                      <p className="text-xs font-black text-accent uppercase tracking-[0.2em] animate-pulse">{t.engine_calculating_vectors}</p>
-                      <p className="text-[10px] text-muted-foreground font-mono">LOCAL_SEARCH_D3</p>
-                    </div>
-                  </div>
-                )}
-                {explanation && !isSuggesting && (
-                  <ScrollArea className="h-full">
-                    <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-700">
-                      <div className="flex items-center justify-between border-b border-white/5 pb-4">
-                        <Badge className="bg-accent text-accent-foreground font-black tracking-widest px-4 py-1 text-xs">
-                          {t.engine_eval}
-                        </Badge>
-                        <ChevronRight className="w-4 h-4 text-accent/50" />
-                      </div>
-                      <div className="space-y-4">
-                        <p className="text-sm text-foreground/90 leading-relaxed font-medium italic border-l-2 border-accent/30 pl-4 bg-accent/5 py-4 rounded-r-lg">
-                          "{explanation}"
-                        </p>
-                      </div>
-                      <div className="pt-6">
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="p-3 bg-white/5 rounded-xl border border-white/5 text-center">
-                            <p className="text-[8px] font-bold text-muted-foreground uppercase mb-1">{t.engine_search_depth}</p>
-                            <p className="text-lg font-black text-white">3 Ply</p>
-                          </div>
-                          <div className="p-3 bg-white/5 rounded-xl border border-white/5 text-center">
-                            <p className="text-[8px] font-bold text-muted-foreground uppercase mb-1">{t.engine_status_label}</p>
-                            <p className="text-lg font-black text-accent">{t.engine_optimal}</p>
+                ) : (
+                  <>
+                    {!explanation && !isSuggesting && (
+                      <div className="flex flex-col items-center justify-center h-full text-center space-y-6">
+                        <div className="relative">
+                          <div className="absolute inset-0 bg-accent/20 rounded-full blur-xl animate-pulse" />
+                          <div className="relative w-16 h-16 rounded-3xl bg-accent/10 flex items-center justify-center border border-accent/20 transition-all group-hover:scale-110">
+                            <Lightbulb className="w-8 h-8 text-accent" />
                           </div>
                         </div>
+                        <div className="space-y-2">
+                          <p className="text-sm font-bold text-white uppercase tracking-wider">{t.engine_awaiting}</p>
+                          <p className="text-muted-foreground text-xs font-medium px-4 leading-relaxed">
+                            {gameMode === 'pve' 
+                              ? t.engine_awaiting_desc_pve
+                              : t.engine_awaiting_desc_pvp
+                            }
+                          </p>
+                        </div>
+                        <Button variant="outline" size="sm" onClick={getAiHint} className="border-accent/30 hover:bg-accent/10 hover:text-accent">
+                          {t.engine_initiate}
+                        </Button>
                       </div>
-                    </div>
-                  </ScrollArea>
+                    )}
+                    {isSuggesting && (
+                      <div className="flex flex-col items-center justify-center h-full space-y-6">
+                        <div className="relative w-12 h-12">
+                          <div className="absolute inset-0 border-4 border-accent/20 rounded-full" />
+                          <div className="absolute inset-0 border-4 border-t-accent rounded-full animate-spin" />
+                        </div>
+                        <div className="text-center space-y-2">
+                          <p className="text-xs font-black text-accent uppercase tracking-[0.2em] animate-pulse">{t.engine_calculating_vectors}</p>
+                          <p className="text-[10px] text-muted-foreground font-mono">LOCAL_SEARCH_D3</p>
+                        </div>
+                      </div>
+                    )}
+                    {explanation && !isSuggesting && (
+                      <ScrollArea className="h-full">
+                        <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-700">
+                          <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                            <Badge className="bg-accent text-accent-foreground font-black tracking-widest px-4 py-1 text-xs">
+                              {t.engine_eval}
+                            </Badge>
+                            <ChevronRight className="w-4 h-4 text-accent/50" />
+                          </div>
+                          <div className="space-y-4">
+                            <p className="text-sm text-foreground/90 leading-relaxed font-medium italic border-l-2 border-accent/30 pl-4 bg-accent/5 py-4 rounded-r-lg">
+                              "{explanation}"
+                            </p>
+                          </div>
+                          <div className="pt-6">
+                            <div className="grid grid-cols-2 gap-4">
+                              <div className="p-3 bg-white/5 rounded-xl border border-white/5 text-center">
+                                <p className="text-[8px] font-bold text-muted-foreground uppercase mb-1">{t.engine_search_depth}</p>
+                                <p className="text-lg font-black text-white">3 Ply</p>
+                              </div>
+                              <div className="p-3 bg-white/5 rounded-xl border border-white/5 text-center">
+                                <p className="text-[8px] font-bold text-muted-foreground uppercase mb-1">{t.engine_status_label}</p>
+                                <p className="text-lg font-black text-accent">{t.engine_optimal}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ScrollArea>
+                    )}
+                  </>
                 )}
               </div>
             </CardContent>
