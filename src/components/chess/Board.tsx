@@ -15,6 +15,8 @@ const Board: React.FC<BoardProps> = ({ game, onMove, hintMove }) => {
   const [selectedSquare, setSelectedSquare] = useState<Position | null>(null);
   const [legalMovesFromSelected, setLegalMovesFromSelected] = useState<Position[]>([]);
 
+  const lastMove = game.history.length > 0 ? game.history[game.history.length - 1] : null;
+
   useEffect(() => {
     if (selectedSquare) {
       const moves = game.getLegalMoves(game.turn)
@@ -56,8 +58,15 @@ const Board: React.FC<BoardProps> = ({ game, onMove, hintMove }) => {
            (hintMove.to.row === row && hintMove.to.col === col);
   };
 
+  // Calculate percentages for SVG arrow coordinates
+  const getSquareCenter = (pos: Position) => ({
+    x: ((pos.col + 0.5) * 100) / BOARD_SIZE,
+    y: ((pos.row + 0.5) * 100) / BOARD_SIZE,
+  });
+
   return (
     <div className="relative aspect-square w-full max-w-[550px] mx-auto select-none rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-[12px] border-card/80 bg-card ring-1 ring-white/10 group">
+      {/* Board Grid */}
       <div className="chess-board-grid w-full h-full">
         {game.board.map((rowArr, row) =>
           rowArr.map((piece, col) => {
@@ -65,6 +74,8 @@ const Board: React.FC<BoardProps> = ({ game, onMove, hintMove }) => {
             const isSelected = selectedSquare?.row === row && selectedSquare?.col === col;
             const isLegalDest = legalMovesFromSelected.some(m => m.row === row && m.col === col);
             const isHint = isSquareHint(row, col);
+            const isLastMoveFrom = lastMove?.from.row === row && lastMove?.from.col === col;
+            const isLastMoveTo = lastMove?.to.row === row && lastMove?.to.col === col;
 
             return (
               <div
@@ -74,7 +85,8 @@ const Board: React.FC<BoardProps> = ({ game, onMove, hintMove }) => {
                   "relative cursor-pointer transition-all duration-300 overflow-hidden",
                   isDark ? "square-dark" : "square-light",
                   isSelected && "square-highlight",
-                  isHint && "square-hint animate-pulse-glow"
+                  isHint && "square-hint animate-pulse-glow",
+                  (isLastMoveFrom || isLastMoveTo) && !isSelected && !isHint && "bg-primary/10"
                 )}
               >
                 {/* Square Coordinates Labels */}
@@ -125,6 +137,39 @@ const Board: React.FC<BoardProps> = ({ game, onMove, hintMove }) => {
           })
         )}
       </div>
+
+      {/* Last Move Arrow Overlay */}
+      {lastMove && (
+        <svg className="absolute inset-0 pointer-events-none z-30 w-full h-full overflow-visible drop-shadow-[0_0_8px_rgba(46,117,184,0.4)]">
+          <defs>
+            <marker
+              id="arrowhead"
+              markerWidth="10"
+              markerHeight="7"
+              refX="9"
+              refY="3.5"
+              orient="auto"
+            >
+              <polygon 
+                points="0 0, 10 3.5, 0 7" 
+                fill="hsl(var(--primary))" 
+                className="opacity-70"
+              />
+            </marker>
+          </defs>
+          <line
+            x1={`${getSquareCenter(lastMove.from).x}%`}
+            y1={`${getSquareCenter(lastMove.from).y}%`}
+            x2={`${getSquareCenter(lastMove.to).x}%`}
+            y2={`${getSquareCenter(lastMove.to).y}%`}
+            stroke="hsl(var(--primary))"
+            strokeWidth="3"
+            strokeLinecap="round"
+            markerEnd="url(#arrowhead)"
+            className="opacity-40 animate-in fade-in duration-500"
+          />
+        </svg>
+      )}
     </div>
   );
 };
