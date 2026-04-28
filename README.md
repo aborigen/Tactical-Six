@@ -70,46 +70,40 @@ If you need to reconnect your local repository to GitHub, follow these tactical 
 
 ## 🔐 Troubleshooting: Git Access Errors
 
-### Error: "403 Forbidden" or "Permission Denied to aborigen"
-This error occurs when Git tries to use cached credentials (like a Personal Access Token) from a different account or an expired token.
+### Error: "403 Forbidden" or "Permission Denied"
+This occurs when Git uses expired or incorrect cached credentials.
 
 #### Option A: Switch to SSH (Recommended)
-SSH keys are more reliable than HTTPS tokens.
 1. Generate an SSH key and add it to your GitHub account.
 2. Update your remote URL:
    ```bash
    git remote set-url origin git@github.com:aborigen/Tactical-Six.git
    ```
-3. Push again: `git push -u origin main`.
 
-#### Option B: Clear Cached Credentials (HTTPS)
-If you prefer HTTPS, you must clear the stored credentials so Git asks for them again.
-- **macOS**: 
-  1. Open **Keychain Access**.
-  2. Search for `github.com`.
-  3. Delete the entries (Internet Password).
-- **Windows**: 
-  1. Open **Credential Manager**.
-  2. Select **Windows Credentials**.
-  3. Find `git:https://github.com` and click **Remove**.
+#### Option B: Clear Cached Credentials
+- **macOS**: Delete `github.com` entries in **Keychain Access**.
+- **Windows**: Remove `git:https://github.com` in **Credential Manager**.
 
-#### Option C: Force Authenticated URL
-You can force Git to use your username in the URL, which often triggers the credential prompt:
-```bash
-git remote set-url origin https://aborigen@github.com/aborigen/Tactical-Six.git
-git push -u origin main
-```
-*Note: When prompted for a password, use a **Personal Access Token (PAT)**, not your GitHub password.*
+### Error: "ECONNREFUSED /tmp/vscode-git-..."
+This error indicates the VS Code Git credential helper socket is broken.
+
+1. **Restart VS Code**: Close all windows and relaunch.
+2. **Sign Out/In**: Go to the Accounts icon in VS Code, sign out of GitHub, and sign back in.
+3. **Use External Terminal**: Try running `git push` in your OS terminal (Terminal.app or PowerShell) instead of the integrated VS Code terminal.
+4. **Unset Helper**: If the issue persists, temporarily bypass the helper:
+   ```bash
+   git config --global --unset credential.helper
+   ```
 
 ## 📦 Static Export
 
-To generate a static build for production deployment:
+To generate a static build:
 
 ```bash
 npm run build
 ```
 
-This will create an `out` directory ready for deployment to any static web host.
+This creates an `out` directory ready for deployment.
 
 ---
 *Tactical Operational Manual v1.2.0*
