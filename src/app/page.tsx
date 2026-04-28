@@ -16,6 +16,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { translations, Language } from '@/lib/translations';
 import Onboarding from '@/components/onboarding/Onboarding';
+import RulesHelp from '@/components/help/RulesHelp';
 
 type GameMode = 'pvp' | 'pve';
 
@@ -152,6 +153,8 @@ export default function Home() {
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
+          <RulesHelp lang={lang} />
+
           <Tabs 
             value={lang} 
             onValueChange={(v) => setLang(v as Language)}
