@@ -68,6 +68,25 @@ If you need to reconnect your local repository to GitHub, follow these tactical 
    git push -u origin main
    ```
 
+## 🔐 Troubleshooting: "No anonymous write access"
+
+If you encounter a write access error, it is likely due to GitHub's removal of password authentication for HTTPS. Use one of these solutions:
+
+### Option A: Switch to SSH (Recommended)
+1. Ensure you have an SSH key added to your GitHub account.
+2. Update your remote URL:
+   ```bash
+   git remote set-url origin git@github.com:aborigen/Tactical-Six.git
+   ```
+3. Attempt the push again.
+
+### Option B: Use a Personal Access Token (PAT)
+1. Generate a PAT on GitHub (Settings > Developer Settings > Personal Access Tokens).
+2. Use the token as your password when prompted during `git push`, or update your remote to include it:
+   ```bash
+   git remote set-url origin https://<TOKEN>@github.com/aborigen/Tactical-Six.git
+   ```
+
 ## 📦 Static Export
 
 To generate a static build for production deployment:
