@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { ChessGame, Move } from '@/lib/chess-logic';
 import Board from '@/components/chess/Board';
 import { Button } from '@/components/ui/button';
@@ -9,11 +9,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { RotateCcw, Lightbulb, Trophy, History, BrainCircuit, ChevronRight, Cpu, User, UserCheck, Users } from 'lucide-react';
+import { RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, Languages } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { translations, Language } from '@/lib/translations';
 
 type GameMode = 'pvp' | 'pve';
 
@@ -23,17 +24,31 @@ export default function Home() {
   const [hintMove, setHintMove] = useState<Move | null>(null);
   const [isSuggesting, setIsSuggesting] = useState(false);
   const [explanation, setExplanation] = useState<string | null>(null);
+  const [lang, setLang] = useState<Language>('en');
   const { toast } = useToast();
+
+  const t = translations[lang];
+
+  const getLocalizedStatus = useCallback((status: string) => {
+    if (status.includes('Checkmate')) {
+      return status.includes('White') ? t.status_checkmate_white : t.status_checkmate_black;
+    }
+    if (status.includes('Draw')) return t.status_draw;
+    
+    const isCheck = status.includes('(Check!)');
+    const base = status.includes('White') ? t.status_white_turn : t.status_black_turn;
+    return `${base}${isCheck ? ` ${t.status_check}` : ''}`;
+  }, [t]);
 
   const resetGame = useCallback(() => {
     setGame(new ChessGame());
     setHintMove(null);
     setExplanation(null);
     toast({
-      title: "Board Reset",
-      description: "A new battle begins on the 6x6 arena.",
+      title: t.toast_reset_title,
+      description: t.toast_reset_desc,
     });
-  }, [toast]);
+  }, [toast, t]);
 
   const handleMove = useCallback((move: Move) => {
     const nextGame = game.clone();
@@ -50,7 +65,6 @@ export default function Home() {
     if (gameMode === 'pve' && game.turn === 'black' && !game.isGameOver && !isSuggesting) {
       const triggerAiOpponent = async () => {
         setIsSuggesting(true);
-        // Small delay for natural feel
         await new Promise(resolve => setTimeout(resolve, 800));
         
         try {
@@ -71,8 +85,8 @@ export default function Home() {
           console.error('AI Opponent Error:', error);
           toast({
             variant: 'destructive',
-            title: 'AI Command Failure',
-            description: 'The tactical engine failed to respond.'
+            title: t.toast_ai_fail_title,
+            description: t.toast_ai_fail_desc
           });
         } finally {
           setIsSuggesting(false);
@@ -81,7 +95,7 @@ export default function Home() {
 
       triggerAiOpponent();
     }
-  }, [game.turn, gameMode, game.isGameOver, handleMove, toast, game]);
+  }, [game.turn, gameMode, game.isGameOver, handleMove, toast, game, t]);
 
   const getAiHint = async () => {
     if (game.isGameOver || isSuggesting) return;
@@ -108,8 +122,8 @@ export default function Home() {
       console.error('AI Hint Error:', error);
       toast({
         variant: 'destructive',
-        title: 'Strategy Tool Error',
-        description: 'Unable to get AI move suggestion at this time.'
+        title: t.toast_hint_fail_title,
+        description: t.toast_hint_fail_desc
       });
     } finally {
       setIsSuggesting(false);
@@ -117,7 +131,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col p-4 md:p-8 selection:bg-accent selection:text-accent-foreground">
+    <div className="min-h-screen bg-background flex flex-col p-4 md:p-8">
       <header className="max-w-6xl mx-auto w-full mb-8 flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="flex items-center gap-4">
           <div className="bg-primary p-3 rounded-2xl shadow-xl shadow-primary/20 ring-1 ring-white/10 group">
@@ -126,15 +140,26 @@ export default function Home() {
             </svg>
           </div>
           <div>
-            <h1 className="text-4xl font-black tracking-tight text-white font-headline leading-none mb-1">TACTICAL SIX</h1>
+            <h1 className="text-4xl font-black tracking-tight text-white font-headline leading-none mb-1">{t.title}</h1>
             <p className="text-muted-foreground text-xs font-bold uppercase tracking-widest flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-              Advanced 6x6 Strategy Arena
+              {t.subtitle}
             </p>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
+          <Tabs 
+            value={lang} 
+            onValueChange={(v) => setLang(v as Language)}
+            className="bg-secondary/40 border border-white/5 p-1 rounded-xl"
+          >
+            <TabsList className="bg-transparent gap-1">
+              <TabsTrigger value="en" className="data-[state=active]:bg-white data-[state=active]:text-black font-bold rounded-lg px-3">EN</TabsTrigger>
+              <TabsTrigger value="ru" className="data-[state=active]:bg-white data-[state=active]:text-black font-bold rounded-lg px-3">RU</TabsTrigger>
+            </TabsList>
+          </Tabs>
+
           <Tabs 
             value={gameMode} 
             onValueChange={(v) => {
@@ -145,16 +170,16 @@ export default function Home() {
           >
             <TabsList className="bg-transparent gap-1">
               <TabsTrigger value="pvp" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold gap-2 rounded-lg transition-all px-4">
-                <Users className="w-4 h-4" /> 2P
+                <Users className="w-4 h-4" /> {t.mode_2p}
               </TabsTrigger>
               <TabsTrigger value="pve" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-bold gap-2 rounded-lg transition-all px-4">
-                <Cpu className="w-4 h-4" /> VS AI
+                <Cpu className="w-4 h-4" /> {t.mode_ai}
               </TabsTrigger>
             </TabsList>
           </Tabs>
 
           <Button variant="secondary" onClick={resetGame} className="gap-2 bg-secondary/80 border-border hover:bg-secondary font-bold px-4 h-10">
-            <RotateCcw className="w-4 h-4" /> Reset
+            <RotateCcw className="w-4 h-4" /> {t.reset}
           </Button>
           
           <Button 
@@ -163,7 +188,7 @@ export default function Home() {
             className="gap-2 bg-primary hover:bg-primary/90 text-white font-black px-6 shadow-lg shadow-primary/30 h-10"
           >
             {isSuggesting && game.turn === 'white' ? <Cpu className="w-5 h-5 animate-spin" /> : <Lightbulb className="w-5 h-5" />}
-            HINT
+            {t.hint}
           </Button>
         </div>
       </header>
@@ -173,7 +198,7 @@ export default function Home() {
           <Card className="bg-card border-border shadow-2xl ring-1 ring-white/5 overflow-hidden">
             <CardHeader className="pb-4 bg-secondary/30">
               <CardTitle className="text-sm font-bold uppercase tracking-widest flex items-center gap-2 text-primary">
-                <History className="w-4 h-4" /> Logged Manoeuvres
+                <History className="w-4 h-4" /> {t.history_title}
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-4">
@@ -184,7 +209,7 @@ export default function Home() {
                       <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center mb-4">
                         <History className="w-6 h-6 text-muted-foreground" />
                       </div>
-                      <p className="text-muted-foreground text-sm italic font-medium">No movements recorded.<br/>Initiate engagement.</p>
+                      <p className="text-muted-foreground text-sm italic font-medium">{t.history_empty_title}<br/>{t.history_empty_desc}</p>
                     </div>
                   ) : (
                     <div className="space-y-2">
@@ -218,8 +243,8 @@ export default function Home() {
             )}>
               <div className="w-3 h-3 rounded-full bg-white shadow-[0_0_10px_white]" />
               <div className="flex flex-col">
-                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Player One</span>
-                <span className="text-sm font-black tracking-tighter">WHITE COMMAND</span>
+                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{t.player_white_label}</span>
+                <span className="text-sm font-black tracking-tighter">{t.player_white_command}</span>
               </div>
             </div>
             
@@ -230,8 +255,8 @@ export default function Home() {
               game.turn === 'black' ? "bg-accent/10 ring-1 ring-accent/20" : "opacity-40 grayscale"
             )}>
               <div className="flex flex-col items-end">
-                <span className="text-[10px] font-bold text-accent/60 uppercase tracking-wider">{gameMode === 'pve' ? 'Local Engine' : 'Player Two'}</span>
-                <span className="text-sm font-black tracking-tighter text-accent">BLACK COMMAND</span>
+                <span className="text-[10px] font-bold text-accent/60 uppercase tracking-wider">{gameMode === 'pve' ? t.player_black_ai_label : t.player_black_label}</span>
+                <span className="text-sm font-black tracking-tighter text-accent">{t.player_black_command}</span>
               </div>
               <div className="w-3 h-3 rounded-full bg-accent shadow-[0_0_10px_hsl(var(--accent))]" />
             </div>
@@ -251,16 +276,16 @@ export default function Home() {
                   <div className="bg-primary/20 p-4 rounded-full">
                     <Trophy className="w-12 h-12 text-primary" />
                   </div>
-                  <h2 className="text-3xl font-black text-white tracking-tight uppercase italic">{game.status}</h2>
-                  <Button size="lg" onClick={resetGame} className="mt-2 bg-primary text-white font-black px-10">REPLAY BATTLE</Button>
+                  <h2 className="text-3xl font-black text-white tracking-tight uppercase italic">{getLocalizedStatus(game.status)}</h2>
+                  <Button size="lg" onClick={resetGame} className="mt-2 bg-primary text-white font-black px-10">{t.replay}</Button>
                 </div>
               ) : (
                 <div className="flex items-center justify-center gap-4">
                   <div className="w-2 h-2 rounded-full bg-primary animate-ping" />
                   <span className="text-xl font-bold tracking-tight text-foreground/90 italic">
                     {isSuggesting && gameMode === 'pve' && game.turn === 'black' 
-                      ? "ENGINE CALCULATING..." 
-                      : game.status
+                      ? t.engine_calculating
+                      : getLocalizedStatus(game.status)
                     }
                   </span>
                 </div>
@@ -274,9 +299,9 @@ export default function Home() {
           <Card className="bg-card border-border shadow-2xl ring-1 ring-white/5 h-full flex flex-col">
             <CardHeader className="pb-4 bg-secondary/30">
               <CardTitle className="text-sm font-bold uppercase tracking-widest flex items-center gap-2 text-accent">
-                <Cpu className="w-4 h-4" /> Tactical Engine
+                <Cpu className="w-4 h-4" /> {t.engine_title}
               </CardTitle>
-              <CardDescription className="text-[10px] font-medium tracking-tight opacity-70">Local Minimax Alpha-Beta Search</CardDescription>
+              <CardDescription className="text-[10px] font-medium tracking-tight opacity-70">{t.engine_desc}</CardDescription>
             </CardHeader>
             <CardContent className="flex-1 pt-6">
               <div className="h-full min-h-[300px] bg-secondary/10 rounded-2xl p-5 border border-white/5 relative overflow-hidden group flex flex-col">
@@ -289,16 +314,16 @@ export default function Home() {
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <p className="text-sm font-bold text-white uppercase tracking-wider">Awaiting Directives</p>
+                      <p className="text-sm font-bold text-white uppercase tracking-wider">{t.engine_awaiting}</p>
                       <p className="text-muted-foreground text-xs font-medium px-4 leading-relaxed">
                         {gameMode === 'pve' 
-                          ? "The engine will automatically engage when it's Black's turn. Request a hint for White anytime."
-                          : "Deploy the Strategy Hint tool to receive instant tactical analysis from the local computational matrix."
+                          ? t.engine_awaiting_desc_pve
+                          : t.engine_awaiting_desc_pvp
                         }
                       </p>
                     </div>
                     <Button variant="outline" size="sm" onClick={getAiHint} className="border-accent/30 hover:bg-accent/10 hover:text-accent">
-                      INITIATE ANALYTICS
+                      {t.engine_initiate}
                     </Button>
                   </div>
                 )}
@@ -309,7 +334,7 @@ export default function Home() {
                       <div className="absolute inset-0 border-4 border-t-accent rounded-full animate-spin" />
                     </div>
                     <div className="text-center space-y-2">
-                      <p className="text-xs font-black text-accent uppercase tracking-[0.2em] animate-pulse">Calculating Vectors</p>
+                      <p className="text-xs font-black text-accent uppercase tracking-[0.2em] animate-pulse">{t.engine_calculating_vectors}</p>
                       <p className="text-[10px] text-muted-foreground font-mono">LOCAL_SEARCH_D3</p>
                     </div>
                   </div>
@@ -319,12 +344,11 @@ export default function Home() {
                     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-700">
                       <div className="flex items-center justify-between border-b border-white/5 pb-4">
                         <Badge className="bg-accent text-accent-foreground font-black tracking-widest px-4 py-1 text-xs">
-                          {gameMode === 'pve' && game.turn === 'white' ? 'ENGINE LOG' : 'SUGGESTION'}
+                          {t.engine_eval}
                         </Badge>
                         <ChevronRight className="w-4 h-4 text-accent/50" />
                       </div>
                       <div className="space-y-4">
-                        <h4 className="text-[10px] font-black text-accent uppercase tracking-widest opacity-60">Engine Evaluation</h4>
                         <p className="text-sm text-foreground/90 leading-relaxed font-medium italic border-l-2 border-accent/30 pl-4 bg-accent/5 py-4 rounded-r-lg">
                           "{explanation}"
                         </p>
@@ -332,12 +356,12 @@ export default function Home() {
                       <div className="pt-6">
                         <div className="grid grid-cols-2 gap-4">
                           <div className="p-3 bg-white/5 rounded-xl border border-white/5 text-center">
-                            <p className="text-[8px] font-bold text-muted-foreground uppercase mb-1">Search Depth</p>
+                            <p className="text-[8px] font-bold text-muted-foreground uppercase mb-1">{t.engine_search_depth}</p>
                             <p className="text-lg font-black text-white">3 Ply</p>
                           </div>
                           <div className="p-3 bg-white/5 rounded-xl border border-white/5 text-center">
-                            <p className="text-[8px] font-bold text-muted-foreground uppercase mb-1">Status</p>
-                            <p className="text-lg font-black text-accent">Optimal</p>
+                            <p className="text-[8px] font-bold text-muted-foreground uppercase mb-1">{t.engine_status_label}</p>
+                            <p className="text-lg font-black text-accent">{t.engine_optimal}</p>
                           </div>
                         </div>
                       </div>
@@ -353,11 +377,11 @@ export default function Home() {
       <footer className="mt-16 pb-8 text-center">
         <div className="flex items-center justify-center gap-6 mb-4">
           <div className="h-px w-24 bg-gradient-to-r from-transparent to-white/10" />
-          <span className="text-[10px] font-black tracking-[0.4em] text-muted-foreground uppercase">Tactical Six Operational Intelligence</span>
+          <span className="text-[10px] font-black tracking-[0.4em] text-muted-foreground uppercase">{t.op_intel}</span>
           <div className="h-px w-24 bg-gradient-to-l from-transparent to-white/10" />
         </div>
         <p className="text-muted-foreground text-[9px] font-mono opacity-30">
-          V1.2.0 // 6X6_STRAT_ENG // LOCAL_INIT_COMPLETE // MODE: {gameMode.toUpperCase()}
+          V1.2.0 // 6X6_STRAT_ENG // LOCAL_INIT_COMPLETE // MODE: {gameMode.toUpperCase()} // LANG: {lang.toUpperCase()}
         </p>
       </footer>
       <Toaster />
