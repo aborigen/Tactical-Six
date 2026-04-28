@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { RotateCcw, Lightbulb, Trophy, History, BrainCircuit, ChevronRight } from 'lucide-react';
+import { RotateCcw, Lightbulb, Trophy, History, BrainCircuit, ChevronRight, Cpu } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
 import { useToast } from '@/hooks/use-toast';
@@ -100,14 +100,13 @@ export default function Home() {
             disabled={game.isGameOver || isSuggesting} 
             className="gap-2 bg-primary hover:bg-primary/90 text-white font-black px-8 shadow-lg shadow-primary/30"
           >
-            {isSuggesting ? <BrainCircuit className="w-5 h-5 animate-spin" /> : <Lightbulb className="w-5 h-5" />}
+            {isSuggesting ? <Cpu className="w-5 h-5 animate-spin" /> : <Lightbulb className="w-5 h-5" />}
             STRATEGY HINT
           </Button>
         </div>
       </header>
 
       <main className="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left: Move History & Player Info */}
         <div className="lg:col-span-3 flex flex-col gap-6 h-full">
           <Card className="bg-card border-border shadow-2xl ring-1 ring-white/5 overflow-hidden">
             <CardHeader className="pb-4 bg-secondary/30">
@@ -149,7 +148,6 @@ export default function Home() {
           </Card>
         </div>
 
-        {/* Center: Board */}
         <div className="lg:col-span-6 flex flex-col items-center">
           <div className="mb-8 flex justify-between w-full items-center px-4 py-3 bg-secondary/20 rounded-2xl border border-border/50 backdrop-blur-sm">
             <div className={cn(
@@ -194,20 +192,18 @@ export default function Home() {
                   <span className="text-xl font-bold tracking-tight text-foreground/90 italic">{game.status}</span>
                 </div>
               )}
-              {/* Subtle background glow */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-primary/10 transition-colors" />
             </div>
           </div>
         </div>
 
-        {/* Right: AI Analysis */}
         <div className="lg:col-span-3 flex flex-col gap-6">
           <Card className="bg-card border-border shadow-2xl ring-1 ring-white/5 h-full flex flex-col">
             <CardHeader className="pb-4 bg-secondary/30">
               <CardTitle className="text-sm font-bold uppercase tracking-widest flex items-center gap-2 text-accent">
-                <BrainCircuit className="w-4 h-4" /> Tactical Intelligence
+                <Cpu className="w-4 h-4" /> Tactical Engine
               </CardTitle>
-              <CardDescription className="text-[10px] font-medium tracking-tight opacity-70">Gemini Neural Processor Engine</CardDescription>
+              <CardDescription className="text-[10px] font-medium tracking-tight opacity-70">Local Minimax Alpha-Beta Search</CardDescription>
             </CardHeader>
             <CardContent className="flex-1 pt-6">
               <div className="h-full min-h-[300px] bg-secondary/10 rounded-2xl p-5 border border-white/5 relative overflow-hidden group flex flex-col">
@@ -222,7 +218,7 @@ export default function Home() {
                     <div className="space-y-2">
                       <p className="text-sm font-bold text-white uppercase tracking-wider">Awaiting Directives</p>
                       <p className="text-muted-foreground text-xs font-medium px-4 leading-relaxed">
-                        Deploy the Strategy Hint tool to receive high-level tactical analysis from the Gemini intelligence matrix.
+                        Deploy the Strategy Hint tool to receive instant tactical analysis from the local computational matrix.
                       </p>
                     </div>
                     <Button variant="outline" size="sm" onClick={getAiHint} className="border-accent/30 hover:bg-accent/10 hover:text-accent">
@@ -238,7 +234,7 @@ export default function Home() {
                     </div>
                     <div className="text-center space-y-2">
                       <p className="text-xs font-black text-accent uppercase tracking-[0.2em] animate-pulse">Calculating Vectors</p>
-                      <p className="text-[10px] text-muted-foreground font-mono">NEURAL_PASS_01.884</p>
+                      <p className="text-[10px] text-muted-foreground font-mono">LOCAL_SEARCH_D3</p>
                     </div>
                   </div>
                 )}
@@ -252,7 +248,7 @@ export default function Home() {
                         <ChevronRight className="w-4 h-4 text-accent/50" />
                       </div>
                       <div className="space-y-4">
-                        <h4 className="text-[10px] font-black text-accent uppercase tracking-widest opacity-60">Strategic Rationale</h4>
+                        <h4 className="text-[10px] font-black text-accent uppercase tracking-widest opacity-60">Engine Evaluation</h4>
                         <p className="text-sm text-foreground/90 leading-relaxed font-medium italic border-l-2 border-accent/30 pl-4 bg-accent/5 py-4 rounded-r-lg">
                           "{explanation}"
                         </p>
@@ -260,12 +256,12 @@ export default function Home() {
                       <div className="pt-6">
                         <div className="grid grid-cols-2 gap-4">
                           <div className="p-3 bg-white/5 rounded-xl border border-white/5 text-center">
-                            <p className="text-[8px] font-bold text-muted-foreground uppercase mb-1">Position Score</p>
-                            <p className="text-lg font-black text-white">+2.4</p>
+                            <p className="text-[8px] font-bold text-muted-foreground uppercase mb-1">Search Depth</p>
+                            <p className="text-lg font-black text-white">3 Ply</p>
                           </div>
                           <div className="p-3 bg-white/5 rounded-xl border border-white/5 text-center">
-                            <p className="text-[8px] font-bold text-muted-foreground uppercase mb-1">Confidence</p>
-                            <p className="text-lg font-black text-accent">98%</p>
+                            <p className="text-[8px] font-bold text-muted-foreground uppercase mb-1">Status</p>
+                            <p className="text-lg font-black text-accent">Optimal</p>
                           </div>
                         </div>
                       </div>
@@ -285,7 +281,7 @@ export default function Home() {
           <div className="h-px w-24 bg-gradient-to-l from-transparent to-white/10" />
         </div>
         <p className="text-muted-foreground text-[9px] font-mono opacity-30">
-          V1.2.0 // 6X6_STRAT_ENG // CORE_INIT_COMPLETE
+          V1.2.0 // 6X6_STRAT_ENG // LOCAL_INIT_COMPLETE
         </p>
       </footer>
       <Toaster />

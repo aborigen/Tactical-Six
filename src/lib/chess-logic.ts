@@ -20,6 +20,15 @@ export interface Move {
 
 export const BOARD_SIZE = 6;
 
+const PIECE_VALUES: Record<PieceType, number> = {
+  p: 100,
+  n: 320,
+  b: 330,
+  r: 500,
+  q: 900,
+  k: 20000,
+};
+
 export class ChessGame {
   board: BoardState;
   turn: PlayerColor;
@@ -244,6 +253,92 @@ export class ChessGame {
       }
     } else {
       this.status = `${this.turn.charAt(0).toUpperCase() + this.turn.slice(1)} to move${inCheck ? ' (Check!)' : ''}`;
+    }
+  }
+
+  evaluate(): number {
+    let score = 0;
+    for (let r = 0; r < BOARD_SIZE; r++) {
+      for (let c = 0; c < BOARD_SIZE; c++) {
+        const piece = this.board[r][c];
+        if (piece) {
+          const val = PIECE_VALUES[piece.type];
+          score += piece.color === 'white' ? val : -val;
+          
+          // Basic positional bonuses
+          if (piece.type === 'p') {
+            const pawnRankBonus = piece.color === 'white' ? (5 - r) * 10 : r * 10;
+            score += piece.color === 'white' ? pawnRankBonus : -pawnRankBonus;
+          }
+        }
+      }
+    }
+    return score;
+  }
+
+  getBestMove(depth: number = 3): { move: Move; score: number } {
+    const moves = this.getLegalMoves(this.turn);
+    if (moves.length === 0) return { move: null as any, score: this.evaluate() };
+
+    let bestMove = moves[0];
+    let bestScore = this.turn === 'white' ? -Infinity : Infinity;
+
+    for (const move of moves) {
+      const cloned = this.clone();
+      cloned.board[move.to.row][move.to.col] = cloned.board[move.from.row][move.from.col];
+      cloned.board[move.from.row][move.from.col] = null;
+      cloned.turn = cloned.turn === 'white' ? 'black' : 'white';
+
+      const score = this.minimax(cloned, depth - 1, -Infinity, Infinity, false);
+      
+      if (this.turn === 'white') {
+        if (score > bestScore) {
+          bestScore = score;
+          bestMove = move;
+        }
+      } else {
+        if (score < bestScore) {
+          bestScore = score;
+          bestMove = move;
+        }
+      }
+    }
+
+    return { move: bestMove, score: bestScore };
+  }
+
+  private minimax(game: ChessGame, depth: number, alpha: number, beta: number, isMaximizing: boolean): number {
+    if (depth === 0) return game.evaluate();
+
+    const moves = game.getLegalMoves(game.turn);
+    if (moves.length === 0) return game.evaluate();
+
+    if (isMaximizing) {
+      let maxEval = -Infinity;
+      for (const move of moves) {
+        const cloned = game.clone();
+        cloned.board[move.to.row][move.to.col] = cloned.board[move.from.row][move.from.col];
+        cloned.board[move.from.row][move.from.col] = null;
+        cloned.turn = 'black';
+        const evaluation = this.minimax(cloned, depth - 1, alpha, beta, false);
+        maxEval = Math.max(maxEval, evaluation);
+        alpha = Math.max(alpha, evaluation);
+        if (beta <= alpha) break;
+      }
+      return maxEval;
+    } else {
+      let minEval = Infinity;
+      for (const move of moves) {
+        const cloned = game.clone();
+        cloned.board[move.to.row][move.to.col] = cloned.board[move.from.row][move.from.col];
+        cloned.board[move.from.row][move.from.col] = null;
+        cloned.turn = 'white';
+        const evaluation = this.minimax(cloned, depth - 1, alpha, beta, true);
+        minEval = Math.min(minEval, evaluation);
+        beta = Math.min(beta, evaluation);
+        if (beta <= alpha) break;
+      }
+      return minEval;
     }
   }
 
