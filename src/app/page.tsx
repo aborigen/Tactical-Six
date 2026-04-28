@@ -22,6 +22,7 @@ import { translations, Language } from '@/lib/translations';
 import Onboarding from '@/components/onboarding/Onboarding';
 import RulesHelp from '@/components/help/RulesHelp';
 import { soundManager } from '@/lib/sounds';
+import { initYandexSDK, showFullscreenAd } from '@/lib/yandex-sdk';
 
 type GameMode = 'pvp' | 'pve';
 type Score = { white: number; black: number; draws: number };
@@ -61,14 +62,32 @@ export default function Home() {
     if (savedHistory) {
       try {
         const moves = JSON.parse(savedHistory) as Move[];
-        const newGame = ChessGame.fromHistory(moves);
         if (moves.length > 0) {
+          const newGame = ChessGame.fromHistory(moves);
           setGame(newGame);
         }
       } catch (e) {
         console.error('Failed to load history', e);
       }
     }
+
+    // Initialize Yandex Games SDK
+    const setupYandex = async () => {
+      const sdk = await initYandexSDK();
+      if (sdk) {
+        // Set language based on SDK environment if supported
+        const sdkLang = sdk.environment.i18n.lang.split('-')[0];
+        if (sdkLang === 'ru') {
+          setLang('ru');
+        } else {
+          setLang('en');
+        }
+        // Show initial ad
+        showFullscreenAd();
+      }
+    };
+    setupYandex();
+
     setIsInitialized(true);
   }, []);
 
@@ -104,11 +123,14 @@ export default function Home() {
       
       setScores(nextScores);
       setGameCounted(true);
+      
+      // Show ad after a short delay on game over
+      setTimeout(() => showFullscreenAd(), 2000);
     }
   }, [game.isGameOver, game.status, gameCounted, scores]);
 
   const displayedGame = useMemo(() => {
-    if (viewIndex === -1 || viewIndex >= game.history.length - 1) {
+    if (viewIndex === -1 || viewIndex >= game.history.length) {
       return game;
     }
     return ChessGame.fromHistory(game.history, viewIndex);
@@ -129,6 +151,7 @@ export default function Home() {
   }, [t]);
 
   const resetGame = useCallback(() => {
+    showFullscreenAd(); // Mandatory ad on manual reset in many SDKs
     setGame(new ChessGame());
     setHintMove(null);
     setExplanation(null);

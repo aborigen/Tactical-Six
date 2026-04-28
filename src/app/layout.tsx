@@ -1,5 +1,6 @@
 import type {Metadata} from 'next';
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 
 const inter = Inter({
@@ -21,6 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`dark ${inter.variable}`}>
       <body className="font-body antialiased bg-background text-foreground min-h-screen">
+        <Script 
+          src="https://yandex.ru/games/sdk/v2" 
+          strategy="beforeInteractive"
+        />
         {children}
       </body>
     </html>
