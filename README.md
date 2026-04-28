@@ -15,6 +15,7 @@ Tactical Six is a sophisticated 6x6 chess variant designed for fast-paced, high-
   - **Click-to-Move**: Precise tactical deployment for all platforms.
   - **Manoeuvre Indicators**: Visual arrow overlays highlighting the most recent engagement.
 - **Onboarding Protocol**: A multi-step introductory experience for new commanders, explaining the 6x6 meta and interface.
+- **Mission Playback**: Review past battles with a dedicated playback controller and tactical log history.
 
 ## 🛠 Tech Stack
 
@@ -24,6 +25,7 @@ Tactical Six is a sophisticated 6x6 chess variant designed for fast-paced, high-
 - **State Management**: React Hooks & Custom Chess Logic
 - **Audio**: Web Audio API (Logic-based synthesis)
 - **Persistence**: Browser LocalStorage
+- **Static Export**: Optimized for deployment on static hosting (e.g., GitHub Pages, Firebase Hosting).
 
 ## 🎮 How to Play
 
@@ -41,3 +43,37 @@ npm run dev
 ```
 
 The application will be available at `http://localhost:9002`.
+
+## 🛰 Connecting to GitHub
+
+If you need to reconnect your local repository to GitHub, follow these tactical steps:
+
+1. **Verify Current Remote**:
+   ```bash
+   git remote -v
+   ```
+
+2. **Remove Old Remote (if needed)**:
+   ```bash
+   git remote remove origin
+   ```
+
+3. **Establish New Connection**:
+   ```bash
+   git remote add origin https://github.com/aborigen/Tactical-Six.git
+   ```
+
+4. **Synchronize Main Branch**:
+   ```bash
+   git push -u origin main
+   ```
+
+## 📦 Static Export
+
+To generate a static build for production deployment:
+
+```bash
+npm run build
+```
+
+This will create an `out` directory ready for deployment to any static web host.
