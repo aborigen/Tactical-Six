@@ -1,26 +1,21 @@
-'use server';
+
 /**
  * @fileOverview This file defines a local logic-based search for suggesting a strategically sound chess move.
- * It has been updated to use a local Minimax engine instead of an external Gemini model.
+ * It runs entirely on the client to support static export environments.
  */
 
 import { ChessGame } from '@/lib/chess-logic';
-import { z } from 'genkit';
 
-// Input Schema for the AI move suggestion.
-const AIMoveSuggestionInputSchema = z.object({
-  boardState: z.string().describe('The current 6x6 chess board state represented as a multi-line string.'),
-  currentPlayer: z.enum(['white', 'black']).describe('The player whose turn it is to move.'),
-  legalMoves: z.array(z.string()).describe('A list of all legal moves available in algebraic notation.'),
-});
-export type AIMoveSuggestionInput = z.infer<typeof AIMoveSuggestionInputSchema>;
+export interface AIMoveSuggestionInput {
+  boardState: string;
+  currentPlayer: 'white' | 'black';
+  legalMoves: string[];
+}
 
-// Output Schema for the AI move suggestion.
-const AIMoveSuggestionOutputSchema = z.object({
-  suggestedMove: z.string().describe('The strategically chosen legal move in algebraic notation.'),
-  explanation: z.string().describe('A brief explanation of why this move was suggested.'),
-});
-export type AIMoveSuggestionOutput = z.infer<typeof AIMoveSuggestionOutputSchema>;
+export interface AIMoveSuggestionOutput {
+  suggestedMove: string;
+  explanation: string;
+}
 
 /**
  * Orchestrates the chess move suggestion process using a local minimax search.
@@ -28,6 +23,9 @@ export type AIMoveSuggestionOutput = z.infer<typeof AIMoveSuggestionOutputSchema
  * @returns A promise that resolves to the suggested move and an explanation.
  */
 export async function aiMoveSuggestion(input: AIMoveSuggestionInput): Promise<AIMoveSuggestionOutput> {
+  // We use a small delay to simulate calculation and ensure UI responsiveness
+  await new Promise(resolve => setTimeout(resolve, 300));
+
   const game = new ChessGame();
   
   // Reconstruct board from string
@@ -49,6 +47,11 @@ export async function aiMoveSuggestion(input: AIMoveSuggestionInput): Promise<AI
   game.turn = input.currentPlayer;
 
   const result = game.getBestMove(3);
+  
+  if (!result.move) {
+    throw new Error("No legal moves available for AI");
+  }
+
   const algebraic = ChessGame.toAlgebraic(result.move);
 
   return {
