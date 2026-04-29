@@ -11,21 +11,22 @@ Tactical Six is a sophisticated 6x6 chess variant designed for fast-paced, high-
 - **Multilingual Command**: Full localization for English and Russian, covering all interface elements, tactical hints, and rule protocols.
 - **Synthesized Tactical Audio**: Real-time auditory feedback synthesized via Web Audio API for moves, captures, checks, and mission conclusions.
 - **Advanced Rule Enforcement**: Comprehensive logic for Checkmate, Stalemate, and Insufficient Material draws.
-- **Modern Command Interface**: 
-  - **Drag & Drop**: Intuitive piece movement for desktop users.
-  - **Click-to-Move**: Precise tactical deployment for all platforms.
-  - **Manoeuvre Indicators**: Visual arrow overlays highlighting the most recent engagement.
 
 ## 🧠 Chess Engine Technical Logic
 
-The "AI" in Tactical Six is a deterministic search engine implemented in TypeScript. It follows these core principles:
+The AI in Tactical Six is a deterministic search engine implemented in TypeScript. It follows these core principles:
 
 1. **Minimax Search**: The engine builds a tree of possible moves. For every move it considers, it simulates the opponent's best response, continuing this process up to a depth of 3 "plies" (half-moves).
 2. **Alpha-Beta Pruning**: A critical optimization that stops evaluating a move as soon as it's determined to be worse than a previously evaluated option. This allows the engine to search 10x more positions in the same amount of time.
 3. **Board Evaluation**: Positions are scored based on:
    - **Material Balance**: Each piece has a weight (P: 100, N: 320, B: 330, R: 500, Q: 900, K: 20000).
    - **Positional Advantage**: Pawns receive "Rank Bonuses" as they move closer to the 6th rank, encouraging aggressive infantry deployment and promotion.
-4. **Move Suggestion**: The "Hint" system uses the same engine logic to suggest the mathematically optimal move for the current player based on a 3-move lookahead.
+
+### 📊 Engine Strength Analysis
+- **Strategic Level**: Intermediate (Tactical Specialist).
+- **Tactical Window**: 3 Plies. The engine identifies direct threats, forks, and hanging pieces instantly.
+- **ELO Equivalent**: Estimated 800–1100. It provides a challenging experience for casual players and a solid training partner for intermediates.
+- **Style**: Aggressive. The engine prioritizes material gain and pawn promotion above all else.
 
 ## 🛠 Tech Stack
 
@@ -43,26 +44,6 @@ To maintain compatibility with static hosting (ZIP upload for Yandex Games), thi
 - **No `'use server'`**: Every function is executed in the browser.
 - **Local Minimax**: Instead of calling a cloud LLM, the "AI" is a logic-based search running on the user's CPU.
 - **Static Export**: The `next.config.ts` is set to `output: 'export'`, generating a pure HTML/JS/CSS bundle.
-
-## 🛠 Development
-
-To start the development environment:
-
-```bash
-npm run dev
-```
-
-The application will be available at `http://localhost:9002`.
-
-## 🛰 Troubleshooting: Git & Remote Deployment
-
-### GitHub "403 Forbidden" or "Permission Denied"
-This occurs when Git uses incorrect or expired credentials.
-- **Switch to SSH (Recommended)**: `git remote set-url origin git@github.com:aborigen/Tactical-Six.git`.
-- **Clear Credentials**: Remove old GitHub entries from macOS Keychain or Windows Credential Manager.
-
-### Error: "ECONNREFUSED /tmp/vscode-git-..."
-- **Fix**: Restart VS Code or run your `git push` command from a standalone OS terminal instead of the integrated VS Code terminal.
 
 ---
 *Tactical Operational Manual v1.2.0*
