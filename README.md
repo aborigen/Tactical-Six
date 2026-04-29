@@ -16,6 +16,17 @@ Tactical Six is a sophisticated 6x6 chess variant designed for fast-paced, high-
   - **Click-to-Move**: Precise tactical deployment for all platforms.
   - **Manoeuvre Indicators**: Visual arrow overlays highlighting the most recent engagement.
 
+## 🧠 Chess Engine Technical Logic
+
+The "AI" in Tactical Six is a deterministic search engine implemented in TypeScript. It follows these core principles:
+
+1. **Minimax Search**: The engine builds a tree of possible moves. For every move it considers, it simulates the opponent's best response, continuing this process up to a depth of 3 "plies" (half-moves).
+2. **Alpha-Beta Pruning**: A critical optimization that stops evaluating a move as soon as it's determined to be worse than a previously evaluated option. This allows the engine to search 10x more positions in the same amount of time.
+3. **Board Evaluation**: Positions are scored based on:
+   - **Material Balance**: Each piece has a weight (P: 100, N: 320, B: 330, R: 500, Q: 900, K: 20000).
+   - **Positional Advantage**: Pawns receive "Rank Bonuses" as they move closer to the 6th rank, encouraging aggressive infantry deployment and promotion.
+4. **Move Suggestion**: The "Hint" system uses the same engine logic to suggest the mathematically optimal move for the current player based on a 3-move lookahead.
+
 ## 🛠 Tech Stack
 
 - **Framework**: [Next.js 15](https://nextjs.org/) (Static Export Mode)
@@ -25,13 +36,6 @@ Tactical Six is a sophisticated 6x6 chess variant designed for fast-paced, high-
 - **Audio**: Web Audio API (Logic-based synthesis)
 - **Persistence**: Browser LocalStorage
 - **SDK**: Yandex Games SDK v2 Integration
-
-## 🎮 How to Play
-
-1. **Deployment**: White and Black start on opposite sides of the 6x6 grid.
-2. **Matrix Rules**: Standard chess rules apply, but within a reduced 6x6 space. Note: Pawns move 1 square forward (no double-move) and capture diagonally.
-3. **AI Engagement**: Toggle "VS AI" in the header to challenge the local tactical engine.
-4. **Winning**: Achieve checkmate by trapping the enemy King. The mission also ends in a draw if a stalemate or insufficient material situation occurs.
 
 ## 🏗 Architecture Note: Why no Server Actions?
 
@@ -50,36 +54,12 @@ npm run dev
 
 The application will be available at `http://localhost:9002`.
 
-## 🛰 Connecting to GitHub
+## 🛰 Troubleshooting: Git & Remote Deployment
 
-If you need to reconnect your local repository to GitHub, follow these tactical steps:
-
-1. **Verify Current Remote**:
-   ```bash
-   git remote -v
-   ```
-
-2. **Remove Old Remote (if needed)**:
-   ```bash
-   git remote remove origin
-   ```
-
-3. **Establish New Connection**:
-   ```bash
-   git remote add origin https://github.com/aborigen/Tactical-Six.git
-   ```
-
-4. **Synchronize Main Branch**:
-   ```bash
-   git push -u origin main
-   ```
-
-## 🔐 Troubleshooting: Git Access Errors
-
-### Error: "403 Forbidden" (No anonymous write access)
+### GitHub "403 Forbidden" or "Permission Denied"
 This occurs when Git uses incorrect or expired credentials.
-- **Option A (Recommended)**: Switch to SSH. Update your remote: `git remote set-url origin git@github.com:aborigen/Tactical-Six.git`.
-- **Option B**: Clear cached credentials in macOS Keychain Access or Windows Credential Manager.
+- **Switch to SSH (Recommended)**: `git remote set-url origin git@github.com:aborigen/Tactical-Six.git`.
+- **Clear Credentials**: Remove old GitHub entries from macOS Keychain or Windows Credential Manager.
 
 ### Error: "ECONNREFUSED /tmp/vscode-git-..."
 - **Fix**: Restart VS Code or run your `git push` command from a standalone OS terminal instead of the integrated VS Code terminal.
