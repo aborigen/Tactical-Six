@@ -1,4 +1,3 @@
-
 /**
  * @fileOverview This file defines a local logic-based search for suggesting a strategically sound chess move.
  * It runs entirely on the client to support static export environments.
@@ -10,11 +9,13 @@ export interface AIMoveSuggestionInput {
   boardState: string;
   currentPlayer: 'white' | 'black';
   legalMoves: string[];
+  depth?: number;
 }
 
 export interface AIMoveSuggestionOutput {
   suggestedMove: string;
   explanation: string;
+  depth: number;
 }
 
 /**
@@ -27,6 +28,7 @@ export async function aiMoveSuggestion(input: AIMoveSuggestionInput): Promise<AI
   await new Promise(resolve => setTimeout(resolve, 300));
 
   const game = new ChessGame();
+  const searchDepth = input.depth || 3;
   
   // Reconstruct board from string
   const ranks = input.boardState.split('\n');
@@ -46,7 +48,7 @@ export async function aiMoveSuggestion(input: AIMoveSuggestionInput): Promise<AI
   }
   game.turn = input.currentPlayer;
 
-  const result = game.getBestMove(3);
+  const result = game.getBestMove(searchDepth);
   
   if (!result.move) {
     throw new Error("No legal moves available for AI");
@@ -56,6 +58,7 @@ export async function aiMoveSuggestion(input: AIMoveSuggestionInput): Promise<AI
 
   return {
     suggestedMove: algebraic,
-    explanation: `Calculated via Local Tactical Engine (Depth 3). The position score is evaluated at ${(result.score / 100).toFixed(2)}. This move prioritizes material balance and positional control within the 6x6 matrix.`
+    explanation: `Calculated via Local Tactical Engine (Depth ${searchDepth}). The position score is evaluated at ${(result.score / 100).toFixed(2)}. This move prioritizes material balance and positional control within the 6x6 matrix.`,
+    depth: searchDepth
   };
 }

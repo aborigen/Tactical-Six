@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
@@ -12,7 +11,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, 
   Volume2, VolumeX, Trash2, Copy, Check, ChevronLeft, ChevronLast, ChevronFirst,
-  PlayCircle
+  PlayCircle, Zap
 } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
@@ -25,14 +24,23 @@ import { soundManager } from '@/lib/sounds';
 import { initYandexSDK, showFullscreenAd } from '@/lib/yandex-sdk';
 
 type GameMode = 'pvp' | 'pve';
+type Difficulty = 'easy' | 'medium' | 'hard';
 type Score = { white: number; black: number; draws: number };
 
 const SCORE_STORAGE_KEY = 'tactical_six_scores';
 const HISTORY_STORAGE_KEY = 'tactical_six_history';
+const DIFFICULTY_STORAGE_KEY = 'tactical_six_difficulty';
+
+const DIFFICULTY_MAP: Record<Difficulty, number> = {
+  easy: 1,
+  medium: 3,
+  hard: 4
+};
 
 export default function Home() {
   const [game, setGame] = useState(new ChessGame());
   const [gameMode, setGameMode] = useState<GameMode>('pvp');
+  const [difficulty, setDifficulty] = useState<Difficulty>('medium');
   const [hintMove, setHintMove] = useState<Move | null>(null);
   const [isSuggesting, setIsSuggesting] = useState(false);
   const [explanation, setExplanation] = useState<string | null>(null);
@@ -47,7 +55,7 @@ export default function Home() {
 
   const t = translations[lang];
 
-  // Load scores and history on mount
+  // Load scores, history, and difficulty on mount
   useEffect(() => {
     const savedScores = localStorage.getItem(SCORE_STORAGE_KEY);
     if (savedScores) {
@@ -56,6 +64,11 @@ export default function Home() {
       } catch (e) {
         console.error('Failed to load scores', e);
       }
+    }
+
+    const savedDifficulty = localStorage.getItem(DIFFICULTY_STORAGE_KEY);
+    if (savedDifficulty) {
+      setDifficulty(savedDifficulty as Difficulty);
     }
 
     const savedHistory = localStorage.getItem(HISTORY_STORAGE_KEY);
@@ -75,14 +88,12 @@ export default function Home() {
     const setupYandex = async () => {
       const sdk = await initYandexSDK();
       if (sdk) {
-        // Set language based on SDK environment if supported
         const sdkLang = sdk.environment.i18n.lang.split('-')[0];
         if (sdkLang === 'ru') {
           setLang('ru');
         } else {
           setLang('en');
         }
-        // Show initial ad
         showFullscreenAd();
       }
     };
@@ -96,6 +107,12 @@ export default function Home() {
     if (!isInitialized) return;
     localStorage.setItem(SCORE_STORAGE_KEY, JSON.stringify(scores));
   }, [scores, isInitialized]);
+
+  // Save difficulty
+  useEffect(() => {
+    if (!isInitialized) return;
+    localStorage.setItem(DIFFICULTY_STORAGE_KEY, difficulty);
+  }, [difficulty, isInitialized]);
 
   // Save history
   useEffect(() => {
@@ -124,7 +141,6 @@ export default function Home() {
       setScores(nextScores);
       setGameCounted(true);
       
-      // Show ad after a short delay on game over
       setTimeout(() => showFullscreenAd(), 2000);
     }
   }, [game.isGameOver, game.status, gameCounted, scores]);
@@ -151,7 +167,7 @@ export default function Home() {
   }, [t]);
 
   const resetGame = useCallback(() => {
-    showFullscreenAd(); // Mandatory ad on manual reset in many SDKs
+    showFullscreenAd();
     setGame(new ChessGame());
     setHintMove(null);
     setExplanation(null);
@@ -175,7 +191,6 @@ export default function Home() {
   }, [toast, t]);
 
   const handleMove = useCallback((move: Move) => {
-    // Cannot move while reviewing history
     if (isReviewMode) return;
 
     const isCapture = !!game.board[move.to.row][move.to.col];
@@ -212,7 +227,8 @@ export default function Home() {
           const suggestion = await aiMoveSuggestion({
             boardState: boardStr,
             currentPlayer: 'black',
-            legalMoves: legalMoves
+            legalMoves: legalMoves,
+            depth: DIFFICULTY_MAP[difficulty]
           });
 
           if (suggestion.suggestedMove) {
@@ -234,7 +250,7 @@ export default function Home() {
 
       triggerAiOpponent();
     }
-  }, [game.turn, gameMode, game.isGameOver, handleMove, toast, game, t, isSuggesting, isReviewMode]);
+  }, [game.turn, gameMode, game.isGameOver, handleMove, toast, game, t, isSuggesting, isReviewMode, difficulty]);
 
   const getAiHint = async () => {
     if (game.isGameOver || isSuggesting || isReviewMode) return;
@@ -249,7 +265,8 @@ export default function Home() {
       const suggestion = await aiMoveSuggestion({
         boardState: boardStr,
         currentPlayer: game.turn,
-        legalMoves: legalMoves
+        legalMoves: legalMoves,
+        depth: DIFFICULTY_MAP[difficulty]
       });
 
       if (suggestion.suggestedMove) {
@@ -570,8 +587,33 @@ export default function Home() {
               </CardTitle>
               <CardDescription className="text-[10px] font-medium tracking-tight opacity-70">{t.engine_desc}</CardDescription>
             </CardHeader>
-            <CardContent className="flex-1 pt-6">
-              <div className="h-full min-h-[300px] bg-secondary/10 rounded-2xl p-5 border border-white/5 relative overflow-hidden group flex flex-col">
+            <CardContent className="flex-1 pt-6 flex flex-col gap-6">
+              {/* Difficulty Selector */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                    <Zap className="w-3 h-3 text-accent" /> {t.engine_difficulty_label}
+                  </label>
+                  <Badge variant="outline" className="text-[8px] font-mono border-accent/20 text-accent uppercase">
+                    Depth {DIFFICULTY_MAP[difficulty]}
+                  </Badge>
+                </div>
+                <Tabs value={difficulty} onValueChange={(v) => setDifficulty(v as Difficulty)} className="w-full">
+                  <TabsList className="grid grid-cols-3 bg-secondary/40 p-1 h-9 border border-white/5">
+                    <TabsTrigger value="easy" className="text-[10px] font-bold uppercase data-[state=active]:bg-primary data-[state=active]:text-white transition-all">
+                      {t.diff_easy}
+                    </TabsTrigger>
+                    <TabsTrigger value="medium" className="text-[10px] font-bold uppercase data-[state=active]:bg-primary data-[state=active]:text-white transition-all">
+                      {t.diff_medium}
+                    </TabsTrigger>
+                    <TabsTrigger value="hard" className="text-[10px] font-bold uppercase data-[state=active]:bg-primary data-[state=active]:text-white transition-all">
+                      {t.diff_hard}
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </div>
+
+              <div className="flex-1 min-h-[300px] bg-secondary/10 rounded-2xl p-5 border border-white/5 relative overflow-hidden group flex flex-col">
                 {isReviewMode ? (
                   <div className="flex flex-col items-center justify-center h-full text-center space-y-6">
                     <History className="w-12 h-12 text-muted-foreground/30" />
@@ -614,7 +656,7 @@ export default function Home() {
                         </div>
                         <div className="text-center space-y-2">
                           <p className="text-xs font-black text-accent uppercase tracking-[0.2em] animate-pulse">{t.engine_calculating_vectors}</p>
-                          <p className="text-[10px] text-muted-foreground font-mono">LOCAL_SEARCH_D3</p>
+                          <p className="text-[10px] text-muted-foreground font-mono">LOCAL_SEARCH_D{DIFFICULTY_MAP[difficulty]}</p>
                         </div>
                       </div>
                     )}
@@ -636,7 +678,7 @@ export default function Home() {
                             <div className="grid grid-cols-2 gap-4">
                               <div className="p-3 bg-white/5 rounded-xl border border-white/5 text-center">
                                 <p className="text-[8px] font-bold text-muted-foreground uppercase mb-1">{t.engine_search_depth}</p>
-                                <p className="text-lg font-black text-white">3 Ply</p>
+                                <p className="text-lg font-black text-white">{DIFFICULTY_MAP[difficulty]} Ply</p>
                               </div>
                               <div className="p-3 bg-white/5 rounded-xl border border-white/5 text-center">
                                 <p className="text-[8px] font-bold text-muted-foreground uppercase mb-1">{t.engine_status_label}</p>
@@ -662,7 +704,7 @@ export default function Home() {
           <div className="h-px w-24 bg-gradient-to-l from-transparent to-white/10" />
         </div>
         <p className="text-muted-foreground text-[9px] font-mono opacity-30">
-          V1.2.0 // 6X6_STRAT_ENG // LOCAL_INIT_COMPLETE // MODE: {gameMode.toUpperCase()} // LANG: {lang.toUpperCase()}
+          V1.2.0 // 6X6_STRAT_ENG // LOCAL_INIT_COMPLETE // MODE: {gameMode.toUpperCase()} // DIFF: {difficulty.toUpperCase()} // LANG: {lang.toUpperCase()}
         </p>
       </footer>
       <Toaster />
