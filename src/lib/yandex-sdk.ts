@@ -5,17 +5,21 @@
 
 export interface YandexSDK {
   adv: {
-    showFullscreenAdv: (callbacks: {
-      onOpen?: () => void;
-      onClose?: (wasShown: boolean) => void;
-      onError?: (error: string) => void;
-      onOffline?: () => void;
+    showFullscreenAdv: (options: {
+      callbacks: {
+        onOpen?: () => void;
+        onClose?: (wasShown: boolean) => void;
+        onError?: (error: string) => void;
+        onOffline?: () => void;
+      };
     }) => void;
-    showRewardedVideo: (callbacks: {
-      onOpen?: () => void;
-      onRewarded?: () => void;
-      onClose?: () => void;
-      onError?: (error: string) => void;
+    showRewardedVideo: (options: {
+      callbacks: {
+        onOpen?: () => void;
+        onRewarded?: () => void;
+        onClose?: () => void;
+        onError?: (error: string) => void;
+      };
     }) => void;
   };
   auth: {
@@ -55,23 +59,33 @@ declare global {
 let ysdkInstance: YandexSDK | null = null;
 
 /**
- * Initializes the Yandex Games SDK.
+ * Initializes the Yandex Games SDK with a retry mechanism if the script is still loading.
  */
 export async function initYandexSDK(): Promise<YandexSDK | null> {
   if (typeof window === 'undefined') return null;
   if (ysdkInstance) return ysdkInstance;
 
-  if (window.YaGames) {
-    try {
-      ysdkInstance = await window.YaGames.init();
-      console.log('Yandex Games SDK initialized');
-      return ysdkInstance;
-    } catch (e) {
-      console.error('Failed to initialize Yandex Games SDK', e);
-      return null;
+  const tryInit = async (retries = 5): Promise<YandexSDK | null> => {
+    if (window.YaGames) {
+      try {
+        ysdkInstance = await window.YaGames.init();
+        console.log('Yandex Games SDK initialized');
+        return ysdkInstance;
+      } catch (e) {
+        console.error('Failed to initialize Yandex Games SDK', e);
+        return null;
+      }
     }
-  }
-  return null;
+    
+    if (retries > 0) {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      return tryInit(retries - 1);
+    }
+    
+    return null;
+  };
+
+  return tryInit();
 }
 
 /**
@@ -82,17 +96,29 @@ export function getYandexSDK(): YandexSDK | null {
 }
 
 /**
- * Shows a fullscreen advertisement.
+ * Shows a fullscreen advertisement with standard callbacks for game state management.
  */
-export function showFullscreenAd() {
+export function showFullscreenAd(options?: { onOpen?: () => void; onClose?: () => void }) {
   const sdk = getYandexSDK();
   if (sdk) {
     sdk.adv.showFullscreenAdv({
-      onClose: (wasShown) => {
-        console.log('Ad closed, was shown:', wasShown);
-      },
-      onError: (err) => {
-        console.error('Ad error:', err);
+      callbacks: {
+        onOpen: () => {
+          console.log('Ad opened');
+          options?.onOpen?.();
+        },
+        onClose: (wasShown) => {
+          console.log('Ad closed, was shown:', wasShown);
+          options?.onClose?.();
+        },
+        onError: (err) => {
+          console.error('Ad error:', err);
+          options?.onClose?.(); // Ensure game resumes even on error
+        },
+        onOffline: () => {
+          console.log('Ad offline');
+          options?.onClose?.();
+        }
       }
     });
   }

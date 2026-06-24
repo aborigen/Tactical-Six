@@ -46,6 +46,7 @@ export default function Home() {
   const [explanation, setExplanation] = useState<string | null>(null);
   const [lang, setLang] = useState<Language>('en');
   const [isMuted, setIsMuted] = useState(false);
+  const [isAdPlaying, setIsAdPlaying] = useState(false);
   const [scores, setScores] = useState<Score>({ white: 0, black: 0, draws: 0 });
   const [gameCounted, setGameCounted] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -55,7 +56,7 @@ export default function Home() {
 
   const t = translations[lang];
 
-  // Load scores, history, and difficulty on mount
+  // Initialize Yandex Games SDK and load state
   useEffect(() => {
     const savedScores = localStorage.getItem(SCORE_STORAGE_KEY);
     if (savedScores) {
@@ -84,7 +85,6 @@ export default function Home() {
       }
     }
 
-    // Initialize Yandex Games SDK
     const setupYandex = async () => {
       const sdk = await initYandexSDK();
       if (sdk) {
@@ -94,7 +94,10 @@ export default function Home() {
         } else {
           setLang('en');
         }
-        showFullscreenAd();
+        showFullscreenAd({
+          onOpen: () => setIsAdPlaying(true),
+          onClose: () => setIsAdPlaying(false)
+        });
       }
     };
     setupYandex();
@@ -141,7 +144,12 @@ export default function Home() {
       setScores(nextScores);
       setGameCounted(true);
       
-      setTimeout(() => showFullscreenAd(), 2000);
+      setTimeout(() => {
+        showFullscreenAd({
+          onOpen: () => setIsAdPlaying(true),
+          onClose: () => setIsAdPlaying(false)
+        });
+      }, 2000);
     }
   }, [game.isGameOver, game.status, gameCounted, scores]);
 
@@ -167,7 +175,10 @@ export default function Home() {
   }, [t]);
 
   const resetGame = useCallback(() => {
-    showFullscreenAd();
+    showFullscreenAd({
+      onOpen: () => setIsAdPlaying(true),
+      onClose: () => setIsAdPlaying(false)
+    });
     setGame(new ChessGame());
     setHintMove(null);
     setExplanation(null);
@@ -191,13 +202,13 @@ export default function Home() {
   }, [toast, t]);
 
   const handleMove = useCallback((move: Move) => {
-    if (isReviewMode) return;
+    if (isReviewMode || isAdPlaying) return;
 
     const isCapture = !!game.board[move.to.row][move.to.col];
     const nextGame = game.clone();
     const success = nextGame.makeMove(move);
     if (success) {
-      if (!isMuted) {
+      if (!isMuted && !isAdPlaying) {
         if (nextGame.isGameOver) {
           soundManager.playGameOver();
         } else if (nextGame.isInCheck(nextGame.turn)) {
@@ -212,11 +223,11 @@ export default function Home() {
       setHintMove(null);
       setExplanation(null);
     }
-  }, [game, isMuted, isReviewMode]);
+  }, [game, isMuted, isReviewMode, isAdPlaying]);
 
   // AI Opponent Logic
   useEffect(() => {
-    if (gameMode === 'pve' && game.turn === 'black' && !game.isGameOver && !isSuggesting && !isReviewMode) {
+    if (gameMode === 'pve' && game.turn === 'black' && !game.isGameOver && !isSuggesting && !isReviewMode && !isAdPlaying) {
       const triggerAiOpponent = async () => {
         setIsSuggesting(true);
         await new Promise(resolve => setTimeout(resolve, 800));
@@ -250,10 +261,10 @@ export default function Home() {
 
       triggerAiOpponent();
     }
-  }, [game.turn, gameMode, game.isGameOver, handleMove, toast, game, t, isSuggesting, isReviewMode, difficulty]);
+  }, [game.turn, gameMode, game.isGameOver, handleMove, toast, game, t, isSuggesting, isReviewMode, difficulty, isAdPlaying]);
 
   const getAiHint = async () => {
-    if (game.isGameOver || isSuggesting || isReviewMode) return;
+    if (game.isGameOver || isSuggesting || isReviewMode || isAdPlaying) return;
 
     setIsSuggesting(true);
     setExplanation(null);
@@ -304,7 +315,10 @@ export default function Home() {
   const setStep = (idx: number) => setViewIndex(idx);
 
   return (
-    <div className="min-h-screen bg-background flex flex-col p-4 md:p-8">
+    <div className={cn(
+      "min-h-screen bg-background flex flex-col p-4 md:p-8 transition-opacity duration-300",
+      isAdPlaying ? "opacity-20 pointer-events-none" : "opacity-100"
+    )}>
       <Onboarding lang={lang} />
       
       <header className="max-w-6xl mx-auto w-full mb-8 flex flex-col md:flex-row justify-between items-center gap-6">
@@ -397,7 +411,7 @@ export default function Home() {
           
           <Button 
             onClick={getAiHint} 
-            disabled={game.isGameOver || isSuggesting || isReviewMode} 
+            disabled={game.isGameOver || isSuggesting || isReviewMode || isAdPlaying} 
             className="gap-2 bg-primary hover:bg-primary/90 text-white font-black px-6 shadow-lg shadow-primary/30 h-10"
           >
             {isSuggesting && game.turn === 'white' ? <Cpu className="w-5 h-5 animate-spin" /> : <Lightbulb className="w-5 h-5" />}
@@ -537,10 +551,10 @@ export default function Home() {
 
           <div className="relative">
             <Board game={displayedGame} onMove={handleMove} hintMove={hintMove} />
-            {isReviewMode && (
+            {(isReviewMode || isAdPlaying) && (
               <div className="absolute inset-0 bg-background/20 backdrop-blur-[1px] pointer-events-none z-10 rounded-2xl flex items-center justify-center">
                 <div className="bg-primary/90 text-white px-6 py-2 rounded-full shadow-2xl font-black text-xs uppercase tracking-[0.2em] border border-white/20 animate-pulse">
-                  Reviewing Mission Log
+                  {isAdPlaying ? "Transmitting Feed" : "Reviewing Mission Log"}
                 </div>
               </div>
             )}
