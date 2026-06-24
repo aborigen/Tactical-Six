@@ -65,7 +65,7 @@ export async function initYandexSDK(): Promise<YandexSDK | null> {
   if (typeof window === 'undefined') return null;
   if (ysdkInstance) return ysdkInstance;
 
-  const tryInit = async (retries = 5): Promise<YandexSDK | null> => {
+  const tryInit = async (retries = 10): Promise<YandexSDK | null> => {
     if (window.YaGames) {
       try {
         ysdkInstance = await window.YaGames.init();
@@ -121,5 +121,8 @@ export function showFullscreenAd(options?: { onOpen?: () => void; onClose?: () =
         }
       }
     });
+  } else {
+    // Fallback if SDK not initialized
+    options?.onClose?.();
   }
 }
