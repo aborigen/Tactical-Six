@@ -37,14 +37,24 @@ The AI in Tactical Six is a deterministic search engine implemented in TypeScrip
 If you encounter errors during `git push`, follow these tactical protocols:
 
 ### Error: Permission Denied (403)
-This occurs when GitHub rejects your local credentials.
-1. **Switch to SSH (Recommended)**: Generate an SSH key, add it to your GitHub account, and update your remote:
-   ```bash
-   git remote set-url origin git@github.com:aborigen/Tactical-Six.git
-   ```
-2. **Clear Credential Cache**:
-   - **macOS**: Delete the GitHub entry from "Keychain Access".
-   - **Windows**: Remove GitHub credentials from "Credential Manager".
+This occurs when GitHub rejects your local credentials. Use one of the following fixes:
+
+**Option A: Clear OS Credential Cache (Recommended)**
+- **macOS (Keychain Access)**:
+  1. Open **Keychain Access** (Cmd + Space, type "Keychain Access").
+  2. Search for `github.com`.
+  3. Delete the "Internet Password" entry for `github.com`.
+  4. Try pushing again; you will be prompted for your username and **Personal Access Token**.
+- **Windows (Credential Manager)**:
+  1. Open **Control Panel** > **User Accounts** > **Credential Manager**.
+  2. Select **Windows Credentials**.
+  3. Find `git:https://github.com` and click **Remove**.
+
+**Option B: Switch to SSH**
+Generate an SSH key, add it to your GitHub account, and update your remote:
+```bash
+git remote set-url origin git@github.com:aborigen/Tactical-Six.git
+```
 
 ### Error: ECONNREFUSED / socket error
 This occurs when the VS Code Git bridge is stale.
