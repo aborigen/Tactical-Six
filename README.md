@@ -32,14 +32,20 @@ The AI in Tactical Six is a deterministic search engine implemented in TypeScrip
 - **Persistence**: Browser LocalStorage
 - **SDK**: Yandex Games SDK v2 Integration
 
-## 🛰 Git Troubleshooting Protocol
+## 🛰 Deployment & Troubleshooting
+
+### Static Export Deployment
+1. Run `npm run build`.
+2. The static files will be generated in the `/out` directory.
+3. For Yandex Games, zip the contents of the `/out` directory and upload the archive.
+
+### Git Troubleshooting Protocol
 
 If you encounter errors during `git push`, follow these tactical protocols:
 
-### Error: Permission Denied (403)
+**Error: Permission Denied (403)**
 This occurs when GitHub rejects your local credentials. Use one of the following fixes to force Git to ask for new credentials:
 
-**Option A: Clear OS Credential Cache (Recommended)**
 - **macOS (Keychain Access)**:
   1. Press **Cmd + Space**, type **"Keychain Access"**, and press Enter.
   2. In the search bar at the top right, type **`github.com`**.
@@ -52,13 +58,7 @@ This occurs when GitHub rejects your local credentials. Use one of the following
   2. Select **Windows Credentials**.
   3. Find `git:https://github.com` and click **Remove**.
 
-**Option B: Switch to SSH**
-Generate an SSH key, add it to your GitHub account, and update your remote:
-```bash
-git remote set-url origin git@github.com:aborigen/Tactical-Six.git
-```
-
-### Error: ECONNREFUSED / socket error
+**Error: ECONNREFUSED / socket error**
 This occurs when the VS Code Git bridge is stale.
 1. **Restart VS Code**: Closing and reopening the environment usually resets the communication socket.
 2. **Use External Terminal**: Run your git commands from the system terminal instead of the integrated VS Code terminal to bypass the broken socket.
