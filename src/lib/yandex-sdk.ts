@@ -65,7 +65,7 @@ export async function initYandexSDK(): Promise<YandexSDK | null> {
   if (typeof window === 'undefined') return null;
   if (ysdkInstance) return ysdkInstance;
 
-  const tryInit = async (retries = 10): Promise<YandexSDK | null> => {
+  const tryInit = async (retries = 15): Promise<YandexSDK | null> => {
     if (window.YaGames) {
       try {
         ysdkInstance = await window.YaGames.init();
@@ -78,10 +78,11 @@ export async function initYandexSDK(): Promise<YandexSDK | null> {
     }
     
     if (retries > 0) {
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 300));
       return tryInit(retries - 1);
     }
     
+    console.warn('Yandex Games SDK script not found after retries.');
     return null;
   };
 
@@ -123,6 +124,7 @@ export function showFullscreenAd(options?: { onOpen?: () => void; onClose?: () =
     });
   } else {
     // Fallback if SDK not initialized
+    console.warn('Yandex SDK not ready for advertisement.');
     options?.onClose?.();
   }
 }

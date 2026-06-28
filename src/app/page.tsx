@@ -94,6 +94,7 @@ export default function Home() {
         } else {
           setLang('en');
         }
+        // Initial entry ad
         showFullscreenAd({
           onOpen: () => setIsAdPlaying(true),
           onClose: () => setIsAdPlaying(false)
@@ -144,12 +145,14 @@ export default function Home() {
       setScores(nextScores);
       setGameCounted(true);
       
-      setTimeout(() => {
+      // Delay game over ad to let the user see the board
+      const adTimeout = setTimeout(() => {
         showFullscreenAd({
           onOpen: () => setIsAdPlaying(true),
           onClose: () => setIsAdPlaying(false)
         });
-      }, 2000);
+      }, 3000);
+      return () => clearTimeout(adTimeout);
     }
   }, [game.isGameOver, game.status, gameCounted, scores]);
 
@@ -175,10 +178,13 @@ export default function Home() {
   }, [t]);
 
   const resetGame = useCallback(() => {
+    if (isAdPlaying) return;
+    
     showFullscreenAd({
       onOpen: () => setIsAdPlaying(true),
       onClose: () => setIsAdPlaying(false)
     });
+    
     setGame(new ChessGame());
     setHintMove(null);
     setExplanation(null);
@@ -189,7 +195,7 @@ export default function Home() {
       title: t.toast_reset_title,
       description: t.toast_reset_desc,
     });
-  }, [toast, t]);
+  }, [toast, t, isAdPlaying]);
 
   const resetScores = useCallback(() => {
     const defaultScore = { white: 0, black: 0, draws: 0 };
