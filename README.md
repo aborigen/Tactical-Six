@@ -37,14 +37,16 @@ The AI in Tactical Six is a deterministic search engine implemented in TypeScrip
 If you encounter errors during `git push`, follow these tactical protocols:
 
 ### Error: Permission Denied (403)
-This occurs when GitHub rejects your local credentials. Use one of the following fixes:
+This occurs when GitHub rejects your local credentials. Use one of the following fixes to force Git to ask for new credentials:
 
 **Option A: Clear OS Credential Cache (Recommended)**
 - **macOS (Keychain Access)**:
-  1. Open **Keychain Access** (Cmd + Space, type "Keychain Access").
-  2. Search for `github.com`.
-  3. Delete the "Internet Password" entry for `github.com`.
-  4. Try pushing again; you will be prompted for your username and **Personal Access Token**.
+  1. Press **Cmd + Space**, type **"Keychain Access"**, and press Enter.
+  2. In the search bar at the top right, type **`github.com`**.
+  3. Find the entry labeled **"Internet Password"** for `github.com`.
+  4. Right-click the entry and select **Delete "github.com"**.
+  5. Close Keychain Access and return to your terminal.
+  6. The next time you `git push`, Git will ask for your username and **Personal Access Token**.
 - **Windows (Credential Manager)**:
   1. Open **Control Panel** > **User Accounts** > **Credential Manager**.
   2. Select **Windows Credentials**.
