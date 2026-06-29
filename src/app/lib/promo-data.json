@@ -1,0 +1,20 @@
+{
+  "en": {
+    "title": "Tactical Six: 6x6 Chess",
+    "short_description": "Fast-paced 6x6 chess variant with a powerful local AI.",
+    "description": "Engage in high-intensity strategic combat on a condensed 6x6 grid. Tactical Six features a custom-built local engine, three difficulty levels (Cadet, Specialist, Commander), and a sleek, modern interface. Optimized for quick sessions where every move counts. Features: Offline play, local AI, and move history analysis.",
+    "keywords": "chess, strategy, 6x6, logic, ai, board game, tactical, puzzle"
+  },
+  "ru": {
+    "title": "Tactical Six: Шахматы 6x6",
+    "short_description": "Динамичные шахматы 6x6 с мощным локальным ИИ.",
+    "description": "Вступайте в интенсивный стратегический бой на компактной сетке 6x6. Tactical Six предлагает встроенный движок, три уровня сложности (Кадет, Специалист, Командор) и стильный современный интерфейс. Идеально для быстрых партий, где важен каждый ход. Особенности: оффлайн режим, локальный ИИ и анализ истории ходов.",
+    "keywords": "шахматы, стратегия, 6x6, логика, ии, настольная игра, тактика, головоломка"
+  },
+  "asset_requirements": {
+    "icon": "512x512px (PNG/JPG)",
+    "cover": "800x470px (Landscape)",
+    "screenshots": "Minimum 2 (Landscape, 16:9 recommended)",
+    "promo_banner": "1280x720px"
+  }
+}

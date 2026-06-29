@@ -41,6 +41,14 @@ The AI in Tactical Six is a deterministic search engine implemented in TypeScrip
 3. For Yandex Games, zip the contents of the `/out` directory and upload the archive.
 4. **Note**: The app is configured with `trailingSlash: true` and `unoptimized: true` images to ensure compatibility with all static hosting providers.
 
+### Yandex Games Publishing
+Refer to `src/app/lib/promo-data.json` for localized metadata (Titles, Descriptions, Keywords) required for the Yandex Games Console. 
+
+**Image Asset Checklist:**
+- **Icon**: 512x512px. Use a clean image of the Knight or King piece on a high-contrast background.
+- **Cover**: 800x470px. Showcase the 6x6 board with tactical highlighting active.
+- **Screenshots**: At least one showing the Board and one showing the Tactical Engine evaluation panel.
+
 ### Git Troubleshooting Protocol
 
 If you encounter errors during `git push`, follow these tactical protocols:
