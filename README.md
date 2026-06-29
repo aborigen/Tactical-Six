@@ -10,6 +10,7 @@ Tactical Six is a sophisticated 6x6 chess variant designed for fast-paced, high-
 - **Persistent Mission Tally**: Integrated score tracking and difficulty settings saved to `localStorage`, allowing you to monitor your campaign progress across sessions.
 - **Multilingual Command**: Full localization for English and Russian, covering all interface elements, tactical hints, and rule protocols.
 - **Synthesized Tactical Audio**: Real-time auditory feedback synthesized via Web Audio API for moves, captures, checks, and mission conclusions.
+- **Local Font Optimization**: Self-hosted Inter font integration for high-performance rendering without external network requests.
 - **Advanced Rule Enforcement**: Comprehensive logic for Checkmate, Stalemate, and Insufficient Material draws.
 
 ## 🧠 Chess Engine Technical Logic

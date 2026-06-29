@@ -3,8 +3,12 @@ import { Inter } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 
+/**
+ * Inter font is automatically downloaded and self-hosted by Next.js during build.
+ * This eliminates external Google Fonts requests at runtime, ensuring offline compatibility.
+ */
 const inter = Inter({
-  subsets: ['latin'],
+  subsets: ['latin', 'cyrillic'],
   display: 'swap',
   variable: '--font-inter',
 });
