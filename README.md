@@ -39,6 +39,7 @@ The AI in Tactical Six is a deterministic search engine implemented in TypeScrip
 1. Run `npm run build`.
 2. The static files will be generated in the `/out` directory.
 3. For Yandex Games, zip the contents of the `/out` directory and upload the archive.
+4. **Note**: The app is configured with `trailingSlash: true` and `unoptimized: true` images to ensure compatibility with all static hosting providers.
 
 ### Git Troubleshooting Protocol
 
