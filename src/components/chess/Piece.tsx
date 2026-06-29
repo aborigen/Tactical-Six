@@ -1,3 +1,9 @@
+/**
+ * @fileOverview This component renders chess pieces using inline SVGs.
+ * Using inline SVGs instead of external image files prevents pathing errors
+ * during static web export (e.g., for deployment on Yandex Games or GitHub Pages).
+ */
+
 import React from 'react';
 import { PieceType, PlayerColor } from '@/lib/chess-logic';
 

@@ -4,7 +4,7 @@ import type {NextConfig} from 'next';
 const nextConfig: NextConfig = {
   output: 'export',
   trailingSlash: true,
-  assetPrefix: './',
+  // assetPrefix: './', // Intentionally commented out unless specific sub-path hosting requires it
   images: {
     unoptimized: true,
     remotePatterns: [
