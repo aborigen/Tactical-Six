@@ -45,7 +45,7 @@ The AI in Tactical Six is a deterministic search engine implemented in TypeScrip
 Refer to `src/app/lib/promo-data.json` for localized metadata (Titles, Descriptions, Keywords) required for the Yandex Games Console. 
 
 **Image Asset Checklist:**
-- **Icon**: 512x512px. Use a clean image of the Knight or King piece on a high-contrast background.
+- **Icon**: 512x512px. A suggested icon is provided in `public/icon.svg`.
 - **Cover**: 800x470px. Showcase the 6x6 board with tactical highlighting active.
 - **Screenshots**: At least one showing the Board and one showing the Tactical Engine evaluation panel.
 
