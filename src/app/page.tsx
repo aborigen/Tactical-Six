@@ -39,7 +39,7 @@ const DIFFICULTY_MAP: Record<Difficulty, number> = {
 
 export default function Home() {
   const [game, setGame] = useState(new ChessGame());
-  const [gameMode, setGameMode] = useState<GameMode>('pvp');
+  const [gameMode, setGameMode] = useState<GameMode>('pve'); // Default set to 'pve' (VS AI)
   const [difficulty, setDifficulty] = useState<Difficulty>('medium');
   const [hintMove, setHintMove] = useState<Move | null>(null);
   const [isSuggesting, setIsSuggesting] = useState(false);
