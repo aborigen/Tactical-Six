@@ -10,8 +10,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['var(--font-inter)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        headline: ['var(--font-inter)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'],
+        body: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        headline: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {

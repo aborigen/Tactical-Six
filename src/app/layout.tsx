@@ -1,17 +1,6 @@
 import type {Metadata} from 'next';
-import { Inter } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
-
-/**
- * Inter font is automatically downloaded and self-hosted by Next.js during build.
- * This eliminates external Google Fonts requests at runtime, ensuring offline compatibility.
- */
-const inter = Inter({
-  subsets: ['latin', 'cyrillic'],
-  display: 'swap',
-  variable: '--font-inter',
-});
 
 export const metadata: Metadata = {
   title: 'Tactical Six | 6x6 Advanced Chess',
@@ -24,8 +13,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`dark ${inter.variable}`}>
-      <body className="font-body antialiased bg-background text-foreground min-h-screen">
+    <html lang="en" className="dark">
+      <body className="antialiased bg-background text-foreground min-h-screen font-sans">
         <Script 
           src="https://yandex.ru/games/sdk/v2" 
           strategy="beforeInteractive"
