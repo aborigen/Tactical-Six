@@ -337,8 +337,8 @@ export default function Home() {
             </svg>
           </div>
           <div>
-            <h1 className="text-4xl font-black tracking-tight text-white font-headline leading-none mb-1">{t.title}</h1>
-            <p className="text-muted-foreground text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+            <h1 className="text-2xl md:text-4xl font-black tracking-tight text-white font-headline leading-none mb-1">{t.title}</h1>
+            <p className="text-muted-foreground text-[8px] md:text-xs font-bold uppercase tracking-widest flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
               {t.subtitle}
             </p>
@@ -347,19 +347,19 @@ export default function Home() {
 
         <div className="flex flex-wrap items-center justify-center gap-3">
           <div className="flex items-center gap-1 bg-secondary/40 border border-white/5 p-1 rounded-xl">
-            <div className="px-3 py-1 flex flex-col items-center">
+            <div className="px-2 md:px-3 py-1 flex flex-col items-center">
               <span className="text-[8px] font-black text-white/40 uppercase tracking-tighter leading-none mb-1">{t.score_white}</span>
-              <span className="text-sm font-black text-white">{scores.white}</span>
+              <span className="text-xs md:text-sm font-black text-white">{scores.white}</span>
             </div>
             <div className="w-px h-6 bg-white/5" />
-            <div className="px-3 py-1 flex flex-col items-center">
+            <div className="px-2 md:px-3 py-1 flex flex-col items-center">
               <span className="text-[8px] font-black text-accent/40 uppercase tracking-tighter leading-none mb-1">{t.score_black}</span>
-              <span className="text-sm font-black text-accent">{scores.black}</span>
+              <span className="text-xs md:text-sm font-black text-accent">{scores.black}</span>
             </div>
             <div className="w-px h-6 bg-white/5" />
-            <div className="px-3 py-1 flex flex-col items-center">
+            <div className="px-2 md:px-3 py-1 flex flex-col items-center">
               <span className="text-[8px] font-black text-muted-foreground uppercase tracking-tighter leading-none mb-1">{t.score_draw}</span>
-              <span className="text-sm font-bold text-muted-foreground">{scores.draws}</span>
+              <span className="text-xs md:text-sm font-bold text-muted-foreground">{scores.draws}</span>
             </div>
             <Button 
               variant="ghost" 
@@ -391,26 +391,29 @@ export default function Home() {
             className="bg-secondary/40 border border-white/5 p-1 rounded-xl"
           >
             <TabsList className="bg-transparent gap-1">
-              <TabsTrigger value="pvp" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold gap-2 rounded-lg transition-all px-4">
-                <Users className="w-4 h-4" /> {t.mode_2p}
+              <TabsTrigger value="pvp" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold gap-2 rounded-lg transition-all px-3 md:px-4">
+                <Users className="w-4 h-4" /> 
+                <span className="hidden sm:inline">{t.mode_2p}</span>
               </TabsTrigger>
-              <TabsTrigger value="pve" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-bold gap-2 rounded-lg transition-all px-4">
-                <Cpu className="w-4 h-4" /> {t.mode_ai}
+              <TabsTrigger value="pve" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-bold gap-2 rounded-lg transition-all px-3 md:px-4">
+                <Cpu className="w-4 h-4" /> 
+                <span className="hidden sm:inline">{t.mode_ai}</span>
               </TabsTrigger>
             </TabsList>
           </Tabs>
 
-          <Button variant="secondary" onClick={resetGame} className="gap-2 bg-secondary/80 border-border hover:bg-secondary font-bold px-4 h-10">
-            <RotateCcw className="w-4 h-4" /> {t.reset}
+          <Button variant="secondary" onClick={resetGame} className="gap-2 bg-secondary/80 border-border hover:bg-secondary font-bold px-3 md:px-4 h-10">
+            <RotateCcw className="w-4 h-4" /> 
+            <span className="hidden sm:inline">{t.reset}</span>
           </Button>
           
           <Button 
             onClick={getAiHint} 
             disabled={game.isGameOver || isSuggesting || isReviewMode || isAdPlaying} 
-            className="gap-2 bg-primary hover:bg-primary/90 text-white font-black px-6 shadow-lg shadow-primary/30 h-10"
+            className="gap-2 bg-primary hover:bg-primary/90 text-white font-black px-4 md:px-6 shadow-lg shadow-primary/30 h-10"
           >
             {isSuggesting && game.turn === 'white' ? <Cpu className="w-5 h-5 animate-spin" /> : <Lightbulb className="w-5 h-5" />}
-            {t.hint}
+            <span className="hidden sm:inline">{t.hint}</span>
           </Button>
         </div>
       </header>
@@ -575,7 +578,7 @@ export default function Home() {
               ) : (
                 <div className="flex items-center justify-center gap-4">
                   <div className={cn("w-2 h-2 rounded-full bg-primary", !isReviewMode && "animate-ping")} />
-                  <span className="text-xl font-bold tracking-tight text-foreground/90 italic">
+                  <span className="text-lg md:text-xl font-bold tracking-tight text-foreground/90 italic">
                     {isSuggesting && gameMode === 'pve' && displayedGame.turn === 'black' && !isReviewMode
                       ? t.engine_calculating
                       : getLocalizedStatus(displayedGame.status)
@@ -712,7 +715,7 @@ export default function Home() {
           <div className="h-px w-24 bg-gradient-to-l from-transparent to-white/10" />
         </div>
         <p className="text-muted-foreground text-[9px] font-mono opacity-30">
-          V1.2.0 // 6X6_STRAT_ENG // LOCAL_INIT_COMPLETE // MODE: {gameMode.toUpperCase()} // DIFF: {difficulty.toUpperCase()} // LANG: {lang.toUpperCase()}
+          V1.3.0 // 6X6_STRAT_ENG // LOCAL_INIT_COMPLETE // MODE: {gameMode.toUpperCase()} // DIFF: {difficulty.toUpperCase()} // LANG: {lang.toUpperCase()}
         </p>
       </footer>
       <Toaster />
