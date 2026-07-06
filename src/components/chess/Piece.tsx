@@ -67,9 +67,8 @@ const Piece: React.FC<PieceProps> = ({ type, color, className }) => {
               strokeLinejoin="round"
             >
               <path d="M22 10c10.5 1 16.5 8 16 29H15c0-9 10-6.5 8-21" strokeLinecap="butt" />
-              <path d="M24 18c.38 2.43-1.62 4.43-3.62 5.43" fill="none" />
-              <path d="M9.5 25.5A.5.5 0 1 1 9 25.5a.5.5 0 1 1 .5 0" fill={strokeColor} />
               <path d="M15 15.5c4.5 2 2.5 9 2.5 9-3-4.5-5.5-3-5.5-3s2-2.5-2-4.5c-4-2-4-8-4-8s2.5-2 9 6.5z" strokeLinecap="butt" />
+              <path d="M24 18c.38 2.43-1.62 4.43-3.62 5.43" fill="none" />
             </g>
           </svg>
         );
