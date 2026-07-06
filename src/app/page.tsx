@@ -39,7 +39,7 @@ const DIFFICULTY_MAP: Record<Difficulty, number> = {
 
 export default function Home() {
   const [game, setGame] = useState(new ChessGame());
-  const [gameMode, setGameMode] = useState<GameMode>('pve'); // Default set to 'pve' (VS AI)
+  const [gameMode, setGameMode] = useState<GameMode>('pve'); 
   const [difficulty, setDifficulty] = useState<Difficulty>('medium');
   const [hintMove, setHintMove] = useState<Move | null>(null);
   const [isSuggesting, setIsSuggesting] = useState(false);
@@ -51,7 +51,7 @@ export default function Home() {
   const [gameCounted, setGameCounted] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [hasCopied, setHasCopied] = useState(false);
-  const [viewIndex, setViewIndex] = useState<number>(-1); // -1 means live game
+  const [viewIndex, setViewIndex] = useState<number>(-1); 
   const { toast } = useToast();
 
   const t = translations[lang];
@@ -88,12 +88,14 @@ export default function Home() {
     const setupYandex = async () => {
       const sdk = await initYandexSDK();
       if (sdk) {
+        // Link Yandex SDK environment language to UI localization
         const sdkLang = sdk.environment.i18n.lang.split('-')[0];
         if (sdkLang === 'ru') {
           setLang('ru');
         } else {
           setLang('en');
         }
+        
         // Initial entry ad
         showFullscreenAd({
           onOpen: () => setIsAdPlaying(true),
@@ -145,7 +147,6 @@ export default function Home() {
       setScores(nextScores);
       setGameCounted(true);
       
-      // Delay game over ad to let the user see the board
       const adTimeout = setTimeout(() => {
         showFullscreenAd({
           onOpen: () => setIsAdPlaying(true),
@@ -608,7 +609,6 @@ export default function Home() {
               <CardDescription className="text-[10px] font-medium tracking-tight opacity-70">{t.engine_desc}</CardDescription>
             </CardHeader>
             <CardContent className="flex-1 pt-6 flex flex-col gap-6">
-              {/* Difficulty Selector */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
