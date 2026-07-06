@@ -18,7 +18,7 @@ const Piece: React.FC<PieceProps> = ({ type, color, className }) => {
   
   // Tactical color palette integration
   // White: Pure white with primary blue stroke
-  // Black: Cyan accent with dark stroke
+  // Black: Cyan accent with dark background stroke
   const fillColor = isWhite ? '#FFFFFF' : '#60DEDE';
   const strokeColor = isWhite ? '#2E75B8' : '#161A1C';
 
