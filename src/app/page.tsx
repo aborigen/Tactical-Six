@@ -11,7 +11,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, 
   Volume2, VolumeX, Trash2, Copy, Check, ChevronLeft, ChevronLast, ChevronFirst,
-  PlayCircle, Zap
+  PlayCircle, Zap, Settings
 } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
@@ -20,6 +20,7 @@ import { cn } from '@/lib/utils';
 import { translations, Language } from '@/lib/translations';
 import Onboarding from '@/components/onboarding/Onboarding';
 import RulesHelp from '@/components/help/RulesHelp';
+import SettingsDialog from '@/components/settings/SettingsDialog';
 import { soundManager } from '@/lib/sounds';
 import { initYandexSDK, showFullscreenAd } from '@/lib/yandex-sdk';
 
@@ -371,28 +372,15 @@ export default function Home() {
             </Button>
           </div>
 
-          <RulesHelp lang={lang} />
-
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => setIsMuted(!isMuted)} 
-            className="text-muted-foreground hover:text-white"
-            title={isMuted ? t.unmute : t.mute}
-          >
-            {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
-          </Button>
-
-          <Tabs 
-            value={lang} 
-            onValueChange={(v) => setLang(v as Language)}
-            className="bg-secondary/40 border border-white/5 p-1 rounded-xl"
-          >
-            <TabsList className="bg-transparent gap-1">
-              <TabsTrigger value="en" className="data-[state=active]:bg-white data-[state=active]:text-black font-bold rounded-lg px-3">EN</TabsTrigger>
-              <TabsTrigger value="ru" className="data-[state=active]:bg-white data-[state=active]:text-black font-bold rounded-lg px-3">RU</TabsTrigger>
-            </TabsList>
-          </Tabs>
+          <div className="flex items-center gap-2 bg-secondary/20 p-1.5 rounded-xl border border-white/5">
+            <RulesHelp lang={lang} />
+            <SettingsDialog 
+              lang={lang} 
+              setLang={setLang} 
+              isMuted={isMuted} 
+              setIsMuted={setIsMuted} 
+            />
+          </div>
 
           <Tabs 
             value={gameMode} 
