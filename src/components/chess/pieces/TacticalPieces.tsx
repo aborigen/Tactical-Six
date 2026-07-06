@@ -5,6 +5,11 @@ interface PieceIconProps {
   strokeColor: string;
 }
 
+/**
+ * Tactical pieces are inspired by the classic Merida chess font, 
+ * refactored for high-density displays with consistent 1.5px strokes.
+ */
+
 export const TacticalPawn: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
     <path
@@ -13,6 +18,7 @@ export const TacticalPawn: React.FC<PieceIconProps> = ({ fillColor, strokeColor 
       stroke={strokeColor}
       strokeWidth="1.5"
       strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );
@@ -21,7 +27,6 @@ export const TacticalRook: React.FC<PieceIconProps> = ({ fillColor, strokeColor 
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
     <g
       fill={fillColor}
-      fillRule="evenodd"
       stroke={strokeColor}
       strokeWidth="1.5"
       strokeLinecap="round"
@@ -31,7 +36,7 @@ export const TacticalRook: React.FC<PieceIconProps> = ({ fillColor, strokeColor 
       <path d="M34 14l-3 3H14l-3-3" />
       <path d="M31 17v12.5H14V17" strokeLinecap="butt" />
       <path d="M31 29.5l1.5 2.5h-20l1.5-2.5" />
-      <path d="M11 14h23" fill="none" strokeLinejoin="miter" />
+      <path d="M11 14h23" fill="none" />
     </g>
   </svg>
 );
@@ -40,7 +45,6 @@ export const TacticalKnight: React.FC<PieceIconProps> = ({ fillColor, strokeColo
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
     <g
       fill={fillColor}
-      fillRule="evenodd"
       stroke={strokeColor}
       strokeWidth="1.5"
       strokeLinecap="round"
@@ -56,19 +60,16 @@ export const TacticalKnight: React.FC<PieceIconProps> = ({ fillColor, strokeColo
 export const TacticalBishop: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
     <g
-      fill="none"
-      fillRule="evenodd"
+      fill={fillColor}
       stroke={strokeColor}
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <g fill={fillColor} strokeLinecap="butt">
-        <path d="M9 36c3.39-.97 10.11.43 13.5-2 3.39 2.43 10.11 1.03 13.5 2 0 0 0 3-1.72 3h-23.56c-1.72 0-1.72-3-1.72-3z" />
-        <path d="M15 32c2.5 2.5 12.5 2.5 15 0 .5-1.5 0-2 0-2 0-2.5-2.5-4-2.5-4 5.5-1.5 6-11.5-5-15.5-11 4-10.5 14-5 15.5 0 0-2.5 1.5-2.5 4 0 0-.5.5 0 2z" />
-        <path d="M25 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 1 1 5 0z" />
-      </g>
-      <path d="M17.5 26h10M15 30h15" strokeLinejoin="miter" />
+      <path d="M9 36c3.39-.97 10.11.43 13.5-2 3.39 2.43 10.11 1.03 13.5 2 0 0 0 3-1.72 3h-23.56c-1.72 0-1.72-3-1.72-3z" strokeLinecap="butt" />
+      <path d="M15 32c2.5 2.5 12.5 2.5 15 0 .5-1.5 0-2 0-2 0-2.5-2.5-4-2.5-4 5.5-1.5 6-11.5-5-15.5-11 4-10.5 14-5 15.5 0 0-2.5 1.5-2.5 4 0 0-.5.5 0 2z" strokeLinecap="butt" />
+      <path d="M25 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 1 1 5 0z" />
+      <path d="M17.5 26h10M15 30h15" fill="none" />
     </g>
   </svg>
 );
@@ -77,7 +78,6 @@ export const TacticalQueen: React.FC<PieceIconProps> = ({ fillColor, strokeColor
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
     <g
       fill={fillColor}
-      fillRule="evenodd"
       stroke={strokeColor}
       strokeWidth="1.5"
       strokeLinecap="round"
@@ -85,7 +85,7 @@ export const TacticalQueen: React.FC<PieceIconProps> = ({ fillColor, strokeColor
     >
       <path d="M8 12a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM24.5 7.5a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM45 12a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM11.5 30a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM37.5 30a2 2 0 1 1-4 0 2 2 0 1 1 4 0z" />
       <path d="M9 26c8.5-1.5 21-1.5 27 0l2-12-7 11V11l-5.5 13.5-3-15-3 15-5.5-13.5V25L7 14l2 12z" />
-      <path d="M9 26c0 2 1.5 2 2.5 4 2.5-1 4.86-1 7.5 0 1.38-1.5 2.62-1.5 4 0 2.64-1 5 0 7.5 0 1-2 2.5-2 2.5-4" strokeLinecap="butt" />
+      <path d="M9 26c0 2 1.5 2 2.5 4 2.5-1 4.86-1 7.5 0 1.38-1.5 2.62-1.5 4 0 2.64-1 5 0 7.5 0 1-2 2.5-2 2.5-4" fill="none" strokeLinecap="butt" />
       <path d="M11.5 30c3.5-1 18.5-1 22 0 1.15 1 1.5.5 1.5 3.5 0 1-1.5 2-1.5 2.5H11.5c0-.5-1.5-1.5-1.5-2.5 0-3 0-2.5 1.5-3.5z" />
       <path d="M9 39h27v-3H9v3z" />
     </g>
@@ -95,24 +95,16 @@ export const TacticalQueen: React.FC<PieceIconProps> = ({ fillColor, strokeColor
 export const TacticalKing: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
     <g
-      fill="none"
-      fillRule="evenodd"
+      fill={fillColor}
       stroke={strokeColor}
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M22.5 11.63V6M20 8h5" strokeLinejoin="miter" />
-      <path
-        d="M22.5 25s4.5-7.5 3-10c-1.5-2.5-6-2.5-6 0-1.5 2.5 3 10 3 10"
-        fill={fillColor}
-        strokeLinecap="butt"
-      />
-      <path
-        d="M11.5 37c5.5 3.5 15.5 3.5 21 0v-7s9-4.5 6-10.5c-4-1-1-1-6 2.5V18c-1.5-3-8.5-3-10 0v4c-5-3.5-2-3.5-6-2.5-3 6 6 10.5 6 10.5v7z"
-        fill={fillColor}
-      />
-      <path d="M11.5 30c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0" />
+      <path d="M22.5 11.63V6M20 8h5" fill="none" />
+      <path d="M22.5 25s4.5-7.5 3-10c-1.5-2.5-6-2.5-6 0-1.5 2.5 3 10 3 10" strokeLinecap="butt" />
+      <path d="M11.5 37c5.5 3.5 15.5 3.5 21 0v-7s9-4.5 6-10.5c-4-1-1-1-6 2.5V18c-1.5-3-8.5-3-10 0v4c-5-3.5-2-3.5-6-2.5-3 6 6 10.5 6 10.5v7z" />
+      <path d="M11.5 30c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0" fill="none" />
     </g>
   </svg>
 );
