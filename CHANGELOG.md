@@ -2,6 +2,22 @@
 
 All notable tactical upgrades to the 6x6 combat matrix are documented here.
 
+## [1.3.0] - Platform Synchronization & Visual Overhaul
+### Added
+- **Merida Tactical Set**: High-fidelity vector piece paths inspired by the classic Merida chess font for a professional aesthetic.
+- **Yandex SDK Localization**: Automatic UI language synchronization with the Yandex Games environment (EN/RU).
+- **Tactical Icon**: New 512x512 vector icon (`public/icon.svg`) for store listing optimization.
+- **Promo Matrix**: Centralized promotional metadata in `src/app/lib/promo-data.json`.
+
+### Changed
+- **Default Engagement**: VS AI mode is now initialized as the default mission profile.
+- **Static Export Hardening**: Optimized `next.config.ts` with `trailingSlash` and script loading strategies for 100% platform compatibility.
+- **Mobile Touch Protocol**: Disabled context menus on the tactical board to prevent menu interference during long-press manoeuvres.
+
+### Fixed
+- **Font Optimization**: Resolved `next/font` build error by standardizing `assetPrefix` logic.
+- **Git Stealth**: Added `archives/` and build artifacts to `.gitignore`.
+
 ## [1.2.0] - Persistent Operations & Playback
 ### Added
 - **Persistent Mission Tally**: Mission scores (White, Black, Draws) are now saved to `localStorage`.
