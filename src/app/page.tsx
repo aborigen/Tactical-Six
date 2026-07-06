@@ -3,6 +3,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { ChessGame, Move } from '@/lib/chess-logic';
 import Board from '@/components/chess/Board';
+import { PieceSetStyle } from '@/components/chess/Piece';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -10,8 +11,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, 
-  Volume2, VolumeX, Trash2, Copy, Check, ChevronLeft, ChevronLast, ChevronFirst,
-  PlayCircle, Zap, Settings
+  Trash2, Copy, Check, ChevronLeft, ChevronLast, ChevronFirst,
+  PlayCircle, Zap
 } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
@@ -31,6 +32,7 @@ type Score = { white: number; black: number; draws: number };
 const SCORE_STORAGE_KEY = 'tactical_six_scores';
 const HISTORY_STORAGE_KEY = 'tactical_six_history';
 const DIFFICULTY_STORAGE_KEY = 'tactical_six_difficulty';
+const PIECE_SET_STORAGE_KEY = 'tactical_six_piece_set';
 
 const DIFFICULTY_MAP: Record<Difficulty, number> = {
   easy: 1,
@@ -42,6 +44,7 @@ export default function Home() {
   const [game, setGame] = useState(new ChessGame());
   const [gameMode, setGameMode] = useState<GameMode>('pve'); 
   const [difficulty, setDifficulty] = useState<Difficulty>('medium');
+  const [pieceSet, setPieceSet] = useState<PieceSetStyle>('tactical');
   const [hintMove, setHintMove] = useState<Move | null>(null);
   const [isSuggesting, setIsSuggesting] = useState(false);
   const [explanation, setExplanation] = useState<string | null>(null);
@@ -57,7 +60,6 @@ export default function Home() {
 
   const t = translations[lang];
 
-  // Initialize Yandex Games SDK and load state
   useEffect(() => {
     const savedScores = localStorage.getItem(SCORE_STORAGE_KEY);
     if (savedScores) {
@@ -71,6 +73,11 @@ export default function Home() {
     const savedDifficulty = localStorage.getItem(DIFFICULTY_STORAGE_KEY);
     if (savedDifficulty) {
       setDifficulty(savedDifficulty as Difficulty);
+    }
+
+    const savedPieceSet = localStorage.getItem(PIECE_SET_STORAGE_KEY);
+    if (savedPieceSet) {
+      setPieceSet(savedPieceSet as PieceSetStyle);
     }
 
     const savedHistory = localStorage.getItem(HISTORY_STORAGE_KEY);
@@ -89,7 +96,6 @@ export default function Home() {
     const setupYandex = async () => {
       const sdk = await initYandexSDK();
       if (sdk) {
-        // Link Yandex SDK environment language to UI localization
         const sdkLang = sdk.environment.i18n.lang.split('-')[0];
         if (sdkLang === 'ru') {
           setLang('ru');
@@ -97,7 +103,6 @@ export default function Home() {
           setLang('en');
         }
         
-        // Initial entry ad
         showFullscreenAd({
           onOpen: () => setIsAdPlaying(true),
           onClose: () => setIsAdPlaying(false)
@@ -109,19 +114,21 @@ export default function Home() {
     setIsInitialized(true);
   }, []);
 
-  // Save scores
   useEffect(() => {
     if (!isInitialized) return;
     localStorage.setItem(SCORE_STORAGE_KEY, JSON.stringify(scores));
   }, [scores, isInitialized]);
 
-  // Save difficulty
   useEffect(() => {
     if (!isInitialized) return;
     localStorage.setItem(DIFFICULTY_STORAGE_KEY, difficulty);
   }, [difficulty, isInitialized]);
 
-  // Save history
+  useEffect(() => {
+    if (!isInitialized) return;
+    localStorage.setItem(PIECE_SET_STORAGE_KEY, pieceSet);
+  }, [pieceSet, isInitialized]);
+
   useEffect(() => {
     if (!isInitialized) return;
     if (game.history.length > 0) {
@@ -131,7 +138,6 @@ export default function Home() {
     }
   }, [game.history, isInitialized]);
 
-  // Update score on game over
   useEffect(() => {
     if (game.isGameOver && !gameCounted) {
       const status = game.status.toLowerCase();
@@ -233,7 +239,6 @@ export default function Home() {
     }
   }, [game, isMuted, isReviewMode, isAdPlaying]);
 
-  // AI Opponent Logic
   useEffect(() => {
     if (gameMode === 'pve' && game.turn === 'black' && !game.isGameOver && !isSuggesting && !isReviewMode && !isAdPlaying) {
       const triggerAiOpponent = async () => {
@@ -379,6 +384,8 @@ export default function Home() {
               setLang={setLang} 
               isMuted={isMuted} 
               setIsMuted={setIsMuted} 
+              pieceSet={pieceSet}
+              setPieceSet={setPieceSet}
             />
           </div>
 
@@ -548,7 +555,7 @@ export default function Home() {
           </div>
 
           <div className="relative">
-            <Board game={displayedGame} onMove={handleMove} hintMove={hintMove} />
+            <Board game={displayedGame} onMove={handleMove} hintMove={hintMove} pieceSet={pieceSet} />
             {(isReviewMode || isAdPlaying) && (
               <div className="absolute inset-0 bg-background/20 backdrop-blur-[1px] pointer-events-none z-10 rounded-2xl flex items-center justify-center">
                 <div className="bg-primary/90 text-white px-6 py-2 rounded-full shadow-2xl font-black text-xs uppercase tracking-[0.2em] border border-white/20 animate-pulse">
@@ -715,7 +722,7 @@ export default function Home() {
           <div className="h-px w-24 bg-gradient-to-l from-transparent to-white/10" />
         </div>
         <p className="text-muted-foreground text-[9px] font-mono opacity-30">
-          V1.3.0 // 6X6_STRAT_ENG // LOCAL_INIT_COMPLETE // MODE: {gameMode.toUpperCase()} // DIFF: {difficulty.toUpperCase()} // LANG: {lang.toUpperCase()}
+          V1.3.0 // 6X6_STRAT_ENG // LOCAL_INIT_COMPLETE // MODE: {gameMode.toUpperCase()} // DIFF: {difficulty.toUpperCase()} // LANG: {lang.toUpperCase()} // SKIN: {pieceSet.toUpperCase()}
         </p>
       </footer>
       <Toaster />

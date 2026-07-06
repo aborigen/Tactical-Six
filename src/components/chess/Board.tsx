@@ -2,16 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import { ChessGame, BOARD_SIZE, Position, Move } from '@/lib/chess-logic';
-import Piece from './Piece';
+import Piece, { PieceSetStyle } from './Piece';
 import { cn } from '@/lib/utils';
 
 interface BoardProps {
   game: ChessGame;
   onMove: (move: Move) => void;
   hintMove?: Move | null;
+  pieceSet?: PieceSetStyle;
 }
 
-const Board: React.FC<BoardProps> = ({ game, onMove, hintMove }) => {
+const Board: React.FC<BoardProps> = ({ game, onMove, hintMove, pieceSet = 'tactical' }) => {
   const [selectedSquare, setSelectedSquare] = useState<Position | null>(null);
   const [legalMovesFromSelected, setLegalMovesFromSelected] = useState<Position[]>([]);
 
@@ -60,7 +61,6 @@ const Board: React.FC<BoardProps> = ({ game, onMove, hintMove }) => {
     const piece = game.board[row][col];
     if (piece && piece.color === game.turn) {
       setSelectedSquare({ row, col });
-      // Store the starting position in dataTransfer for the drop event
       e.dataTransfer.setData("text/plain", JSON.stringify({ row, col }));
       e.dataTransfer.effectAllowed = "move";
     } else {
@@ -113,7 +113,6 @@ const Board: React.FC<BoardProps> = ({ game, onMove, hintMove }) => {
       onContextMenu={preventContextMenu}
       className="relative aspect-square w-full max-w-[550px] mx-auto select-none rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-[12px] border-card/80 bg-card ring-1 ring-white/10 group touch-none"
     >
-      {/* Board Grid */}
       <div className="chess-board-grid w-full h-full">
         {game.board.map((rowArr, row) =>
           rowArr.map((piece, col) => {
@@ -138,7 +137,6 @@ const Board: React.FC<BoardProps> = ({ game, onMove, hintMove }) => {
                   (isLastMoveFrom || isLastMoveTo) && !isSelected && !isHint && "bg-primary/10"
                 )}
               >
-                {/* Square Coordinates Labels */}
                 {col === 0 && (
                   <span className={cn(
                     "absolute top-1 left-1.5 text-[10px] font-black opacity-20 transition-opacity group-hover:opacity-40",
@@ -156,7 +154,6 @@ const Board: React.FC<BoardProps> = ({ game, onMove, hintMove }) => {
                   </span>
                 )}
 
-                {/* Piece Rendering */}
                 {piece && (
                   <div 
                     draggable={!game.isGameOver && piece.color === game.turn}
@@ -168,11 +165,10 @@ const Board: React.FC<BoardProps> = ({ game, onMove, hintMove }) => {
                       game.isGameOver ? "grayscale-[0.3]" : ""
                     )}
                   >
-                    <Piece type={piece.type} color={piece.color} />
+                    <Piece type={piece.type} color={piece.color} style={pieceSet} />
                   </div>
                 )}
 
-                {/* Legal Move Indicator */}
                 {isLegalDest && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <div className={cn(
@@ -184,7 +180,6 @@ const Board: React.FC<BoardProps> = ({ game, onMove, hintMove }) => {
                   </div>
                 )}
                 
-                {/* Subtle Inner Square Border */}
                 <div className="absolute inset-0 border border-white/[0.02] pointer-events-none" />
               </div>
             );
@@ -192,7 +187,6 @@ const Board: React.FC<BoardProps> = ({ game, onMove, hintMove }) => {
         )}
       </div>
 
-      {/* Last Move Arrow Overlay */}
       {lastMove && (
         <svg className="absolute inset-0 pointer-events-none z-30 w-full h-full overflow-visible drop-shadow-[0_0_8px_rgba(46,117,184,0.4)]">
           <defs>

@@ -15,20 +15,25 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { translations, Language } from '@/lib/translations';
-import { Settings, Globe, Volume2, VolumeX, ShieldCheck } from 'lucide-react';
+import { Settings, Globe, Volume2, VolumeX, ShieldCheck, Palette, LayoutGrid } from 'lucide-react';
+import { PieceSetStyle } from '@/components/chess/Piece';
 
 interface SettingsDialogProps {
   lang: Language;
   setLang: (lang: Language) => void;
   isMuted: boolean;
   setIsMuted: (muted: boolean) => void;
+  pieceSet: PieceSetStyle;
+  setPieceSet: (style: PieceSetStyle) => void;
 }
 
 const SettingsDialog: React.FC<SettingsDialogProps> = ({ 
   lang, 
   setLang, 
   isMuted, 
-  setIsMuted 
+  setIsMuted,
+  pieceSet,
+  setPieceSet
 }) => {
   const t = translations[lang];
 
@@ -63,7 +68,6 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
         </div>
 
         <div className="p-8 space-y-8">
-          {/* Language Selection */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <Label className="text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
@@ -89,7 +93,31 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
             </Tabs>
           </div>
 
-          {/* Sound Toggle */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Label className="text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                <Palette className="w-3.5 h-3.5" /> {t.settings_pieces_label}
+              </Label>
+              <Badge variant="outline" className="text-[8px] font-mono border-white/10 text-white/40 uppercase">
+                SKIN_PACK
+              </Badge>
+            </div>
+            <Tabs 
+              value={pieceSet} 
+              onValueChange={(v) => setPieceSet(v as PieceSetStyle)}
+              className="w-full bg-secondary/40 border border-white/5 p-1 rounded-xl"
+            >
+              <TabsList className="grid grid-cols-2 bg-transparent gap-1 h-10">
+                <TabsTrigger value="tactical" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-3">
+                  {t.piece_set_tactical}
+                </TabsTrigger>
+                <TabsTrigger value="cyber" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-bold rounded-lg px-3">
+                  {t.piece_set_cyber}
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <Label className="text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
@@ -115,7 +143,6 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
             </div>
           </div>
 
-          {/* Footer Info */}
           <div className="pt-4 border-t border-white/5">
             <div className="flex items-center gap-3 p-4 bg-secondary/10 rounded-xl border border-white/5">
               <ShieldCheck className="w-5 h-5 text-muted-foreground shrink-0" />

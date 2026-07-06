@@ -1,28 +1,28 @@
 /**
- * @fileOverview This component renders chess pieces using high-fidelity Merida-style vector paths.
- * These SVGs are built to match the classic Merida chess font geometry, providing 
- * professional-grade visuals for the tactical 6x6 arena.
+ * @fileOverview This component renders chess pieces using multiple high-fidelity styles.
+ * Supports 'tactical' (Merida-style) and 'cyber' (geometric) piece sets.
  */
 
 import React from 'react';
 import { PieceType, PlayerColor } from '@/lib/chess-logic';
 
+export type PieceSetStyle = 'tactical' | 'cyber';
+
 interface PieceProps {
   type: PieceType;
   color: PlayerColor;
+  style?: PieceSetStyle;
   className?: string;
 }
 
-const Piece: React.FC<PieceProps> = ({ type, color, className }) => {
+const Piece: React.FC<PieceProps> = ({ type, color, style = 'tactical', className }) => {
   const isWhite = color === 'white';
   
   // Tactical color palette integration
-  // White: Pure white with primary blue stroke
-  // Black: Cyan accent with dark background stroke
   const fillColor = isWhite ? '#FFFFFF' : '#60DEDE';
   const strokeColor = isWhite ? '#2E75B8' : '#161A1C';
 
-  const renderIcon = () => {
+  const renderTacticalIcon = () => {
     switch (type) {
       case 'p':
         return (
@@ -141,7 +141,60 @@ const Piece: React.FC<PieceProps> = ({ type, color, className }) => {
     }
   };
 
-  return <div className={className}>{renderIcon()}</div>;
+  const renderCyberIcon = () => {
+    switch (type) {
+      case 'p':
+        return (
+          <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
+            <circle cx="22.5" cy="22.5" r="12" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
+            <circle cx="22.5" cy="22.5" r="4" fill={strokeColor} />
+          </svg>
+        );
+      case 'r':
+        return (
+          <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
+            <rect x="12" y="12" width="21" height="21" rx="2" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
+            <path d="M12 20h21M22.5 12v21" stroke={strokeColor} strokeWidth="1.5" />
+          </svg>
+        );
+      case 'n':
+        return (
+          <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
+            <path d="M12 33l10.5-21 10.5 21z" fill={fillColor} stroke={strokeColor} strokeWidth="2" strokeLinejoin="round" />
+            <path d="M22.5 15v15" stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        );
+      case 'b':
+        return (
+          <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
+            <path d="M22.5 10l12 25h-24z" fill={fillColor} stroke={strokeColor} strokeWidth="2" strokeLinejoin="round" />
+            <circle cx="22.5" cy="26" r="4" fill={strokeColor} />
+          </svg>
+        );
+      case 'q':
+        return (
+          <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
+            <path d="M22.5 8l6 14 10 2-8 8 2 10-10-6-10 6 2-10-8-8 10-2z" fill={fillColor} stroke={strokeColor} strokeWidth="2" strokeLinejoin="round" />
+            <circle cx="22.5" cy="22.5" r="3" fill={strokeColor} />
+          </svg>
+        );
+      case 'k':
+        return (
+          <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
+            <path d="M22.5 6v33M6 22.5h33" stroke={fillColor} strokeWidth="4" strokeLinecap="round" />
+            <rect x="12" y="12" width="21" height="21" fill="none" stroke={fillColor} strokeWidth="2" />
+          </svg>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className={className}>
+      {style === 'cyber' ? renderCyberIcon() : renderTacticalIcon()}
+    </div>
+  );
 };
 
 export default Piece;
