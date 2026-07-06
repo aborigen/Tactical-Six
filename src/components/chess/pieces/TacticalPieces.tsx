@@ -6,105 +6,94 @@ interface PieceIconProps {
 }
 
 /**
- * Tactical pieces are inspired by the classic Merida chess font, 
- * refactored for high-density displays with consistent 1.5px strokes.
+ * Vanguard Piece Set: A modern, high-fidelity professional chess set.
+ * Designed with a clean silhouette and consistent 2px stroke weight.
  */
 
 export const TacticalPawn: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
     <path
-      d="M22.5 9c-2.21 0-4 1.79-4 4 0 .89.29 1.71.78 2.38C17.33 16.5 16 18.59 16 21c0 2.03.94 3.84 2.41 5.03-3 1.06-7.41 5.55-7.41 13.47h23c0-7.92-4.41-12.41-7.41-13.47 1.47-1.19 2.41-3 2.41-5.03 0-2.41-1.33-4.5-3.28-5.62.49-.67.78-1.49.78-2.38 0-2.21-1.79-4-4-4z"
+      d="M22.5 12c-2.5 0-4.5 2-4.5 4.5 0 1.5.8 2.8 2 3.5-2.5 2-3.5 5-3.5 9v4h12v-4c0-4-1-7-3.5-9 1.2-.7 2-2 2-3.5 0-2.5-2-4.5-4.5-4.5z"
       fill={fillColor}
       stroke={strokeColor}
-      strokeWidth="1.5"
-      strokeLinecap="round"
+      strokeWidth="2"
       strokeLinejoin="round"
     />
+    <path d="M16 36h13" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
   </svg>
 );
 
 export const TacticalRook: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
-    <g
+    <path
+      d="M13 33V15h2v-4h3v3h3v-3h3v3h3v-3h3v4h2v18H13z"
       fill={fillColor}
       stroke={strokeColor}
-      strokeWidth="1.5"
-      strokeLinecap="round"
+      strokeWidth="2"
       strokeLinejoin="round"
-    >
-      <path d="M9 39h27v-3H9v3zM12 36v-4h21v4H12zM11 14V9h4v2h5V9h5v2h5V9h4v5" />
-      <path d="M34 14l-3 3H14l-3-3" />
-      <path d="M31 17v12.5H14V17" strokeLinecap="butt" />
-      <path d="M31 29.5l1.5 2.5h-20l1.5-2.5" />
-      <path d="M11 14h23" fill="none" />
-    </g>
+    />
+    <path d="M12 37h21" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
+    <path d="M16 19h13M16 26h13" stroke={strokeColor} strokeWidth="1.5" opacity="0.3" />
   </svg>
 );
 
 export const TacticalKnight: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
-    <g
+    <path
+      d="M14 33c0-8 2-15 10-18 6-2 10 2 10 8 0 4-3 7-5 8l-2 10h-13z"
       fill={fillColor}
       stroke={strokeColor}
-      strokeWidth="1.5"
-      strokeLinecap="round"
+      strokeWidth="2"
       strokeLinejoin="round"
-    >
-      <path d="M22 10c10.5 1 16.5 8 16 29H15c0-9 10-6.5 8-21" strokeLinecap="butt" />
-      <path d="M15 15.5c4.5 2 2.5 9 2.5 9-3-4.5-5.5-3-5.5-3s2-2.5-2-4.5c-4-2-4-8-4-8s2.5-2 9 6.5z" strokeLinecap="butt" />
-      <path d="M24 18c.38 2.43-1.62 4.43-3.62 5.43" fill="none" />
-    </g>
+    />
+    <path d="M14 37h17" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
+    <circle cx="26" cy="18" r="1.5" fill={strokeColor} />
   </svg>
 );
 
 export const TacticalBishop: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
-    <g
+    <path
+      d="M22.5 9c-3.5 0-6 4-6 9s2.5 9 6 15 6-10 6-15-2.5-9-6-9z"
       fill={fillColor}
       stroke={strokeColor}
-      strokeWidth="1.5"
-      strokeLinecap="round"
+      strokeWidth="2"
       strokeLinejoin="round"
-    >
-      <path d="M9 36c3.39-.97 10.11.43 13.5-2 3.39 2.43 10.11 1.03 13.5 2 0 0 0 3-1.72 3h-23.56c-1.72 0-1.72-3-1.72-3z" strokeLinecap="butt" />
-      <path d="M15 32c2.5 2.5 12.5 2.5 15 0 .5-1.5 0-2 0-2 0-2.5-2.5-4-2.5-4 5.5-1.5 6-11.5-5-15.5-11 4-10.5 14-5 15.5 0 0-2.5 1.5-2.5 4 0 0-.5.5 0 2z" strokeLinecap="butt" />
-      <path d="M25 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 1 1 5 0z" />
-      <path d="M17.5 26h10M15 30h15" fill="none" />
-    </g>
+    />
+    <path d="M16 33h13M15 37h15" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
+    <path d="M22.5 9v4" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
   </svg>
 );
 
 export const TacticalQueen: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
-    <g
+    <path
+      d="M22.5 9l-4 7-6-2 3 9-5 3 8 7h8l8-7-5-3 3-9-6 2-4-7z"
       fill={fillColor}
       stroke={strokeColor}
-      strokeWidth="1.5"
-      strokeLinecap="round"
+      strokeWidth="2"
       strokeLinejoin="round"
-    >
-      <path d="M8 12a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM24.5 7.5a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM45 12a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM11.5 30a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM37.5 30a2 2 0 1 1-4 0 2 2 0 1 1 4 0z" />
-      <path d="M9 26c8.5-1.5 21-1.5 27 0l2-12-7 11V11l-5.5 13.5-3-15-3 15-5.5-13.5V25L7 14l2 12z" />
-      <path d="M9 26c0 2 1.5 2 2.5 4 2.5-1 4.86-1 7.5 0 1.38-1.5 2.62-1.5 4 0 2.64-1 5 0 7.5 0 1-2 2.5-2 2.5-4" fill="none" strokeLinecap="butt" />
-      <path d="M11.5 30c3.5-1 18.5-1 22 0 1.15 1 1.5.5 1.5 3.5 0 1-1.5 2-1.5 2.5H11.5c0-.5-1.5-1.5-1.5-2.5 0-3 0-2.5 1.5-3.5z" />
-      <path d="M9 39h27v-3H9v3z" />
-    </g>
+    />
+    <path d="M14 37h17" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
+    <circle cx="22.5" cy="18" r="2" fill={strokeColor} />
   </svg>
 );
 
 export const TacticalKing: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
-    <g
+    <path
+      d="M22.5 13v-4M20.5 11h4"
+      stroke={strokeColor}
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
+    <path
+      d="M13 33c0-10 4-15 9.5-15s9.5 5 9.5 15H13z"
       fill={fillColor}
       stroke={strokeColor}
-      strokeWidth="1.5"
-      strokeLinecap="round"
+      strokeWidth="2"
       strokeLinejoin="round"
-    >
-      <path d="M22.5 11.63V6M20 8h5" fill="none" />
-      <path d="M22.5 25s4.5-7.5 3-10c-1.5-2.5-6-2.5-6 0-1.5 2.5 3 10 3 10" strokeLinecap="butt" />
-      <path d="M11.5 37c5.5 3.5 15.5 3.5 21 0v-7s9-4.5 6-10.5c-4-1-1-1-6 2.5V18c-1.5-3-8.5-3-10 0v4c-5-3.5-2-3.5-6-2.5-3 6 6 10.5 6 10.5v7z" />
-      <path d="M11.5 30c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0" fill="none" />
-    </g>
+    />
+    <path d="M12 37h21" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
   </svg>
 );
