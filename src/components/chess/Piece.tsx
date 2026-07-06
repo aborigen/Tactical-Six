@@ -19,8 +19,10 @@ const Piece: React.FC<PieceProps> = ({ type, color, style = 'tactical', classNam
   const isWhite = color === 'white';
   
   // Tactical color palette integration
-  const fillColor = isWhite ? '#FFFFFF' : '#60DEDE';
-  const strokeColor = isWhite ? '#2E75B8' : '#161A1C';
+  // White pieces: Pure white fill with primary blue stroke
+  // Black pieces: Cyan accent fill with deep background stroke
+  const fillColor = isWhite ? '#FFFFFF' : 'hsl(var(--accent))';
+  const strokeColor = isWhite ? 'hsl(var(--primary))' : 'hsl(var(--background))';
 
   const renderTacticalIcon = () => {
     switch (type) {
