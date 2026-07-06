@@ -107,12 +107,15 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
               onValueChange={(v) => setPieceSet(v as PieceSetStyle)}
               className="w-full bg-secondary/40 border border-white/5 p-1 rounded-xl"
             >
-              <TabsList className="grid grid-cols-2 bg-transparent gap-1 h-10">
-                <TabsTrigger value="tactical" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-3">
+              <TabsList className="grid grid-cols-3 bg-transparent gap-1 h-10">
+                <TabsTrigger value="tactical" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-2 text-[10px] uppercase">
                   {t.piece_set_tactical}
                 </TabsTrigger>
-                <TabsTrigger value="cyber" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-bold rounded-lg px-3">
+                <TabsTrigger value="cyber" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-bold rounded-lg px-2 text-[10px] uppercase">
                   {t.piece_set_cyber}
+                </TabsTrigger>
+                <TabsTrigger value="classical" className="data-[state=active]:bg-white data-[state=active]:text-black font-bold rounded-lg px-2 text-[10px] uppercase">
+                  {t.piece_set_classical}
                 </TabsTrigger>
               </TabsList>
             </Tabs>

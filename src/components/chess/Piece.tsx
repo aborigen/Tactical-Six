@@ -1,14 +1,15 @@
 /**
  * @fileOverview This component renders chess pieces using multiple high-fidelity styles.
- * Supports 'tactical' (Merida-style) and 'cyber' (geometric) piece sets.
+ * Supports 'tactical' (Vanguard), 'cyber' (Geometric), and 'classical' (Staunton) piece sets.
  */
 
 import React from 'react';
 import { PieceType, PlayerColor } from '@/lib/chess-logic';
 import * as Tactical from './pieces/TacticalPieces';
 import * as Cyber from './pieces/CyberPieces';
+import * as Classical from './pieces/ClassicalPieces';
 
-export type PieceSetStyle = 'tactical' | 'cyber';
+export type PieceSetStyle = 'tactical' | 'cyber' | 'classical';
 
 interface PieceProps {
   type: PieceType;
@@ -36,6 +37,18 @@ const Piece: React.FC<PieceProps> = ({ type, color, style = 'tactical', classNam
       case 'b': return <Cyber.CyberBishop {...props} />;
       case 'q': return <Cyber.CyberQueen {...props} />;
       case 'k': return <Cyber.CyberKing {...props} />;
+      default: return null;
+    }
+  }
+
+  if (style === 'classical') {
+    switch (type) {
+      case 'p': return <Classical.ClassicalPawn {...props} />;
+      case 'r': return <Classical.ClassicalRook {...props} />;
+      case 'n': return <Classical.ClassicalKnight {...props} />;
+      case 'b': return <Classical.ClassicalBishop {...props} />;
+      case 'q': return <Classical.ClassicalQueen {...props} />;
+      case 'k': return <Classical.ClassicalKing {...props} />;
       default: return null;
     }
   }
