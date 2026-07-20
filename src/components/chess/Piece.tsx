@@ -1,15 +1,15 @@
 /**
  * @fileOverview This component renders chess pieces using multiple high-fidelity styles.
- * Supports 'tactical' (Vanguard), 'cyber' (Geometric), and 'classical' (Staunton) piece sets.
+ * Supports 'vanguard' (Professional), 'cyber' (Geometric), and 'classical' (Staunton) piece sets.
  */
 
 import React from 'react';
 import { PieceType, PlayerColor } from '@/lib/chess-logic';
-import * as Tactical from './pieces/TacticalPieces';
+import * as Vanguard from './pieces/VanguardPieces';
 import * as Cyber from './pieces/CyberPieces';
 import * as Classical from './pieces/ClassicalPieces';
 
-export type PieceSetStyle = 'tactical' | 'cyber' | 'classical';
+export type PieceSetStyle = 'vanguard' | 'cyber' | 'classical' | 'tactical'; // 'tactical' kept for backwards compat
 
 interface PieceProps {
   type: PieceType;
@@ -18,7 +18,7 @@ interface PieceProps {
   className?: string;
 }
 
-const Piece: React.FC<PieceProps> = ({ type, color, style = 'tactical', className }) => {
+const Piece: React.FC<PieceProps> = ({ type, color, style = 'vanguard', className }) => {
   const isWhite = color === 'white';
   
   // Tactical color palette integration
@@ -29,7 +29,9 @@ const Piece: React.FC<PieceProps> = ({ type, color, style = 'tactical', classNam
 
   const props = { fillColor, strokeColor };
 
-  if (style === 'cyber') {
+  const activeStyle = style === 'tactical' ? 'vanguard' : style;
+
+  if (activeStyle === 'cyber') {
     switch (type) {
       case 'p': return <Cyber.CyberPawn {...props} />;
       case 'r': return <Cyber.CyberRook {...props} />;
@@ -41,7 +43,7 @@ const Piece: React.FC<PieceProps> = ({ type, color, style = 'tactical', classNam
     }
   }
 
-  if (style === 'classical') {
+  if (activeStyle === 'classical') {
     switch (type) {
       case 'p': return <Classical.ClassicalPawn {...props} />;
       case 'r': return <Classical.ClassicalRook {...props} />;
@@ -53,13 +55,14 @@ const Piece: React.FC<PieceProps> = ({ type, color, style = 'tactical', classNam
     }
   }
 
+  // Default to Vanguard
   switch (type) {
-    case 'p': return <Tactical.TacticalPawn {...props} />;
-    case 'r': return <Tactical.TacticalRook {...props} />;
-    case 'n': return <Tactical.TacticalKnight {...props} />;
-    case 'b': return <Tactical.TacticalBishop {...props} />;
-    case 'q': return <Tactical.TacticalQueen {...props} />;
-    case 'k': return <Tactical.TacticalKing {...props} />;
+    case 'p': return <Vanguard.VanguardPawn {...props} />;
+    case 'r': return <Vanguard.VanguardRook {...props} />;
+    case 'n': return <Vanguard.VanguardKnight {...props} />;
+    case 'b': return <Vanguard.VanguardBishop {...props} />;
+    case 'q': return <Vanguard.VanguardQueen {...props} />;
+    case 'k': return <Vanguard.VanguardKing {...props} />;
     default: return null;
   }
 };

@@ -44,7 +44,7 @@ export default function Home() {
   const [game, setGame] = useState(new ChessGame());
   const [gameMode, setGameMode] = useState<GameMode>('pve'); 
   const [difficulty, setDifficulty] = useState<Difficulty>('medium');
-  const [pieceSet, setPieceSet] = useState<PieceSetStyle>('tactical');
+  const [pieceSet, setPieceSet] = useState<PieceSetStyle>('vanguard');
   const [hintMove, setHintMove] = useState<Move | null>(null);
   const [isSuggesting, setIsSuggesting] = useState(false);
   const [explanation, setExplanation] = useState<string | null>(null);
