@@ -111,6 +111,7 @@ export default function Home() {
       const sdk = await initYandexSDK();
       if (sdk) {
         const sdkLang = sdk.environment.i18n.lang.split('-')[0];
+        document.documentElement.lang = sdkLang;
         if (sdkLang === 'ru') {
           setLang('ru');
         } else {
@@ -121,6 +122,9 @@ export default function Home() {
           onOpen: () => setIsAdPlaying(true),
           onClose: () => setIsAdPlaying(false)
         });
+      } else {
+        // Fallback for document lang if SDK is not present
+        document.documentElement.lang = lang;
       }
     };
     setupYandex();

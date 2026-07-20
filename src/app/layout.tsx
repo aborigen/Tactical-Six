@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html className="dark">
       <body className="antialiased bg-background text-foreground min-h-screen font-sans">
         <Script 
           src="https://yandex.ru/games/sdk/v2" 
