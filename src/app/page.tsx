@@ -10,12 +10,13 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { 
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger 
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter
 } from "@/components/ui/dialog";
+import { Label } from '@/components/ui/label';
 import { 
   RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, 
   Trash2, Copy, Check, ChevronLeft, ChevronLast, ChevronFirst,
-  PlayCircle, Zap, Settings, X
+  PlayCircle, Zap, Settings, X, Target, Swords
 } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
@@ -36,6 +37,7 @@ const SCORE_STORAGE_KEY = 'tactical_six_scores';
 const HISTORY_STORAGE_KEY = 'tactical_six_history';
 const DIFFICULTY_STORAGE_KEY = 'tactical_six_difficulty';
 const PIECE_SET_STORAGE_KEY = 'tactical_six_piece_set';
+const GAME_MODE_STORAGE_KEY = 'tactical_six_game_mode';
 
 const DIFFICULTY_MAP: Record<Difficulty, number> = {
   easy: 1,
@@ -60,6 +62,7 @@ export default function Home() {
   const [hasCopied, setHasCopied] = useState(false);
   const [viewIndex, setViewIndex] = useState<number>(-1); 
   const [isLogOpen, setIsLogOpen] = useState(false);
+  const [isBriefingOpen, setIsBriefingOpen] = useState(false);
   const { toast } = useToast();
 
   const t = translations[lang];
@@ -84,6 +87,11 @@ export default function Home() {
       setPieceSet(savedPieceSet as PieceSetStyle);
     }
 
+    const savedMode = localStorage.getItem(GAME_MODE_STORAGE_KEY);
+    if (savedMode) {
+      setGameMode(savedMode as GameMode);
+    }
+
     const savedHistory = localStorage.getItem(HISTORY_STORAGE_KEY);
     if (savedHistory) {
       try {
@@ -95,6 +103,9 @@ export default function Home() {
       } catch (e) {
         console.error('Failed to load history', e);
       }
+    } else {
+      // If no history, it's a fresh session, show briefing
+      setIsBriefingOpen(true);
     }
 
     const setupYandex = async () => {
@@ -132,6 +143,11 @@ export default function Home() {
     if (!isInitialized) return;
     localStorage.setItem(PIECE_SET_STORAGE_KEY, pieceSet);
   }, [pieceSet, isInitialized]);
+
+  useEffect(() => {
+    if (!isInitialized) return;
+    localStorage.setItem(GAME_MODE_STORAGE_KEY, gameMode);
+  }, [gameMode, isInitialized]);
 
   useEffect(() => {
     if (!isInitialized) return;
@@ -189,8 +205,13 @@ export default function Home() {
     return `${base}${isCheck ? ` ${t.status_check}` : ''}`;
   }, [t]);
 
-  const resetGame = useCallback(() => {
+  const initiateBriefing = () => {
     if (isAdPlaying) return;
+    setIsBriefingOpen(true);
+  };
+
+  const startNewMission = () => {
+    setIsBriefingOpen(false);
     
     showFullscreenAd({
       onOpen: () => setIsAdPlaying(true),
@@ -207,7 +228,7 @@ export default function Home() {
       title: t.toast_reset_title,
       description: t.toast_reset_desc,
     });
-  }, [toast, t, isAdPlaying]);
+  };
 
   const handleMove = useCallback((move: Move) => {
     if (isReviewMode || isAdPlaying) return;
@@ -234,7 +255,7 @@ export default function Home() {
   }, [game, isMuted, isReviewMode, isAdPlaying]);
 
   useEffect(() => {
-    if (gameMode === 'pve' && game.turn === 'black' && !game.isGameOver && !isSuggesting && !isReviewMode && !isAdPlaying) {
+    if (gameMode === 'pve' && game.turn === 'black' && !game.isGameOver && !isSuggesting && !isReviewMode && !isAdPlaying && !isBriefingOpen) {
       const triggerAiOpponent = async () => {
         setIsSuggesting(true);
         await new Promise(resolve => setTimeout(resolve, 800));
@@ -268,7 +289,7 @@ export default function Home() {
 
       triggerAiOpponent();
     }
-  }, [game.turn, gameMode, game.isGameOver, handleMove, toast, game, t, isSuggesting, isReviewMode, difficulty, isAdPlaying]);
+  }, [game.turn, gameMode, game.isGameOver, handleMove, toast, game, t, isSuggesting, isReviewMode, difficulty, isAdPlaying, isBriefingOpen]);
 
   const getAiHint = async () => {
     if (game.isGameOver || isSuggesting || isReviewMode || isAdPlaying) return;
@@ -380,6 +401,69 @@ export default function Home() {
     )}>
       <Onboarding lang={lang} />
       
+      {/* Mission Briefing Dialog */}
+      <Dialog open={isBriefingOpen} onOpenChange={setIsBriefingOpen}>
+        <DialogContent className="sm:max-w-[450px] bg-card/95 backdrop-blur-xl border-border/50 shadow-2xl p-0 overflow-hidden ring-1 ring-white/10">
+          <div className="h-28 w-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center px-8">
+            <div className="flex items-center gap-4">
+              <div className="bg-primary p-2.5 rounded-xl shadow-lg shadow-primary/20">
+                <Target className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <DialogTitle className="text-xl font-black tracking-tight text-white uppercase">
+                  {t.briefing_title}
+                </DialogTitle>
+                <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em] opacity-80">
+                  {t.briefing_subtitle}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-8 space-y-8">
+             <div className="space-y-4">
+              <Label className="text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                <Swords className="w-3.5 h-3.5" /> {t.briefing_mode_label}
+              </Label>
+              <Tabs value={gameMode} onValueChange={(v) => setGameMode(v as GameMode)} className="w-full bg-secondary/40 border border-white/5 p-1 rounded-xl">
+                <TabsList className="grid grid-cols-2 bg-transparent gap-1 h-10">
+                  <TabsTrigger value="pve" className="data-[state=active]:bg-white data-[state=active]:text-black font-bold rounded-lg px-3 uppercase text-[10px]">
+                    <Cpu className="w-3.5 h-3.5 mr-2" /> {t.mode_ai}
+                  </TabsTrigger>
+                  <TabsTrigger value="pvp" className="data-[state=active]:bg-white data-[state=active]:text-black font-bold rounded-lg px-3 uppercase text-[10px]">
+                    <Users className="w-3.5 h-3.5 mr-2" /> {t.mode_2p}
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
+
+            <div className="space-y-4">
+              <Label className="text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                <Zap className="w-3.5 h-3.5" /> {t.briefing_difficulty_label}
+              </Label>
+              <Tabs value={difficulty} onValueChange={(v) => setDifficulty(v as Difficulty)} className="w-full bg-secondary/40 border border-white/5 p-1 rounded-xl">
+                <TabsList className="grid grid-cols-3 bg-transparent gap-1 h-10">
+                  <TabsTrigger value="easy" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-2 text-[10px] uppercase">
+                    {t.diff_easy}
+                  </TabsTrigger>
+                  <TabsTrigger value="medium" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-2 text-[10px] uppercase">
+                    {t.diff_medium}
+                  </TabsTrigger>
+                  <TabsTrigger value="hard" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-2 text-[10px] uppercase">
+                    {t.diff_hard}
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
+
+            <Button onClick={startNewMission} className="w-full h-12 bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest shadow-xl shadow-primary/20">
+              {t.briefing_engage}
+              <ChevronRight className="w-5 h-5 ml-2" />
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+      
       {/* Optimized Header */}
       <header className="px-4 py-2 flex items-center justify-between shrink-0 border-b border-white/5 bg-secondary/10 backdrop-blur-md z-40">
         <div className="flex items-center gap-2">
@@ -420,7 +504,7 @@ export default function Home() {
               pieceSet={pieceSet}
               setPieceSet={setPieceSet}
             />
-            <Button variant="secondary" size="icon" onClick={resetGame} className="h-8 w-8 bg-secondary/50">
+            <Button variant="secondary" size="icon" onClick={initiateBriefing} className="h-8 w-8 bg-secondary/50">
               <RotateCcw className="w-3.5 h-3.5" />
             </Button>
           </div>
@@ -475,10 +559,10 @@ export default function Home() {
 
           <div className="relative flex-1 w-full max-w-[550px] flex items-center justify-center min-h-0">
             <Board game={displayedGame} onMove={handleMove} hintMove={hintMove} pieceSet={pieceSet} />
-            {(isReviewMode || isAdPlaying) && (
+            {(isReviewMode || isAdPlaying || isBriefingOpen) && (
               <div className="absolute inset-0 bg-background/20 backdrop-blur-[1px] pointer-events-none z-10 rounded-2xl flex items-center justify-center">
                 <div className="bg-primary/90 text-white px-4 py-1.5 rounded-full shadow-2xl font-black text-[9px] uppercase tracking-widest border border-white/20">
-                  {isAdPlaying ? "TRANSMISSION ACTIVE" : "REVIEW MODE"}
+                  {isAdPlaying ? "TRANSMISSION ACTIVE" : isBriefingOpen ? "BRIEFING IN PROGRESS" : "REVIEW MODE"}
                 </div>
               </div>
             )}
@@ -498,7 +582,7 @@ export default function Home() {
                     <h2 className="text-xs font-black text-white uppercase italic">{getLocalizedStatus(displayedGame.status)}</h2>
                   </div>
                   {!isReviewMode && (
-                    <Button size="sm" onClick={resetGame} className="h-7 bg-primary text-white font-black px-4 text-[9px]">{t.replay}</Button>
+                    <Button size="sm" onClick={initiateBriefing} className="h-7 bg-primary text-white font-black px-4 text-[9px]">{t.replay}</Button>
                   )}
                 </div>
               ) : (

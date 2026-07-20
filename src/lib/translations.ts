@@ -67,6 +67,12 @@ export const translations = {
     status_checkmate_black: "Checkmate! Black wins.",
     status_draw: "Draw! Stalemate.",
     status_draw_material: "Draw! Insufficient material.",
+    // Mission Briefing
+    briefing_title: "Mission Briefing",
+    briefing_subtitle: "Configure Tactical Parameters",
+    briefing_engage: "ENGAGE MISSION",
+    briefing_mode_label: "Mission Profile",
+    briefing_difficulty_label: "Tactical Difficulty",
     // Rules
     rules_title: "Tactical Protocols",
     rules_subtitle: "Standard 6x6 Combat Engagement",
@@ -176,6 +182,12 @@ export const translations = {
     status_checkmate_black: "Мат! Черные победили.",
     status_draw: "Ничья! Пат.",
     status_draw_material: "Ничья! Недостаточно фигур.",
+    // Mission Briefing
+    briefing_title: "Боевое задание",
+    briefing_subtitle: "Настройка тактических параметров",
+    briefing_engage: "НАЧАТЬ МИССИЮ",
+    briefing_mode_label: "Профиль миссии",
+    briefing_difficulty_label: "Тактическая сложность",
     // Rules
     rules_title: "Тактические Протоколы",
     rules_subtitle: "Стандартный бой 6x6",
