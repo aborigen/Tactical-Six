@@ -1,0 +1,20 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="720" fill="#161A1C"/>
+  <defs>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2E75B8;stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:#60DEDE;stop-opacity:0.1" />
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#grad2)"/>
+  
+  <g transform="translate(640, 320)">
+    <text text-anchor="middle" fill="white" font-family="Inter, sans-serif" font-weight="900" font-size="80" letter-spacing="-4">TACTICAL SIX</text>
+    <text y="60" text-anchor="middle" fill="#60DEDE" font-family="Inter, sans-serif" font-weight="900" font-size="20" letter-spacing="8">ШАХМАТЫ 6x6</text>
+    
+    <g transform="translate(0, 160)">
+      <rect x="-150" y="0" width="300" height="50" rx="25" fill="#2E75B8" />
+      <text text-anchor="middle" y="32" fill="white" font-family="Inter, sans-serif" font-weight="900" font-size="16" letter-spacing="2">ИГРАТЬ СЕЙЧАС</text>
+    </g>
+  </g>
+</svg>

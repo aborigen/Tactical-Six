@@ -1,0 +1,22 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="720" fill="#161A1C"/>
+  
+  <!-- Header Mock -->
+  <rect width="1280" height="60" fill="#1D2326"/>
+  <text x="60" y="38" fill="white" font-family="Inter, sans-serif" font-weight="900" font-size="20">TACTICAL SIX</text>
+  
+  <!-- Board Representation -->
+  <g transform="translate(390, 110)">
+    <rect width="500" height="500" rx="20" fill="#1D2326" stroke="#2E75B8" stroke-width="4"/>
+    <path d="M0 83.3 H500 M0 166.6 H500 M0 250 H500 M0 333.3 H500 M0 416.6 H500" stroke="#FFFFFF" stroke-opacity="0.05"/>
+    <path d="M83.3 0 V500 M166.6 0 V500 M250 0 V500 M333.3 0 V500 M416.6 0 V500" stroke="#FFFFFF" stroke-opacity="0.05"/>
+    
+    <!-- Highlighted Move -->
+    <rect x="166.6" y="166.6" width="83.3" height="83.3" fill="#2E75B8" fill-opacity="0.2" stroke="#2E75B8" stroke-width="2"/>
+    <circle cx="208" cy="208" r="30" fill="white" fill-opacity="0.9"/>
+  </g>
+  
+  <!-- Labels -->
+  <text x="390" y="95" fill="white" font-family="Inter, sans-serif" font-weight="900" font-size="12" letter-spacing="2">БЕЛЫЙ ШТАБ</text>
+  <text x="890" y="95" fill="#60DEDE" font-family="Inter, sans-serif" font-weight="900" font-size="12" letter-spacing="2" text-anchor="end">ЧЕРНЫЙ ШТАБ</text>
+</svg>

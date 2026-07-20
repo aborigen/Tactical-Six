@@ -1,0 +1,20 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="720" fill="#161A1C"/>
+  
+  <!-- Engine Panel Mock -->
+  <g transform="translate(100, 100)">
+    <rect width="400" height="520" rx="16" fill="#1D2326" stroke="#FFFFFF" stroke-opacity="0.1"/>
+    <rect width="400" height="50" rx="16" fill="#2E75B8" fill-opacity="0.1"/>
+    <text x="20" y="32" fill="#60DEDE" font-family="Inter, sans-serif" font-weight="900" font-size="14" letter-spacing="2">ТАКТИЧЕСКИЙ ДВИЖОК</text>
+    
+    <g transform="translate(20, 80)">
+      <rect width="360" height="100" rx="12" fill="#FFFFFF" fill-opacity="0.03"/>
+      <text x="15" y="30" fill="white" font-family="Inter, sans-serif" font-weight="900" font-size="10" opacity="0.5">ОЦЕНКА ДВИЖКА</text>
+      <text x="15" y="65" fill="white" font-family="Inter, sans-serif" font-weight="500" font-size="14">"+1.45. Позиционное преимущество."</text>
+    </g>
+  </g>
+  
+  <!-- Visual Accent -->
+  <circle cx="900" cy="360" r="200" fill="#2E75B8" fill-opacity="0.05"/>
+  <text x="900" y="370" text-anchor="middle" fill="#2E75B8" font-family="Inter, sans-serif" font-weight="900" font-size="120" opacity="0.1">ИИ</text>
+</svg>
