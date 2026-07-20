@@ -1,0 +1,13 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="720" fill="#161A1C"/>
+  <circle cx="1280" cy="0" r="600" fill="#2E75B8" fill-opacity="0.1"/>
+  <circle cx="0" cy="720" r="400" fill="#60DEDE" fill-opacity="0.05"/>
+  
+  <g transform="translate(640, 360)">
+    <text font-family="Inter, sans-serif" font-weight="900" font-size="120" fill="#FFFFFF" text-anchor="middle" letter-spacing="-5">TACTICAL SIX</text>
+    <text y="70" font-family="Inter, sans-serif" font-weight="900" font-size="24" fill="#60DEDE" text-anchor="middle" letter-spacing="15">ADVANCED 6X6 ARENA</text>
+  </g>
+  
+  <!-- Decorative matrix lines -->
+  <path d="M0 100H1280M0 620H1280" stroke="#FFFFFF" stroke-width="1" stroke-opacity="0.1"/>
+</svg>
