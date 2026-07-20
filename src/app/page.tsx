@@ -104,7 +104,6 @@ export default function Home() {
         console.error('Failed to load history', e);
       }
     } else {
-      // If no history, it's a fresh session, show briefing
       setIsBriefingOpen(true);
     }
 
@@ -344,21 +343,6 @@ export default function Home() {
 
   const EnginePanel = (
     <div className="flex flex-col h-full overflow-hidden">
-      <div className="mb-3 space-y-2">
-        <div className="flex items-center justify-between">
-          <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-            <Zap className="w-3.5 h-3.5 text-accent" /> {t.engine_difficulty_label}
-          </label>
-        </div>
-        <Tabs value={difficulty} onValueChange={(v) => setDifficulty(v as Difficulty)} className="w-full">
-          <TabsList className="grid grid-cols-3 bg-secondary/40 p-0.5 h-8 border border-white/5">
-            <TabsTrigger value="easy" className="text-[9px] font-bold uppercase py-1">{t.diff_easy}</TabsTrigger>
-            <TabsTrigger value="medium" className="text-[9px] font-bold uppercase py-1">{t.diff_medium}</TabsTrigger>
-            <TabsTrigger value="hard" className="text-[9px] font-bold uppercase py-1">{t.diff_hard}</TabsTrigger>
-          </TabsList>
-        </Tabs>
-      </div>
-
       <div className="flex-1 min-h-0 bg-secondary/10 rounded-xl p-4 border border-white/5 relative overflow-hidden flex flex-col">
         {isReviewMode ? (
           <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
@@ -370,7 +354,10 @@ export default function Home() {
             {!explanation && !isSuggesting && (
               <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
                 <Lightbulb className="w-8 h-8 text-accent/40" />
-                <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">{t.engine_awaiting}</p>
+                <div className="space-y-1">
+                  <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">{t.engine_awaiting}</p>
+                  <p className="text-[8px] text-muted-foreground/60 uppercase tracking-tight">{difficulty === 'easy' ? t.diff_easy : difficulty === 'medium' ? t.diff_medium : t.diff_hard} Depth Active</p>
+                </div>
                 <Button variant="outline" size="sm" onClick={getAiHint} className="h-7 text-[9px] border-accent/30">{t.engine_initiate}</Button>
               </div>
             )}
@@ -401,7 +388,6 @@ export default function Home() {
     )}>
       <Onboarding lang={lang} />
       
-      {/* Mission Briefing Dialog */}
       <Dialog open={isBriefingOpen} onOpenChange={setIsBriefingOpen}>
         <DialogContent className="sm:max-w-[450px] bg-card/95 backdrop-blur-xl border-border/50 shadow-2xl p-0 overflow-hidden ring-1 ring-white/10">
           <div className="h-28 w-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center px-8">
@@ -464,7 +450,6 @@ export default function Home() {
         </DialogContent>
       </Dialog>
       
-      {/* Optimized Header */}
       <header className="px-4 py-2 flex items-center justify-between shrink-0 border-b border-white/5 bg-secondary/10 backdrop-blur-md z-40">
         <div className="flex items-center gap-2">
           <div className="bg-primary p-1.5 rounded-lg shadow-lg shadow-primary/20 ring-1 ring-white/10">
@@ -511,10 +496,8 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main Game Area */}
       <main className="flex-1 flex flex-col lg:grid lg:grid-cols-12 lg:gap-8 lg:p-6 overflow-hidden">
         
-        {/* Left Side (Desktop Only) - Now purely engine focus or stats */}
         <div className="hidden lg:col-span-3 lg:flex flex-col gap-6 overflow-hidden">
            <Card className="flex-1 bg-card border-border shadow-2xl overflow-hidden flex flex-col">
             <CardHeader className="py-3 px-4 bg-secondary/20 border-b border-border/50">
@@ -534,9 +517,7 @@ export default function Home() {
           </Card>
         </div>
 
-        {/* Center: Board and Status */}
         <div className="lg:col-span-6 flex flex-col items-center justify-center p-2 lg:p-0 min-h-0">
-          
           <div className="w-full max-w-[550px] mb-2 flex justify-between items-center px-4 py-2 bg-secondary/10 rounded-xl border border-white/5 backdrop-blur-sm shrink-0">
             <div className={cn(
               "flex items-center gap-2 transition-all duration-300",
@@ -611,7 +592,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Right Side - Engine Panel */}
         <div className="hidden lg:col-span-3 lg:flex flex-col gap-6 overflow-hidden">
           <Card className="flex-1 bg-card border-border shadow-2xl overflow-hidden flex flex-col">
             <CardHeader className="py-3 px-4 bg-secondary/20 border-b border-border/50">
@@ -625,7 +605,6 @@ export default function Home() {
           </Card>
         </div>
 
-        {/* Mobile Engine/Log - Super compact footer tabs */}
         <div className="lg:hidden shrink-0 h-[100px] px-2 pb-2">
           <div className="h-full bg-card/50 rounded-lg p-2 border border-white/5 overflow-hidden">
             {EnginePanel}
@@ -633,7 +612,6 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Separate Tactical Log Screen */}
       <Dialog open={isLogOpen} onOpenChange={setIsLogOpen}>
         <DialogContent className="max-w-none w-full h-full p-0 bg-background/95 backdrop-blur-2xl border-none z-50">
           <div className="flex flex-col h-full">
@@ -659,7 +637,6 @@ export default function Home() {
             </header>
 
             <div className="flex-1 overflow-hidden flex flex-col lg:grid lg:grid-cols-2 gap-8 p-6">
-              {/* Log View Left: The Board */}
               <div className="flex flex-col items-center justify-center space-y-6">
                 <div className="relative w-full max-w-[500px] aspect-square">
                    <Board game={displayedGame} onMove={() => {}} pieceSet={pieceSet} />
@@ -670,7 +647,6 @@ export default function Home() {
                    </div>
                 </div>
 
-                {/* Playback Controls */}
                 <div className="w-full max-w-[500px] grid grid-cols-5 gap-2 p-2 bg-secondary/30 rounded-2xl border border-white/10">
                   <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-white/5" onClick={() => setStep(0)} disabled={viewIndex === 0 || game.history.length === 0}>
                     <ChevronFirst className="w-5 h-5" />
@@ -690,7 +666,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Log View Right: The Move List */}
               <Card className="flex flex-col bg-card/50 border-white/5 overflow-hidden">
                 <ScrollArea className="flex-1 p-6">
                   {game.history.length === 0 ? (
