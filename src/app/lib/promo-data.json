@@ -3,13 +3,33 @@
     "title": "Tactical Six: 6x6 Chess",
     "short_description": "Fast-paced 6x6 chess variant with a powerful local AI.",
     "description": "Engage in high-intensity strategic combat on a condensed 6x6 grid. Tactical Six features a custom-built local engine, three difficulty levels (Cadet, Specialist, Commander), and a sleek, modern interface. Optimized for quick sessions where every move counts. Features: Offline play, local AI, and move history analysis.",
-    "keywords": "chess, strategy, 6x6, logic, ai, board game, tactical, puzzle"
+    "keywords": "chess, strategy, 6x6, logic, ai, board game, tactical, puzzle",
+    "google_play": {
+      "title": "Tactical Six: 6x6 Chess",
+      "short_description": "Compact 6x6 chess with a powerful AI. Fast-paced strategic board game.",
+      "full_description": "Engage in high-intensity strategic combat on a condensed 6x6 grid. Tactical Six is a sophisticated chess variant designed for fast-paced play.\n\nFeatures:\n- 3 AI Difficulty Levels (Cadet, Specialist, Commander)\n- Custom Local Engine: Play anywhere, even offline\n- Tactical Log: Full move history review and playback\n- Visual Customization: Vanguard, Cyber, and Classical piece sets\n- Synthesized Audio: Real-time tactical sound effects\n\nOptimized for quick sessions where every move counts. Master the 6-file arena today! Whether you are a casual player or a strategy enthusiast, Tactical Six offers a fresh, challenging perspective on the classic game of kings."
+    },
+    "poki": {
+      "title": "Tactical Six",
+      "short_description": "Fast-paced 6x6 chess variant.",
+      "description": "Tactical Six is a modern 6x6 chess variant built for speed and strategy. Challenge a smart local AI or play locally with a friend on the same device. Featuring synthesized audio, persistent scoring, and multiple high-fidelity board styles. Perfect for a quick brain workout or a competitive match in a condensed arena."
+    }
   },
   "ru": {
     "title": "Tactical Six: Шахматы 6x6",
     "short_description": "Динамичные шахматы 6x6 с мощным локальным ИИ.",
     "description": "Вступайте в интенсивный стратегический бой на компактной сетке 6x6. Tactical Six предлагает встроенный движок, три уровня сложности (Кадет, Специалист, Командор) и стильный современный интерфейс. Идеально для быстрых партий, где важен каждый ход. Особенности: оффлайн режим, локальный ИИ и анализ истории ходов.",
-    "keywords": "шахматы, стратегия, 6x6, логика, ии, настольная игра, тактика, головоломка"
+    "keywords": "шахматы, стратегия, 6x6, логика, ии, настольная игра, тактика, головоломка",
+    "google_play": {
+      "title": "Tactical Six: Шахматы 6x6",
+      "short_description": "Компактные шахматы 6x6 с мощным ИИ. Динамичная стратегическая игра.",
+      "full_description": "Вступайте в интенсивный стратегический бой на компактной сетке 6x6. Tactical Six — это продвинутый вариант шахмат, созданный для быстрых партий.\n\nОсобенности:\n- 3 уровня сложности ИИ (Кадет, Специалист, Командор)\n- Встроенный движок: играйте где угодно, даже без интернета\n- Журнал операций: полный просмотр и воспроизведение истории ходов\n- Кастомизация: наборы фигур Vanguard, Cyber и Classical\n- Синтезированное аудио: звуковые эффекты в реальном времени\n\nИдеально для коротких сессий, где важен каждый ход. Станьте мастером арены 6x6 уже сегодня! Будь вы новичок или опытный стратег, Tactical Six предложит вам новый и захватывающий взгляд на классическую игру королей."
+    },
+    "poki": {
+      "title": "Tactical Six",
+      "short_description": "Динамичные шахматы 6x6.",
+      "description": "Tactical Six — современная версия шахмат 6x6 для тех, кто ценит скорость и стратегию. Бросьте вызов умному локальному ИИ или играйте с другом на одном устройстве. Синтезированный звук, сохранение рекордов и несколько стилей оформления. Идеально для быстрой тренировки мозга или соревновательного матча на компактной доске."
+    }
   },
   "asset_requirements": {
     "icon": "512x512px (PNG/JPG)",
