@@ -10,9 +10,12 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { 
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger 
+} from "@/components/ui/dialog";
+import { 
   RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, 
   Trash2, Copy, Check, ChevronLeft, ChevronLast, ChevronFirst,
-  PlayCircle, Zap, Settings
+  PlayCircle, Zap, Settings, X
 } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
@@ -56,6 +59,7 @@ export default function Home() {
   const [isInitialized, setIsInitialized] = useState(false);
   const [hasCopied, setHasCopied] = useState(false);
   const [viewIndex, setViewIndex] = useState<number>(-1); 
+  const [isLogOpen, setIsLogOpen] = useState(false);
   const { toast } = useToast();
 
   const t = translations[lang];
@@ -205,16 +209,6 @@ export default function Home() {
     });
   }, [toast, t, isAdPlaying]);
 
-  const resetScores = useCallback(() => {
-    const defaultScore = { white: 0, black: 0, draws: 0 };
-    setScores(defaultScore);
-    localStorage.setItem(SCORE_STORAGE_KEY, JSON.stringify(defaultScore));
-    toast({
-      title: t.score_reset,
-      description: t.toast_score_reset,
-    });
-  }, [toast, t]);
-
   const handleMove = useCallback((move: Move) => {
     if (isReviewMode || isAdPlaying) return;
 
@@ -327,70 +321,12 @@ export default function Home() {
   const setLive = () => setViewIndex(-1);
   const setStep = (idx: number) => setViewIndex(idx);
 
-  // Common UI components reused between mobile/desktop layouts
-  const HistoryPanel = (
-    <div className="flex flex-col h-full overflow-hidden">
-      {game.history.length > 0 && (
-        <div className="grid grid-cols-5 gap-1 pb-3 border-b border-border/40 mb-3">
-          <Button variant="outline" size="icon" className="h-7 w-full" onClick={() => setStep(0)} disabled={viewIndex === 0}>
-            <ChevronFirst className="w-3 h-3" />
-          </Button>
-          <Button variant="outline" size="icon" className="h-7 w-full" onClick={() => setStep(Math.max(0, (viewIndex === -1 ? game.history.length - 1 : viewIndex) - 1))} disabled={viewIndex === 0}>
-            <ChevronLeft className="w-3 h-3" />
-          </Button>
-          <Button variant={isReviewMode ? "default" : "outline"} size="icon" className={cn("h-7 w-full", !isReviewMode && "opacity-40")} onClick={setLive}>
-            <PlayCircle className="w-3 h-3" />
-          </Button>
-          <Button variant="outline" size="icon" className="h-7 w-full" onClick={() => setStep(Math.min(game.history.length - 1, (viewIndex === -1 ? game.history.length - 1 : viewIndex) + 1))} disabled={viewIndex === -1 || viewIndex === game.history.length - 1}>
-            <ChevronRight className="w-3 h-3" />
-          </Button>
-          <Button variant="outline" size="icon" className="h-7 w-full" onClick={() => setStep(game.history.length - 1)} disabled={viewIndex === game.history.length - 1}>
-            <ChevronLast className="w-3 h-3" />
-          </Button>
-        </div>
-      )}
-      
-      <ScrollArea className="flex-1">
-        <div className="space-y-3">
-          {game.history.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-8 text-center">
-              <History className="w-8 h-8 text-muted-foreground opacity-20 mb-2" />
-              <p className="text-muted-foreground text-[10px] italic font-medium uppercase tracking-widest">{t.history_empty_title}</p>
-            </div>
-          ) : (
-            <div className="space-y-1.5">
-              {Array.from({ length: Math.ceil(game.history.length / 2) }).map((_, i) => (
-                <div key={i} className="grid grid-cols-2 gap-1.5">
-                  <div onClick={() => setStep(i * 2)} className={cn("flex justify-between items-center px-2 py-1.5 rounded border text-[10px] font-mono cursor-pointer transition-all", viewIndex === i * 2 ? "bg-primary/20 border-primary" : "bg-secondary/20 border-border/40 hover:bg-secondary/40")}>
-                    <span className="text-muted-foreground/60 font-bold">{i + 1}W</span>
-                    <span className="font-bold">{ChessGame.toAlgebraic(game.history[i * 2])}</span>
-                  </div>
-                  {game.history[i * 2 + 1] && (
-                    <div onClick={() => setStep(i * 2 + 1)} className={cn("flex justify-between items-center px-2 py-1.5 rounded border text-[10px] font-mono cursor-pointer transition-all", viewIndex === i * 2 + 1 ? "bg-accent/20 border-accent" : "bg-accent/5 border-accent/20 hover:bg-accent/10")}>
-                      <span className="text-accent/60 font-bold">{i + 1}B</span>
-                      <span className="text-accent font-bold">{ChessGame.toAlgebraic(game.history[i * 2 + 1])}</span>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </ScrollArea>
-      {isReviewMode && (
-        <Button size="sm" variant="secondary" className="w-full font-bold h-8 mt-2 text-[10px]" onClick={setLive}>
-           <PlayCircle className="w-3 h-3 mr-1" /> {t.history_playback_back}
-        </Button>
-      )}
-    </div>
-  );
-
   const EnginePanel = (
     <div className="flex flex-col h-full overflow-hidden">
       <div className="mb-3 space-y-2">
         <div className="flex items-center justify-between">
           <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-            <Zap className="w-3 h-3 text-accent" /> {t.engine_difficulty_label}
+            <Zap className="w-3.5 h-3.5 text-accent" /> {t.engine_difficulty_label}
           </label>
         </div>
         <Tabs value={difficulty} onValueChange={(v) => setDifficulty(v as Difficulty)} className="w-full">
@@ -444,8 +380,8 @@ export default function Home() {
     )}>
       <Onboarding lang={lang} />
       
-      {/* Optimized Compact Header */}
-      <header className="px-4 py-2 flex items-center justify-between shrink-0 border-b border-white/5 bg-secondary/10 backdrop-blur-md">
+      {/* Optimized Header */}
+      <header className="px-4 py-2 flex items-center justify-between shrink-0 border-b border-white/5 bg-secondary/10 backdrop-blur-md z-40">
         <div className="flex items-center gap-2">
           <div className="bg-primary p-1.5 rounded-lg shadow-lg shadow-primary/20 ring-1 ring-white/10">
             <svg viewBox="0 0 45 45" className="w-5 h-5 fill-white">
@@ -459,7 +395,6 @@ export default function Home() {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Tally - Super Compact on mobile */}
           <div className="flex items-center gap-1.5 bg-secondary/40 border border-white/5 p-1 rounded-lg">
             <div className="px-1.5 flex flex-col items-center">
               <span className="text-[7px] font-black text-white/40 leading-none">W</span>
@@ -472,6 +407,10 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-1">
+            <Button variant="outline" size="sm" onClick={() => setIsLogOpen(true)} className="gap-2 border-primary/20 bg-primary/5 hover:bg-primary/10 font-bold text-primary h-8 px-3">
+              <History className="w-4 h-4" />
+              <span className="hidden sm:inline">{t.history_btn}</span>
+            </Button>
             <RulesHelp lang={lang} />
             <SettingsDialog 
               lang={lang} 
@@ -491,19 +430,22 @@ export default function Home() {
       {/* Main Game Area */}
       <main className="flex-1 flex flex-col lg:grid lg:grid-cols-12 lg:gap-8 lg:p-6 overflow-hidden">
         
-        {/* Left Side (Desktop Only) */}
+        {/* Left Side (Desktop Only) - Now purely engine focus or stats */}
         <div className="hidden lg:col-span-3 lg:flex flex-col gap-6 overflow-hidden">
-          <Card className="flex-1 bg-card border-border shadow-2xl overflow-hidden flex flex-col">
-            <CardHeader className="py-3 px-4 bg-secondary/20 flex flex-row items-center justify-between border-b border-border/50">
+           <Card className="flex-1 bg-card border-border shadow-2xl overflow-hidden flex flex-col">
+            <CardHeader className="py-3 px-4 bg-secondary/20 border-b border-border/50">
               <CardTitle className="text-[10px] font-black uppercase tracking-widest flex items-center gap-2 text-primary">
-                <History className="w-3 h-3" /> {t.history_title}
+                <Users className="w-3.5 h-3.5" /> {t.player_white_command}
               </CardTitle>
-              <Button variant="ghost" size="icon" onClick={copyHistory} className="h-6 w-6">
-                {hasCopied ? <Check className="w-3 h-3 text-accent" /> : <Copy className="w-3 h-3" />}
-              </Button>
             </CardHeader>
-            <CardContent className="flex-1 overflow-hidden p-4">
-              {HistoryPanel}
+            <CardContent className="p-6 flex flex-col items-center justify-center text-center space-y-4">
+              <div className="w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shadow-inner">
+                <div className="w-12 h-12 rounded-full bg-white shadow-[0_0_20px_white]" />
+              </div>
+              <div>
+                <h3 className="text-xs font-black text-white uppercase tracking-widest">{t.player_white_label}</h3>
+                <p className="text-[10px] text-muted-foreground font-medium">Strategic Command</p>
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -511,7 +453,6 @@ export default function Home() {
         {/* Center: Board and Status */}
         <div className="lg:col-span-6 flex flex-col items-center justify-center p-2 lg:p-0 min-h-0">
           
-          {/* Active Turn Header */}
           <div className="w-full max-w-[550px] mb-2 flex justify-between items-center px-4 py-2 bg-secondary/10 rounded-xl border border-white/5 backdrop-blur-sm shrink-0">
             <div className={cn(
               "flex items-center gap-2 transition-all duration-300",
@@ -532,7 +473,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Board Container - Dynamic sizing */}
           <div className="relative flex-1 w-full max-w-[550px] flex items-center justify-center min-h-0">
             <Board game={displayedGame} onMove={handleMove} hintMove={hintMove} pieceSet={pieceSet} />
             {(isReviewMode || isAdPlaying) && (
@@ -544,7 +484,6 @@ export default function Home() {
             )}
           </div>
 
-          {/* Game Status - Compact on mobile */}
           <div className="w-full max-w-[550px] mt-2 shrink-0">
             <div className={cn(
               "px-4 py-3 rounded-xl border transition-all duration-500",
@@ -588,12 +527,12 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Right Side (Desktop Only) */}
+        {/* Right Side - Engine Panel */}
         <div className="hidden lg:col-span-3 lg:flex flex-col gap-6 overflow-hidden">
           <Card className="flex-1 bg-card border-border shadow-2xl overflow-hidden flex flex-col">
             <CardHeader className="py-3 px-4 bg-secondary/20 border-b border-border/50">
               <CardTitle className="text-[10px] font-black uppercase tracking-widest flex items-center gap-2 text-accent">
-                <Cpu className="w-3 h-3" /> {t.engine_title}
+                <Cpu className="w-3.5 h-3.5" /> {t.engine_title}
               </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 overflow-hidden p-4">
@@ -602,26 +541,132 @@ export default function Home() {
           </Card>
         </div>
 
-        {/* Mobile Tabs (Bottom Area) */}
-        <div className="lg:hidden shrink-0 h-[200px] px-2 pb-2">
-          <Tabs defaultValue="history" className="h-full flex flex-col">
-            <TabsList className="grid grid-cols-2 bg-secondary/30 h-8 p-0.5 rounded-lg border border-white/5">
-              <TabsTrigger value="history" className="text-[9px] font-black uppercase gap-2">
-                <History className="w-3 h-3" /> {t.history_title}
-              </TabsTrigger>
-              <TabsTrigger value="engine" className="text-[9px] font-black uppercase gap-2">
-                <Cpu className="w-3 h-3" /> {t.engine_title}
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="history" className="flex-1 mt-1 overflow-hidden bg-card/50 rounded-lg p-2 border border-white/5">
-              {HistoryPanel}
-            </TabsContent>
-            <TabsContent value="engine" className="flex-1 mt-1 overflow-hidden bg-card/50 rounded-lg p-2 border border-white/5">
-              {EnginePanel}
-            </TabsContent>
-          </Tabs>
+        {/* Mobile Engine/Log - Super compact footer tabs */}
+        <div className="lg:hidden shrink-0 h-[100px] px-2 pb-2">
+          <div className="h-full bg-card/50 rounded-lg p-2 border border-white/5 overflow-hidden">
+            {EnginePanel}
+          </div>
         </div>
       </main>
+
+      {/* Separate Tactical Log Screen */}
+      <Dialog open={isLogOpen} onOpenChange={setIsLogOpen}>
+        <DialogContent className="max-w-none w-full h-full p-0 bg-background/95 backdrop-blur-2xl border-none z-50">
+          <div className="flex flex-col h-full">
+            <header className="px-6 py-4 flex items-center justify-between border-b border-white/10 shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="bg-primary/20 p-2 rounded-lg border border-primary/30">
+                  <History className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-black text-white uppercase tracking-tighter">{t.history_title}</h2>
+                  <p className="text-[9px] font-black text-primary uppercase tracking-[0.2em]">{t.history_btn} Protocol active</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                 <Button variant="outline" size="sm" onClick={copyHistory} className="h-9 gap-2 font-black uppercase text-[10px] border-white/10 bg-white/5">
+                  {hasCopied ? <Check className="w-4 h-4 text-accent" /> : <Copy className="w-4 h-4" />}
+                  {hasCopied ? "COPIED" : "COPY LOG"}
+                </Button>
+                <Button variant="ghost" size="icon" onClick={() => setIsLogOpen(false)} className="h-10 w-10">
+                  <X className="w-6 h-6" />
+                </Button>
+              </div>
+            </header>
+
+            <div className="flex-1 overflow-hidden flex flex-col lg:grid lg:grid-cols-2 gap-8 p-6">
+              {/* Log View Left: The Board */}
+              <div className="flex flex-col items-center justify-center space-y-6">
+                <div className="relative w-full max-w-[500px] aspect-square">
+                   <Board game={displayedGame} onMove={() => {}} pieceSet={pieceSet} />
+                   <div className="absolute top-4 right-4 z-40">
+                      <Badge variant="outline" className="bg-primary text-white font-black tracking-widest px-4 py-1.5 text-[10px] border-white/20 shadow-2xl">
+                        {viewIndex === -1 ? `MOVE ${game.history.length}` : `MOVE ${viewIndex + 1}`}
+                      </Badge>
+                   </div>
+                </div>
+
+                {/* Playback Controls */}
+                <div className="w-full max-w-[500px] grid grid-cols-5 gap-2 p-2 bg-secondary/30 rounded-2xl border border-white/10">
+                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-white/5" onClick={() => setStep(0)} disabled={viewIndex === 0 || game.history.length === 0}>
+                    <ChevronFirst className="w-5 h-5" />
+                  </Button>
+                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-white/5" onClick={() => setStep(Math.max(0, (viewIndex === -1 ? game.history.length - 1 : viewIndex) - 1))} disabled={viewIndex === 0 || game.history.length === 0}>
+                    <ChevronLeft className="w-5 h-5" />
+                  </Button>
+                  <Button variant={viewIndex === -1 ? "default" : "secondary"} size="icon" className="h-12 w-full font-black" onClick={setLive}>
+                    <PlayCircle className="w-5 h-5" />
+                  </Button>
+                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-white/5" onClick={() => setStep(Math.min(game.history.length - 1, (viewIndex === -1 ? game.history.length - 1 : viewIndex) + 1))} disabled={viewIndex === -1 || viewIndex === game.history.length - 1 || game.history.length === 0}>
+                    <ChevronRight className="w-5 h-5" />
+                  </Button>
+                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-white/5" onClick={() => setStep(game.history.length - 1)} disabled={viewIndex === game.history.length - 1 || game.history.length === 0}>
+                    <ChevronLast className="w-5 h-5" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Log View Right: The Move List */}
+              <Card className="flex flex-col bg-card/50 border-white/5 overflow-hidden">
+                <ScrollArea className="flex-1 p-6">
+                  {game.history.length === 0 ? (
+                    <div className="h-full flex flex-col items-center justify-center py-20 text-center space-y-4">
+                      <History className="w-16 h-16 text-muted-foreground/20" />
+                      <div className="space-y-1">
+                        <h3 className="text-sm font-black text-white uppercase">{t.history_empty_title}</h3>
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-widest">{t.history_empty_desc}</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 gap-2">
+                      {Array.from({ length: Math.ceil(game.history.length / 2) }).map((_, i) => (
+                        <div key={i} className="grid grid-cols-12 gap-3 items-center">
+                          <div className="col-span-1 text-center">
+                            <span className="text-[10px] font-black text-muted-foreground font-mono">{i + 1}.</span>
+                          </div>
+                          <div className="col-span-11 grid grid-cols-2 gap-3">
+                            <div 
+                              onClick={() => setStep(i * 2)} 
+                              className={cn(
+                                "flex justify-between items-center px-4 py-3 rounded-xl border text-xs font-mono cursor-pointer transition-all", 
+                                viewIndex === i * 2 ? "bg-primary border-primary shadow-[0_0_15px_rgba(46,117,184,0.4)] text-white" : "bg-white/5 border-white/5 hover:bg-white/10"
+                              )}
+                            >
+                              <span className={cn("text-[9px] font-black uppercase", viewIndex === i * 2 ? "text-white/60" : "text-muted-foreground/60")}>White</span>
+                              <span className="font-bold">{ChessGame.toAlgebraic(game.history[i * 2])}</span>
+                            </div>
+                            {game.history[i * 2 + 1] && (
+                              <div 
+                                onClick={() => setStep(i * 2 + 1)} 
+                                className={cn(
+                                  "flex justify-between items-center px-4 py-3 rounded-xl border text-xs font-mono cursor-pointer transition-all", 
+                                  viewIndex === i * 2 + 1 ? "bg-accent border-accent shadow-[0_0_15px_rgba(96,222,222,0.4)] text-black" : "bg-accent/5 border-accent/10 hover:bg-accent/10"
+                                )}
+                              >
+                                <span className={cn("text-[9px] font-black uppercase", viewIndex === i * 2 + 1 ? "text-black/60" : "text-accent/60")}>Black</span>
+                                <span className={cn("font-bold", viewIndex === i * 2 + 1 ? "text-black" : "text-accent")}>{ChessGame.toAlgebraic(game.history[i * 2 + 1])}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </ScrollArea>
+                <div className="p-4 border-t border-white/5 bg-secondary/10 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <History className="w-3 h-3 text-muted-foreground" />
+                    <span className="text-[9px] font-black text-muted-foreground uppercase">{game.history.length} Manoeuvres Recorded</span>
+                  </div>
+                  <Button onClick={() => setIsLogOpen(false)} variant="secondary" className="h-8 font-black text-[9px] uppercase px-6">
+                    {t.history_playback_back}
+                  </Button>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <Toaster />
     </div>
