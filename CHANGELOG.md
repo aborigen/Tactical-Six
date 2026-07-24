@@ -2,48 +2,41 @@
 
 All notable tactical upgrades to the 6x6 combat matrix are documented here.
 
-## [1.3.0] - Platform Synchronization & Visual Overhaul
+## [1.4.0] - Strategic Expansion & AI Optimization
 ### Added
-- **Merida Tactical Set**: High-fidelity vector piece paths inspired by the classic Merida chess font for a professional aesthetic.
-- **Yandex SDK Localization**: Automatic UI language synchronization with the Yandex Games environment (EN/RU).
-- **Command Settings Dialog**: New centralized hub for language and audio parameters, decluttering the main tactical interface.
-- **Tactical Icon**: New 512x512 vector icon (`public/icon.svg`) for store listing optimization.
-- **Promo Matrix**: Centralized promotional metadata in `src/app/lib/promo-data.json`.
+- **Expanded AI Difficulty Matrix**: Implemented five distinct tactical depths:
+  - **Recruit** (Depth 1): Immediate situational awareness.
+  - **Cadet** (Depth 2): Basic tactical patterns.
+  - **Specialist** (Depth 3): Balanced positional play.
+  - **Commander** (Depth 4): Advanced strategic foresight.
+  - **Grandmaster** (Depth 5): Deep-state computational analysis.
+- **Classical Piece Set**: High-fidelity Staunton-inspired vector pieces for traditional tactical engagement.
+- **Vanguard Piece Set**: Redesigned primary piece set with professional silhouettes and consistent 2px stroke geometry.
+- **Mission Briefing Protocol**: New pre-engagement flow requiring commanders to select difficulty and mission profile (VS AI / PvP) before initialization.
+- **Light/Dark Vision Modes**: Fully integrated theme engine with persistent state and a pre-hydration script to eliminate "theme flash" on load.
+- **Tactical Log Screen**: Relocated move history and playback controls to a dedicated, full-screen analysis environment.
 
 ### Changed
-- **Mobile UI Optimization**: Button text labels in the header are now hidden in portrait orientation to maximize screen real estate for the combat grid.
-- **Default Engagement**: VS AI mode is now initialized as the default mission profile.
-- **Static Export Hardening**: Optimized `next.config.ts` by removing problematic `assetPrefix` and standardizing script loading for 100% platform compatibility.
-- **Mobile Touch Protocol**: Disabled context menus on the tactical board to prevent menu interference during long-press manoeuvres.
+- **Dual-Layout Architecture**: 
+  - **Desktop Landscape**: 12-column grid with dual sidebars for player profiles and real-time engine evaluation.
+  - **Mobile Portrait**: Compact, scroll-free tactical grid with a tabbed "Command Center" console.
+- **Streamlined Interface**: Removed the difficulty selector from the active combat view to minimize distractions; moved to the Mission Briefing stage.
+- **SDK-Driven Localization**: Replaced hardcoded HTML language attributes with dynamic synchronization via the Yandex Games SDK environment.
 
 ### Fixed
-- **Settings Component Integrity**: Resolved `Badge` and `cn` reference errors within the Settings Dialog.
-- **Font Optimization**: Replaced `next/font` with standard system stacks to eliminate build-time asset prefix conflicts.
-- **Git Stealth**: Added `archives/` and build artifacts to `.gitignore`.
+- **Visual Inconsistency**: Synchronized internal "Vanguard" branding across the UI and component architecture.
+- **Mobile Viewport Integrity**: Eliminated vertical scrolling in portrait orientation by optimizing header and status bar spacing.
 
-## [1.2.0] - Persistent Operations & Playback
+## [1.3.0] - Platform Synchronization & Visual Overhaul
 ### Added
-- **Persistent Mission Tally**: Mission scores (White, Black, Draws) are now saved to `localStorage`.
-- **Manouevre Log Persistence**: Game history is saved across sessions, allowing for tactical resumption.
-- **Mission Playback**: New playback controller in the history panel for reviewing past movements.
-- **Review Mode**: Interactive state for analyzing previous tactical positions without disrupting live combat.
-- **Copy History**: Tool for exporting tactical logs to the clipboard.
+- **Merida Tactical Set**: High-fidelity vector piece paths inspired by the classic Merida chess font.
+- **Yandex SDK Localization**: Automatic UI language synchronization with the Yandex Games environment (EN/RU).
+- **Command Settings Dialog**: New centralized hub for language and audio parameters.
+- **Tactical Icon**: New 512x512 vector icon for store listing optimization.
 
-## [1.1.0] - Audio & Engine Refinement
-### Added
-- **Tactical Sound Synthesis**: Logic-based audio generation via Web Audio API (no external assets).
-- **Insufficient Material Protocol**: Automatic mission conclusion if checkmate becomes mathematically impossible.
-- **Pawn Promotion Logic**: Infantry units now automatically upgrade to High Command (Queen) upon reaching the back rank.
-- **Mute Toggle**: Command center option to silence tactical audio.
-
-## [1.0.0] - Initial Deployment
-### Added
-- **6x6 Matrix Combat**: Optimized chess engine for the 6-file grid.
-- **Local Tactical Engine**: Minimax search with Alpha-Beta pruning (Depth 3).
-- **Onboarding Protocol**: Multi-step introductory experience for new commanders.
-- **Multilingual Command**: Full support for English and Russian interfaces.
-- **Static Matrix Export**: Optimized for deployment on static hosting environments.
-- **Interactive UI**: Drag & Drop and Click-to-Move tactical deployment.
+### Changed
+- **Mobile UI Optimization**: Button text labels in the header are now hidden in portrait orientation.
+- **Static Export Hardening**: Optimized `next.config.ts` for 100% platform compatibility.
 
 ---
 *Operational Intelligence Report Generated by Tactical Six Engine*
