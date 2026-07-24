@@ -16,7 +16,7 @@ import { Label } from '@/components/ui/label';
 import { 
   RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, 
   Trash2, Copy, Check, ChevronLeft, ChevronLast, ChevronFirst,
-  PlayCircle, Zap, Settings, X, Target, Swords
+  PlayCircle, Zap, Settings, X, Target, Swords, Activity
 } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
@@ -525,6 +525,7 @@ export default function Home() {
 
       <main className="flex-1 flex flex-col lg:grid lg:grid-cols-12 lg:gap-8 lg:p-6 overflow-hidden">
         
+        {/* Desktop Left Sidebar: Player Profile */}
         <div className="hidden lg:col-span-3 lg:flex flex-col gap-6 overflow-hidden">
            <Card className="flex-1 bg-card border-border shadow-2xl overflow-hidden flex flex-col">
             <CardHeader className="py-3 px-4 bg-secondary/20 border-b border-border/50">
@@ -540,11 +541,39 @@ export default function Home() {
                 <h3 className="text-xs font-black text-foreground uppercase tracking-widest">{t.player_white_label}</h3>
                 <p className="text-[10px] text-muted-foreground font-medium">Strategic Command</p>
               </div>
+              <div className="w-full pt-4 border-t border-border/50">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-[8px] font-black text-muted-foreground uppercase">Win Rate</span>
+                  <span className="text-[9px] font-black text-primary">
+                    {scores.white + scores.black > 0 
+                      ? Math.round((scores.white / (scores.white + scores.black + scores.draws)) * 100)
+                      : 0}%
+                  </span>
+                </div>
+                <div className="h-1 w-full bg-secondary rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-primary" 
+                    style={{ width: `${scores.white + scores.black > 0 ? (scores.white / (scores.white + scores.black + scores.draws)) * 100 : 0}%` }} 
+                  />
+                </div>
+              </div>
             </CardContent>
+          </Card>
+          
+          <Card className="shrink-0 bg-card border-border shadow-md p-4">
+            <div className="flex items-center gap-3">
+              <Activity className="w-4 h-4 text-accent animate-pulse" />
+              <div>
+                <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest leading-none mb-1">Link integrity</p>
+                <p className="text-[10px] font-bold text-foreground">ENCRYPTED_SYNC_STABLE</p>
+              </div>
+            </div>
           </Card>
         </div>
 
+        {/* Central Tactical Arena: Board & Primary Status */}
         <div className="lg:col-span-6 flex flex-col items-center justify-center p-2 lg:p-0 min-h-0">
+          {/* Top Turn Indicator */}
           <div className="w-full max-w-[550px] mb-2 flex justify-between items-center px-4 py-2 bg-secondary/10 rounded-xl border border-white/5 backdrop-blur-sm shrink-0">
             <div className={cn(
               "flex items-center gap-2 transition-all duration-300",
@@ -565,6 +594,7 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Chess Board */}
           <div className="relative flex-1 w-full max-w-[550px] flex items-center justify-center min-h-0">
             <Board game={displayedGame} onMove={handleMove} hintMove={hintMove} pieceSet={pieceSet} />
             {(isReviewMode || isAdPlaying || isBriefingOpen) && (
@@ -576,6 +606,7 @@ export default function Home() {
             )}
           </div>
 
+          {/* Bottom Status Bar */}
           <div className="w-full max-w-[550px] mt-2 shrink-0">
             <div className={cn(
               "px-4 py-3 rounded-xl border transition-all duration-500",
@@ -619,6 +650,7 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Desktop Right Sidebar: Engine Analysis */}
         <div className="hidden lg:col-span-3 lg:flex flex-col gap-6 overflow-hidden">
           <Card className="flex-1 bg-card border-border shadow-2xl overflow-hidden flex flex-col">
             <CardHeader className="py-3 px-4 bg-secondary/20 border-b border-border/50">
@@ -630,15 +662,31 @@ export default function Home() {
               {EnginePanel}
             </CardContent>
           </Card>
+          
+          <Card className="shrink-0 bg-card border-border shadow-md p-4 space-y-3">
+            <p className="text-[8px] font-black text-muted-foreground uppercase tracking-widest">Session Statistics</p>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="bg-secondary/30 p-2 rounded-lg border border-border/50">
+                <p className="text-[7px] font-black text-muted-foreground uppercase">Moves</p>
+                <p className="text-xs font-black text-foreground">{game.history.length}</p>
+              </div>
+              <div className="bg-secondary/30 p-2 rounded-lg border border-border/50">
+                <p className="text-[7px] font-black text-muted-foreground uppercase">Draws</p>
+                <p className="text-xs font-black text-foreground">{scores.draws}</p>
+              </div>
+            </div>
+          </Card>
         </div>
 
-        <div className="lg:hidden shrink-0 h-[100px] px-2 pb-2">
+        {/* Mobile Bottom Console: Compact Engine Panel */}
+        <div className="lg:hidden shrink-0 h-[80px] px-2 pb-2">
           <div className="h-full bg-card/50 rounded-lg p-2 border border-white/5 overflow-hidden">
             {EnginePanel}
           </div>
         </div>
       </main>
 
+      {/* History Log Modal (Separate Screen) */}
       <Dialog open={isLogOpen} onOpenChange={setIsLogOpen}>
         <DialogContent className="max-w-none w-full h-full p-0 bg-background/95 backdrop-blur-2xl border-none z-50">
           <div className="flex flex-col h-full">
@@ -664,6 +712,7 @@ export default function Home() {
             </header>
 
             <div className="flex-1 overflow-hidden flex flex-col lg:grid lg:grid-cols-2 gap-8 p-6">
+              {/* Review Board */}
               <div className="flex flex-col items-center justify-center space-y-6">
                 <div className="relative w-full max-w-[500px] aspect-square">
                    <Board game={displayedGame} onMove={() => {}} pieceSet={pieceSet} />
@@ -674,6 +723,7 @@ export default function Home() {
                    </div>
                 </div>
 
+                {/* Playback Controls */}
                 <div className="w-full max-w-[500px] grid grid-cols-5 gap-2 p-2 bg-secondary/30 rounded-2xl border border-border">
                   <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-foreground/5" onClick={() => setStep(0)} disabled={viewIndex === 0 || game.history.length === 0}>
                     <ChevronFirst className="w-5 h-5" />
@@ -693,6 +743,7 @@ export default function Home() {
                 </div>
               </div>
 
+              {/* Move List */}
               <Card className="flex flex-col bg-card/50 border-border overflow-hidden">
                 <ScrollArea className="flex-1 p-6">
                   {game.history.length === 0 ? (
