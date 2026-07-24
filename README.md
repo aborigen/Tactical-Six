@@ -5,7 +5,7 @@ Tactical Six is a sophisticated 6x6 chess variant designed for fast-paced, high-
 ## 🚀 Key Features
 
 - **6x6 Matrix Combat**: A condensed arena that forces tactical engagement and rewards precise positioning. Features a standard back-rank deployment (R-N-B-Q-K-R) optimized for the 6-file grid.
-- **Local Tactical Engine**: Powered by a custom Minimax algorithm with Alpha-Beta pruning. Includes 3 selectable difficulty levels: **Cadet** (Depth 1), **Specialist** (Depth 3), and **Commander** (Depth 4).
+- **Local Tactical Engine**: Powered by a custom Minimax algorithm with Alpha-Beta pruning. Includes 5 selectable difficulty levels: **Recruit** (Depth 1), **Cadet** (Depth 2), **Specialist** (Depth 3), **Commander** (Depth 4), and **Grandmaster** (Depth 5).
 - **Static Matrix Architecture**: Optimized for deployment on static hosting environments (GitHub Pages, Yandex Games). This app contains **zero Server Actions**, running entirely in the browser for maximum portability.
 - **Persistent Mission Tally**: Integrated score tracking and difficulty settings saved to `localStorage`, allowing you to monitor your campaign progress across sessions.
 - **Multilingual Command**: Full localization for English and Russian, covering all interface elements, tactical hints, and rule protocols.
@@ -20,9 +20,11 @@ The AI in Tactical Six is a deterministic search engine implemented in TypeScrip
 1. **Minimax Search**: The engine builds a tree of possible moves. For every move it considers, it simulates the opponent's best response.
 2. **Alpha-Beta Pruning**: A critical optimization that stops evaluating a move as soon as it's determined to be worse than a previously evaluated option.
 3. **Variable Search Depth**:
-   - **Easy (Cadet)**: Depth 1 (Immediate consequences only).
-   - **Medium (Specialist)**: Depth 3 (Balanced tactical vision).
-   - **Hard (Commander)**: Depth 4 (Advanced tactical foresight).
+   - **Recruit**: Depth 1 (Immediate consequences only).
+   - **Cadet**: Depth 2 (Standard foundational tactics).
+   - **Specialist**: Depth 3 (Balanced tactical vision).
+   - **Commander**: Depth 4 (Advanced tactical foresight).
+   - **Grandmaster**: Depth 5 (Deep strategic coordination).
 
 ## 🛠 Tech Stack
 
@@ -74,4 +76,4 @@ This occurs when the VS Code Git bridge is stale.
 2. **Use External Terminal**: Run your git commands from the system terminal instead of the integrated VS Code terminal to bypass the broken socket.
 
 ---
-*Tactical Operational Manual v1.2.0*
+*Tactical Operational Manual v1.3.1*

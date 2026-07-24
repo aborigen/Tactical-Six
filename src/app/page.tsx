@@ -30,7 +30,7 @@ import { soundManager } from '@/lib/sounds';
 import { initYandexSDK, showFullscreenAd } from '@/lib/yandex-sdk';
 
 type GameMode = 'pvp' | 'pve';
-type Difficulty = 'easy' | 'medium' | 'hard';
+type Difficulty = 'recruit' | 'cadet' | 'specialist' | 'commander' | 'grandmaster';
 type Score = { white: number; black: number; draws: number };
 
 const SCORE_STORAGE_KEY = 'tactical_six_scores';
@@ -40,15 +40,17 @@ const PIECE_SET_STORAGE_KEY = 'tactical_six_piece_set';
 const GAME_MODE_STORAGE_KEY = 'tactical_six_game_mode';
 
 const DIFFICULTY_MAP: Record<Difficulty, number> = {
-  easy: 1,
-  medium: 3,
-  hard: 4
+  recruit: 1,
+  cadet: 2,
+  specialist: 3,
+  commander: 4,
+  grandmaster: 5
 };
 
 export default function Home() {
   const [game, setGame] = useState(new ChessGame());
   const [gameMode, setGameMode] = useState<GameMode>('pve'); 
-  const [difficulty, setDifficulty] = useState<Difficulty>('medium');
+  const [difficulty, setDifficulty] = useState<Difficulty>('specialist');
   const [pieceSet, setPieceSet] = useState<PieceSetStyle>('vanguard');
   const [hintMove, setHintMove] = useState<Move | null>(null);
   const [isSuggesting, setIsSuggesting] = useState(false);
@@ -77,9 +79,9 @@ export default function Home() {
       }
     }
 
-    const savedDifficulty = localStorage.getItem(DIFFICULTY_STORAGE_KEY);
-    if (savedDifficulty) {
-      setDifficulty(savedDifficulty as Difficulty);
+    const savedDifficulty = localStorage.getItem(DIFFICULTY_STORAGE_KEY) as Difficulty;
+    if (savedDifficulty && DIFFICULTY_MAP[savedDifficulty]) {
+      setDifficulty(savedDifficulty);
     }
 
     const savedPieceSet = localStorage.getItem(PIECE_SET_STORAGE_KEY);
@@ -123,7 +125,6 @@ export default function Home() {
           onClose: () => setIsAdPlaying(false)
         });
       } else {
-        // Fallback for document lang if SDK is not present
         document.documentElement.lang = lang;
       }
     };
@@ -360,7 +361,7 @@ export default function Home() {
                 <Lightbulb className="w-8 h-8 text-accent/40" />
                 <div className="space-y-1">
                   <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">{t.engine_awaiting}</p>
-                  <p className="text-[8px] text-muted-foreground/60 uppercase tracking-tight">{difficulty === 'easy' ? t.diff_easy : difficulty === 'medium' ? t.diff_medium : t.diff_hard} Depth Active</p>
+                  <p className="text-[8px] text-muted-foreground/60 uppercase tracking-tight">{(t as any)[`diff_${difficulty}`]} Depth Active</p>
                 </div>
                 <Button variant="outline" size="sm" onClick={getAiHint} className="h-7 text-[9px] border-accent/30">{t.engine_initiate}</Button>
               </div>
@@ -393,7 +394,7 @@ export default function Home() {
       <Onboarding lang={lang} />
       
       <Dialog open={isBriefingOpen} onOpenChange={setIsBriefingOpen}>
-        <DialogContent className="sm:max-w-[450px] bg-card/95 backdrop-blur-xl border-border/50 shadow-2xl p-0 overflow-hidden ring-1 ring-white/10">
+        <DialogContent className="sm:max-w-[550px] bg-card/95 backdrop-blur-xl border-border/50 shadow-2xl p-0 overflow-hidden ring-1 ring-white/10">
           <div className="h-28 w-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center px-8">
             <div className="flex items-center gap-4">
               <div className="bg-primary p-2.5 rounded-xl shadow-lg shadow-primary/20">
@@ -432,15 +433,21 @@ export default function Home() {
                 <Zap className="w-3.5 h-3.5" /> {t.briefing_difficulty_label}
               </Label>
               <Tabs value={difficulty} onValueChange={(v) => setDifficulty(v as Difficulty)} className="w-full bg-secondary/40 border border-white/5 p-1 rounded-xl">
-                <TabsList className="grid grid-cols-3 bg-transparent gap-1 h-10">
-                  <TabsTrigger value="easy" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-2 text-[10px] uppercase">
-                    {t.diff_easy}
+                <TabsList className="grid grid-cols-5 bg-transparent gap-1 h-10">
+                  <TabsTrigger value="recruit" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-1 text-[8px] uppercase">
+                    {t.diff_recruit}
                   </TabsTrigger>
-                  <TabsTrigger value="medium" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-2 text-[10px] uppercase">
-                    {t.diff_medium}
+                  <TabsTrigger value="cadet" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-1 text-[8px] uppercase">
+                    {t.diff_cadet}
                   </TabsTrigger>
-                  <TabsTrigger value="hard" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-2 text-[10px] uppercase">
-                    {t.diff_hard}
+                  <TabsTrigger value="specialist" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-1 text-[8px] uppercase">
+                    {t.diff_specialist}
+                  </TabsTrigger>
+                  <TabsTrigger value="commander" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-1 text-[8px] uppercase">
+                    {t.diff_commander}
+                  </TabsTrigger>
+                  <TabsTrigger value="grandmaster" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-1 text-[8px] uppercase">
+                    {t.diff_grandmaster}
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
