@@ -15,7 +15,7 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { translations, Language } from '@/lib/translations';
-import { Settings, Globe, Volume2, VolumeX, ShieldCheck, Palette, LayoutGrid } from 'lucide-react';
+import { Settings, Globe, Volume2, VolumeX, ShieldCheck, Palette, Sun, Moon } from 'lucide-react';
 import { PieceSetStyle } from '@/components/chess/Piece';
 
 interface SettingsDialogProps {
@@ -25,6 +25,8 @@ interface SettingsDialogProps {
   setIsMuted: (muted: boolean) => void;
   pieceSet: PieceSetStyle;
   setPieceSet: (style: PieceSetStyle) => void;
+  theme: 'light' | 'dark';
+  setTheme: (theme: 'light' | 'dark') => void;
 }
 
 const SettingsDialog: React.FC<SettingsDialogProps> = ({ 
@@ -33,7 +35,9 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
   isMuted, 
   setIsMuted,
   pieceSet,
-  setPieceSet
+  setPieceSet,
+  theme,
+  setTheme
 }) => {
   const t = translations[lang];
 
@@ -57,7 +61,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
               <Settings className="w-6 h-6 text-accent-foreground" />
             </div>
             <div>
-              <DialogTitle className="text-xl font-black tracking-tight text-white uppercase">
+              <DialogTitle className="text-xl font-black tracking-tight text-foreground uppercase">
                 {t.settings_title}
               </DialogTitle>
               <p className="text-[10px] font-black text-accent uppercase tracking-[0.2em] opacity-80">
@@ -71,22 +75,47 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <Label className="text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                <Sun className="w-3.5 h-3.5" /> {t.settings_theme_label}
+              </Label>
+              <Badge variant="outline" className="text-[8px] font-mono border-border text-muted-foreground uppercase">
+                VISION_MODE
+              </Badge>
+            </div>
+            <Tabs 
+              value={theme} 
+              onValueChange={(v) => setTheme(v as 'light' | 'dark')}
+              className="w-full bg-secondary/40 border border-border p-1 rounded-xl"
+            >
+              <TabsList className="grid grid-cols-2 bg-transparent gap-1 h-10">
+                <TabsTrigger value="light" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-3 uppercase text-[10px]">
+                  <Sun className="w-3.5 h-3.5 mr-2" /> {t.theme_light}
+                </TabsTrigger>
+                <TabsTrigger value="dark" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-3 uppercase text-[10px]">
+                  <Moon className="w-3.5 h-3.5 mr-2" /> {t.theme_dark}
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Label className="text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
                 <Globe className="w-3.5 h-3.5" /> {t.settings_lang_label}
               </Label>
-              <Badge variant="outline" className="text-[8px] font-mono border-white/10 text-white/40 uppercase">
+              <Badge variant="outline" className="text-[8px] font-mono border-border text-muted-foreground uppercase">
                 ISO_639_1
               </Badge>
             </div>
             <Tabs 
               value={lang} 
               onValueChange={(v) => setLang(v as Language)}
-              className="w-full bg-secondary/40 border border-white/5 p-1 rounded-xl"
+              className="w-full bg-secondary/40 border border-border p-1 rounded-xl"
             >
               <TabsList className="grid grid-cols-2 bg-transparent gap-1 h-10">
-                <TabsTrigger value="en" className="data-[state=active]:bg-white data-[state=active]:text-black font-bold rounded-lg px-3">
+                <TabsTrigger value="en" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-3">
                   English
                 </TabsTrigger>
-                <TabsTrigger value="ru" className="data-[state=active]:bg-white data-[state=active]:text-black font-bold rounded-lg px-3">
+                <TabsTrigger value="ru" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-3">
                   Русский
                 </TabsTrigger>
               </TabsList>
@@ -98,23 +127,23 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
               <Label className="text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
                 <Palette className="w-3.5 h-3.5" /> {t.settings_pieces_label}
               </Label>
-              <Badge variant="outline" className="text-[8px] font-mono border-white/10 text-white/40 uppercase">
+              <Badge variant="outline" className="text-[8px] font-mono border-border text-muted-foreground uppercase">
                 SKIN_PACK
               </Badge>
             </div>
             <Tabs 
               value={pieceSet} 
               onValueChange={(v) => setPieceSet(v as PieceSetStyle)}
-              className="w-full bg-secondary/40 border border-white/5 p-1 rounded-xl"
+              className="w-full bg-secondary/40 border border-border p-1 rounded-xl"
             >
               <TabsList className="grid grid-cols-3 bg-transparent gap-1 h-10">
-                <TabsTrigger value="tactical" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-2 text-[10px] uppercase">
+                <TabsTrigger value="vanguard" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-2 text-[10px] uppercase">
                   {t.piece_set_tactical}
                 </TabsTrigger>
                 <TabsTrigger value="cyber" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-bold rounded-lg px-2 text-[10px] uppercase">
                   {t.piece_set_cyber}
                 </TabsTrigger>
-                <TabsTrigger value="classical" className="data-[state=active]:bg-white data-[state=active]:text-black font-bold rounded-lg px-2 text-[10px] uppercase">
+                <TabsTrigger value="classical" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-2 text-[10px] uppercase">
                   {t.piece_set_classical}
                 </TabsTrigger>
               </TabsList>
@@ -128,15 +157,15 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
                 {t.settings_sound_label}
               </Label>
               <Badge variant="outline" className={cn(
-                "text-[8px] font-mono border-white/10 uppercase",
+                "text-[8px] font-mono border-border uppercase",
                 !isMuted ? "text-accent" : "text-destructive"
               )}>
                 {isMuted ? "Muted" : "Active"}
               </Badge>
             </div>
-            <div className="flex items-center justify-between p-4 bg-secondary/30 rounded-xl border border-white/5">
+            <div className="flex items-center justify-between p-4 bg-secondary/30 rounded-xl border border-border">
               <div className="flex flex-col">
-                <span className="text-xs font-bold text-white uppercase tracking-tight">Audio Synthesis</span>
+                <span className="text-xs font-bold text-foreground uppercase tracking-tight">Audio Synthesis</span>
                 <span className="text-[10px] text-muted-foreground">Web Audio API Protocols</span>
               </div>
               <Switch 
@@ -146,8 +175,8 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
             </div>
           </div>
 
-          <div className="pt-4 border-t border-white/5">
-            <div className="flex items-center gap-3 p-4 bg-secondary/10 rounded-xl border border-white/5">
+          <div className="pt-4 border-t border-border">
+            <div className="flex items-center gap-3 p-4 bg-secondary/10 rounded-xl border border-border">
               <ShieldCheck className="w-5 h-5 text-muted-foreground shrink-0" />
               <div>
                 <p className="text-[10px] font-bold text-muted-foreground leading-tight uppercase tracking-wide">

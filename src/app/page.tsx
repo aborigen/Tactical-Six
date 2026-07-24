@@ -38,6 +38,7 @@ const HISTORY_STORAGE_KEY = 'tactical_six_history';
 const DIFFICULTY_STORAGE_KEY = 'tactical_six_difficulty';
 const PIECE_SET_STORAGE_KEY = 'tactical_six_piece_set';
 const GAME_MODE_STORAGE_KEY = 'tactical_six_game_mode';
+const THEME_STORAGE_KEY = 'tactical_six_theme';
 
 const DIFFICULTY_MAP: Record<Difficulty, number> = {
   recruit: 1,
@@ -52,6 +53,7 @@ export default function Home() {
   const [gameMode, setGameMode] = useState<GameMode>('pve'); 
   const [difficulty, setDifficulty] = useState<Difficulty>('specialist');
   const [pieceSet, setPieceSet] = useState<PieceSetStyle>('vanguard');
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [hintMove, setHintMove] = useState<Move | null>(null);
   const [isSuggesting, setIsSuggesting] = useState(false);
   const [explanation, setExplanation] = useState<string | null>(null);
@@ -94,6 +96,11 @@ export default function Home() {
       setGameMode(savedMode as GameMode);
     }
 
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) as 'light' | 'dark';
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
+
     const savedHistory = localStorage.getItem(HISTORY_STORAGE_KEY);
     if (savedHistory) {
       try {
@@ -113,7 +120,6 @@ export default function Home() {
       const sdk = await initYandexSDK();
       if (sdk) {
         const sdkLang = sdk.environment.i18n.lang.split('-')[0];
-        document.documentElement.lang = sdkLang;
         if (sdkLang === 'ru') {
           setLang('ru');
         } else {
@@ -124,8 +130,6 @@ export default function Home() {
           onOpen: () => setIsAdPlaying(true),
           onClose: () => setIsAdPlaying(false)
         });
-      } else {
-        document.documentElement.lang = lang;
       }
     };
     setupYandex();
@@ -152,6 +156,16 @@ export default function Home() {
     if (!isInitialized) return;
     localStorage.setItem(GAME_MODE_STORAGE_KEY, gameMode);
   }, [gameMode, isInitialized]);
+
+  useEffect(() => {
+    if (!isInitialized) return;
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme, isInitialized]);
 
   useEffect(() => {
     if (!isInitialized) return;
@@ -418,10 +432,10 @@ export default function Home() {
               </Label>
               <Tabs value={gameMode} onValueChange={(v) => setGameMode(v as GameMode)} className="w-full bg-secondary/40 border border-white/5 p-1 rounded-xl">
                 <TabsList className="grid grid-cols-2 bg-transparent gap-1 h-10">
-                  <TabsTrigger value="pve" className="data-[state=active]:bg-white data-[state=active]:text-black font-bold rounded-lg px-3 uppercase text-[10px]">
+                  <TabsTrigger value="pve" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-3 uppercase text-[10px]">
                     <Cpu className="w-3.5 h-3.5 mr-2" /> {t.mode_ai}
                   </TabsTrigger>
-                  <TabsTrigger value="pvp" className="data-[state=active]:bg-white data-[state=active]:text-black font-bold rounded-lg px-3 uppercase text-[10px]">
+                  <TabsTrigger value="pvp" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-3 uppercase text-[10px]">
                     <Users className="w-3.5 h-3.5 mr-2" /> {t.mode_2p}
                   </TabsTrigger>
                 </TabsList>
@@ -469,7 +483,7 @@ export default function Home() {
             </svg>
           </div>
           <div>
-            <h1 className="text-sm md:text-xl font-black tracking-tighter text-white uppercase leading-none">{t.title}</h1>
+            <h1 className="text-sm md:text-xl font-black tracking-tighter text-foreground uppercase leading-none">{t.title}</h1>
             <p className="hidden xs:block text-[8px] font-black text-accent/60 uppercase tracking-widest">{t.subtitle}</p>
           </div>
         </div>
@@ -477,8 +491,8 @@ export default function Home() {
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1.5 bg-secondary/40 border border-white/5 p-1 rounded-lg">
             <div className="px-1.5 flex flex-col items-center">
-              <span className="text-[7px] font-black text-white/40 leading-none">W</span>
-              <span className="text-[10px] font-black text-white">{scores.white}</span>
+              <span className="text-[7px] font-black text-muted-foreground leading-none">W</span>
+              <span className="text-[10px] font-black text-foreground">{scores.white}</span>
             </div>
             <div className="px-1.5 flex flex-col items-center border-l border-white/5">
               <span className="text-[7px] font-black text-accent/40 leading-none">B</span>
@@ -499,6 +513,8 @@ export default function Home() {
               setIsMuted={setIsMuted} 
               pieceSet={pieceSet}
               setPieceSet={setPieceSet}
+              theme={theme}
+              setTheme={setTheme}
             />
             <Button variant="secondary" size="icon" onClick={initiateBriefing} className="h-8 w-8 bg-secondary/50">
               <RotateCcw className="w-3.5 h-3.5" />
@@ -517,11 +533,11 @@ export default function Home() {
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6 flex flex-col items-center justify-center text-center space-y-4">
-              <div className="w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shadow-inner">
-                <div className="w-12 h-12 rounded-full bg-white shadow-[0_0_20px_white]" />
+              <div className="w-20 h-20 rounded-2xl bg-secondary/20 border border-border flex items-center justify-center shadow-inner">
+                <div className="w-12 h-12 rounded-full bg-foreground shadow-[0_0_20px_rgba(var(--foreground),0.2)]" />
               </div>
               <div>
-                <h3 className="text-xs font-black text-white uppercase tracking-widest">{t.player_white_label}</h3>
+                <h3 className="text-xs font-black text-foreground uppercase tracking-widest">{t.player_white_label}</h3>
                 <p className="text-[10px] text-muted-foreground font-medium">Strategic Command</p>
               </div>
             </CardContent>
@@ -534,7 +550,7 @@ export default function Home() {
               "flex items-center gap-2 transition-all duration-300",
               displayedGame.turn === 'white' ? "opacity-100" : "opacity-20 grayscale"
             )}>
-              <div className="w-2 h-2 rounded-full bg-white shadow-[0_0_5px_white]" />
+              <div className="w-2 h-2 rounded-full bg-foreground shadow-[0_0_5px_currentColor]" />
               <span className="text-[10px] font-black tracking-tight">{t.player_white_command}</span>
             </div>
             
@@ -571,7 +587,7 @@ export default function Home() {
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
                     <Trophy className="w-4 h-4 text-primary animate-bounce" />
-                    <h2 className="text-xs font-black text-white uppercase italic">{getLocalizedStatus(displayedGame.status)}</h2>
+                    <h2 className="text-xs font-black text-foreground uppercase italic">{getLocalizedStatus(displayedGame.status)}</h2>
                   </div>
                   {!isReviewMode && (
                     <Button size="sm" onClick={initiateBriefing} className="h-7 bg-primary text-white font-black px-4 text-[9px]">{t.replay}</Button>
@@ -632,12 +648,12 @@ export default function Home() {
                   <History className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-black text-white uppercase tracking-tighter">{t.history_title}</h2>
+                  <h2 className="text-lg font-black text-foreground uppercase tracking-tighter">{t.history_title}</h2>
                   <p className="text-[9px] font-black text-primary uppercase tracking-[0.2em]">{t.history_btn} Protocol active</p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
-                 <Button variant="outline" size="sm" onClick={copyHistory} className="h-9 gap-2 font-black uppercase text-[10px] border-white/10 bg-white/5">
+                 <Button variant="outline" size="sm" onClick={copyHistory} className="h-9 gap-2 font-black uppercase text-[10px] border-border bg-secondary/20">
                   {hasCopied ? <Check className="w-4 h-4 text-accent" /> : <Copy className="w-4 h-4" />}
                   {hasCopied ? "COPIED" : "COPY LOG"}
                 </Button>
@@ -658,32 +674,32 @@ export default function Home() {
                    </div>
                 </div>
 
-                <div className="w-full max-w-[500px] grid grid-cols-5 gap-2 p-2 bg-secondary/30 rounded-2xl border border-white/10">
-                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-white/5" onClick={() => setStep(0)} disabled={viewIndex === 0 || game.history.length === 0}>
+                <div className="w-full max-w-[500px] grid grid-cols-5 gap-2 p-2 bg-secondary/30 rounded-2xl border border-border">
+                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-foreground/5" onClick={() => setStep(0)} disabled={viewIndex === 0 || game.history.length === 0}>
                     <ChevronFirst className="w-5 h-5" />
                   </Button>
-                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-white/5" onClick={() => setStep(Math.max(0, (viewIndex === -1 ? game.history.length - 1 : viewIndex) - 1))} disabled={viewIndex === 0 || game.history.length === 0}>
+                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-foreground/5" onClick={() => setStep(Math.max(0, (viewIndex === -1 ? game.history.length - 1 : viewIndex) - 1))} disabled={viewIndex === 0 || game.history.length === 0}>
                     <ChevronLeft className="w-5 h-5" />
                   </Button>
                   <Button variant={viewIndex === -1 ? "default" : "secondary"} size="icon" className="h-12 w-full font-black" onClick={setLive}>
                     <PlayCircle className="w-5 h-5" />
                   </Button>
-                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-white/5" onClick={() => setStep(Math.min(game.history.length - 1, (viewIndex === -1 ? game.history.length - 1 : viewIndex) + 1))} disabled={viewIndex === -1 || viewIndex === game.history.length - 1 || game.history.length === 0}>
+                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-foreground/5" onClick={() => setStep(Math.min(game.history.length - 1, (viewIndex === -1 ? game.history.length - 1 : viewIndex) + 1))} disabled={viewIndex === -1 || viewIndex === game.history.length - 1 || game.history.length === 0}>
                     <ChevronRight className="w-5 h-5" />
                   </Button>
-                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-white/5" onClick={() => setStep(game.history.length - 1)} disabled={viewIndex === game.history.length - 1 || game.history.length === 0}>
+                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-foreground/5" onClick={() => setStep(game.history.length - 1)} disabled={viewIndex === game.history.length - 1 || game.history.length === 0}>
                     <ChevronLast className="w-5 h-5" />
                   </Button>
                 </div>
               </div>
 
-              <Card className="flex flex-col bg-card/50 border-white/5 overflow-hidden">
+              <Card className="flex flex-col bg-card/50 border-border overflow-hidden">
                 <ScrollArea className="flex-1 p-6">
                   {game.history.length === 0 ? (
                     <div className="h-full flex flex-col items-center justify-center py-20 text-center space-y-4">
                       <History className="w-16 h-16 text-muted-foreground/20" />
                       <div className="space-y-1">
-                        <h3 className="text-sm font-black text-white uppercase">{t.history_empty_title}</h3>
+                        <h3 className="text-sm font-black text-foreground uppercase">{t.history_empty_title}</h3>
                         <p className="text-[10px] text-muted-foreground uppercase tracking-widest">{t.history_empty_desc}</p>
                       </div>
                     </div>
@@ -699,7 +715,7 @@ export default function Home() {
                               onClick={() => setStep(i * 2)} 
                               className={cn(
                                 "flex justify-between items-center px-4 py-3 rounded-xl border text-xs font-mono cursor-pointer transition-all", 
-                                viewIndex === i * 2 ? "bg-primary border-primary shadow-[0_0_15px_rgba(46,117,184,0.4)] text-white" : "bg-white/5 border-white/5 hover:bg-white/10"
+                                viewIndex === i * 2 ? "bg-primary border-primary shadow-[0_0_15px_rgba(46,117,184,0.4)] text-white" : "bg-secondary/20 border-border hover:bg-secondary/40"
                               )}
                             >
                               <span className={cn("text-[9px] font-black uppercase", viewIndex === i * 2 ? "text-white/60" : "text-muted-foreground/60")}>White</span>
@@ -710,11 +726,11 @@ export default function Home() {
                                 onClick={() => setStep(i * 2 + 1)} 
                                 className={cn(
                                   "flex justify-between items-center px-4 py-3 rounded-xl border text-xs font-mono cursor-pointer transition-all", 
-                                  viewIndex === i * 2 + 1 ? "bg-accent border-accent shadow-[0_0_15px_rgba(96,222,222,0.4)] text-black" : "bg-accent/5 border-accent/10 hover:bg-accent/10"
+                                  viewIndex === i * 2 + 1 ? "bg-accent border-accent shadow-[0_0_15px_rgba(96,222,222,0.4)] text-white" : "bg-accent/5 border-accent/10 hover:bg-accent/10"
                                 )}
                               >
-                                <span className={cn("text-[9px] font-black uppercase", viewIndex === i * 2 + 1 ? "text-black/60" : "text-accent/60")}>Black</span>
-                                <span className={cn("font-bold", viewIndex === i * 2 + 1 ? "text-black" : "text-accent")}>{ChessGame.toAlgebraic(game.history[i * 2 + 1])}</span>
+                                <span className={cn("text-[9px] font-black uppercase", viewIndex === i * 2 + 1 ? "text-white/60" : "text-accent/60")}>Black</span>
+                                <span className={cn("font-bold", viewIndex === i * 2 + 1 ? "text-white" : "text-accent")}>{ChessGame.toAlgebraic(game.history[i * 2 + 1])}</span>
                               </div>
                             )}
                           </div>
@@ -723,7 +739,7 @@ export default function Home() {
                     </div>
                   )}
                 </ScrollArea>
-                <div className="p-4 border-t border-white/5 bg-secondary/10 flex items-center justify-between">
+                <div className="p-4 border-t border-border bg-secondary/10 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <History className="w-3 h-3 text-muted-foreground" />
                     <span className="text-[9px] font-black text-muted-foreground uppercase">{game.history.length} Manoeuvres Recorded</span>
