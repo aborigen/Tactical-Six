@@ -27,7 +27,7 @@ import Onboarding from '@/components/onboarding/Onboarding';
 import RulesHelp from '@/components/help/RulesHelp';
 import SettingsDialog from '@/components/settings/SettingsDialog';
 import { soundManager } from '@/lib/sounds';
-import { initYandexSDK, showFullscreenAd } from '@/lib/yandex-sdk';
+import { initYandexSDK, showFullscreenAd, gameReady } from '@/lib/yandex-sdk';
 
 type GameMode = 'pvp' | 'pve';
 type Difficulty = 'recruit' | 'cadet' | 'specialist' | 'commander' | 'grandmaster';
@@ -126,6 +126,9 @@ export default function Home() {
           setLang('en');
         }
         
+        // Signal game ready after SDK init and language set
+        gameReady();
+
         showFullscreenAd({
           onOpen: () => setIsAdPlaying(true),
           onClose: () => setIsAdPlaying(false)

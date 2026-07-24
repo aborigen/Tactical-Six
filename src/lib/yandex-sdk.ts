@@ -33,6 +33,11 @@ export interface YandexSDK {
       tld: string;
     };
   };
+  features: {
+    LoadingProgress?: {
+      ready: () => void;
+    };
+  };
 }
 
 export interface YandexPlayer {
@@ -94,6 +99,19 @@ export async function initYandexSDK(): Promise<YandexSDK | null> {
  */
 export function getYandexSDK(): YandexSDK | null {
   return ysdkInstance;
+}
+
+/**
+ * Signals to Yandex that the game is ready and finished loading.
+ */
+export function gameReady() {
+  const sdk = getYandexSDK();
+  if (sdk && sdk.features && sdk.features.LoadingProgress) {
+    sdk.features.LoadingProgress.ready();
+    console.log('Yandex Games: Game Ready signal sent');
+  } else {
+    console.warn('Yandex Games: Ready signal could not be sent (SDK or Feature missing)');
+  }
 }
 
 /**
