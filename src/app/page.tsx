@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
@@ -126,7 +127,6 @@ export default function Home() {
           setLang('en');
         }
         
-        // Signal game ready after SDK init and language set
         gameReady();
 
         showFullscreenAd({
@@ -526,7 +526,7 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col lg:grid lg:grid-cols-12 lg:gap-8 lg:p-6 overflow-hidden">
+      <main className="flex-1 flex flex-col landscape:flex-row lg:grid lg:grid-cols-12 lg:gap-8 lg:p-6 overflow-hidden">
         
         {/* Desktop Left Sidebar: Player Profile */}
         <div className="hidden lg:col-span-3 lg:flex flex-col gap-6 overflow-hidden">
@@ -575,7 +575,7 @@ export default function Home() {
         </div>
 
         {/* Central Tactical Arena: Board & Primary Status */}
-        <div className="lg:col-span-6 flex flex-col items-center justify-center p-2 lg:p-0 min-h-0">
+        <div className="flex-1 flex flex-col items-center justify-center p-2 lg:col-span-6 lg:p-0 min-h-0 landscape:flex-[2]">
           {/* Top Turn Indicator */}
           <div className="w-full max-w-[550px] mb-2 flex justify-between items-center px-4 py-2 bg-secondary/10 rounded-xl border border-white/5 backdrop-blur-sm shrink-0">
             <div className={cn(
@@ -681,8 +681,8 @@ export default function Home() {
           </Card>
         </div>
 
-        {/* Mobile Bottom Console: Compact Engine Panel */}
-        <div className="lg:hidden shrink-0 h-[80px] px-2 pb-2">
+        {/* Mobile Console: Bottom in Portrait, Side in Landscape */}
+        <div className="lg:hidden shrink-0 h-[100px] landscape:h-full landscape:w-[280px] px-2 pb-2 landscape:p-4 landscape:border-l landscape:border-white/5">
           <div className="h-full bg-card/50 rounded-lg p-2 border border-white/5 overflow-hidden">
             {EnginePanel}
           </div>
