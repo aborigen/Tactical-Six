@@ -159,7 +159,7 @@ const Board: React.FC<BoardProps> = ({ game, onMove, hintMove, pieceSet = 'tacti
                     draggable={!game.isGameOver && piece.color === game.turn}
                     onDragStart={(e) => handleDragStart(e, row, col)}
                     className={cn(
-                      "w-full h-full p-2.5 transition-all duration-300",
+                      "w-full h-full p-0.5 transition-all duration-300",
                       !game.isGameOver && piece.color === game.turn ? "cursor-grab active:cursor-grabbing" : "cursor-default",
                       isSelected ? "scale-110 drop-shadow-2xl z-20" : "scale-100 drop-shadow-lg",
                       game.isGameOver ? "grayscale-[0.3]" : ""
@@ -174,7 +174,7 @@ const Board: React.FC<BoardProps> = ({ game, onMove, hintMove, pieceSet = 'tacti
                     <div className={cn(
                       "rounded-full transition-all duration-500",
                       piece 
-                        ? "w-[85%] h-[85%] border-[3px] border-accent/40 animate-pulse scale-95" 
+                        ? "w-[90%] h-[90%] border-[3px] border-accent/40 animate-pulse scale-95" 
                         : "w-4 h-4 bg-accent/30 shadow-[0_0_10px_rgba(96,222,222,0.3)]"
                     )} />
                   </div>
