@@ -2,6 +2,22 @@
 
 All notable tactical upgrades to the 6x6 combat matrix are documented here.
 
+## [1.6.0] - Tactical Depth & UI Hardening
+### Added
+- **Engine Heuristics**: Integrated Piece-Square Tables (PST) for positional evaluation, favoring center control and pawn advancement.
+- **Move Ordering**: Implemented MVV-LVA (Most Valuable Victim - Least Valuable Attacker) heuristics to optimize Alpha-Beta pruning efficiency.
+- **Simulated Latency**: Added a 2000ms "calculation delay" to the AI opponent for a more immersive strategic feel.
+- **Orientation-Specific Layouts**: Introduced a dynamic landscape mode for mobile devices that places the tactical engine panel adjacent to the combat arena.
+
+### Changed
+- **Mobile Command Interface**: Replaced text-heavy buttons with icon-driven navigation in portrait mode to prevent viewport clipping and cut-offs.
+- **Piece Scaling**: Reduced internal piece padding from 10px to 2px, allowing pieces to occupy 95% of the square area for improved visibility.
+- **Tactical Evaluation Logic**: Upgraded internal Minimax logic to prioritize checkmates and material advantage more aggressively via refined scoring weights.
+
+### Fixed
+- **Viewport Integrity**: Resolved layout overflow issues on high-aspect-ratio portrait displays.
+- **Hydration Sync**: Optimized the initial piece set loading to prevent visual flashes during style injection.
+
 ## [1.5.0] - Platform Hardening & Global Readiness
 ### Added
 - **Vector Asset Matrix**: Generated a comprehensive set of high-fidelity SVG promotional assets (Covers, Screenshots, Banners) in both English and Russian for store submissions.
