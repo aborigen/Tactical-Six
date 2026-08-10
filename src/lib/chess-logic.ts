@@ -29,6 +29,65 @@ const PIECE_VALUES: Record<PieceType, number> = {
   k: 20000,
 };
 
+/**
+ * Piece-Square Tables (PST) for the 6x6 matrix.
+ * Positive values favor White, negative favor Black (when indexed correctly).
+ * We define them for White; Black uses the mirrored version.
+ */
+const PAWN_PST = [
+  [0,  0,  0,  0,  0,  0],
+  [50, 50, 50, 50, 50, 50],
+  [10, 10, 20, 20, 10, 10],
+  [5,  5, 10, 10,  5,  5],
+  [0,  0,  0,  0,  0,  0],
+  [0,  0,  0,  0,  0,  0]
+];
+
+const KNIGHT_PST = [
+  [-50,-40,-30,-30,-40,-50],
+  [-40,-20,  0,  0,-20,-40],
+  [-30,  0, 10, 10,  0,-30],
+  [-30,  5, 15, 15,  5,-30],
+  [-40,-20,  0,  0,-20,-40],
+  [-50,-40,-30,-30,-40,-50]
+];
+
+const BISHOP_PST = [
+  [-20,-10,-10,-10,-10,-20],
+  [-10,  0,  0,  0,  0,-10],
+  [-10,  0,  5,  5,  0,-10],
+  [-10,  5,  5,  5,  5,-10],
+  [-10,  0,  0,  0,  0,-10],
+  [-20,-10,-10,-10,-10,-20]
+];
+
+const ROOK_PST = [
+  [0,  0,  0,  0,  0,  0],
+  [5, 10, 10, 10, 10,  5],
+  [-5,  0,  0,  0,  0, -5],
+  [-5,  0,  0,  0,  0, -5],
+  [-5,  0,  0,  0,  0, -5],
+  [0,  0,  0,  0,  0,  0]
+];
+
+const QUEEN_PST = [
+  [-20,-10,-10,-10,-10,-20],
+  [-10,  0,  0,  0,  0,-10],
+  [-10,  0,  5,  5,  0,-10],
+  [-10,  0,  5,  5,  0,-10],
+  [-10,  0,  0,  0,  0,-10],
+  [-20,-10,-10,-10,-10,-20]
+];
+
+const KING_PST = [
+  [-30,-40,-40,-40,-40,-30],
+  [-30,-40,-40,-40,-40,-30],
+  [-30,-40,-40,-40,-40,-30],
+  [-30,-40,-40,-40,-40,-30],
+  [-20,-30,-30,-30,-30,-20],
+  [20, 30, 10, 10, 30, 20]
+];
+
 export class ChessGame {
   board: BoardState;
   turn: PlayerColor;
@@ -72,11 +131,6 @@ export class ChessGame {
     return newGame;
   }
 
-  /**
-   * Reconstructs a game state from a specific point in history.
-   * @param history The full history of moves.
-   * @param moveIndex The index (0-based) up to which moves should be applied.
-   */
   static fromHistory(history: Move[], moveIndex?: number): ChessGame {
     const game = new ChessGame();
     const limit = moveIndex !== undefined ? moveIndex + 1 : history.length;
@@ -101,7 +155,33 @@ export class ChessGame {
         }
       }
     }
-    return moves;
+    return this.orderMoves(moves);
+  }
+
+  /**
+   * Sorts moves to optimize Alpha-Beta pruning.
+   * Prioritizes captures and promotions.
+   */
+  private orderMoves(moves: Move[]): Move[] {
+    return moves.sort((a, b) => {
+      let scoreA = 0;
+      let scoreB = 0;
+
+      const pieceA = this.board[a.from.row][a.from.col];
+      const targetA = this.board[a.to.row][a.to.col];
+      const pieceB = this.board[b.from.row][b.from.col];
+      const targetB = this.board[b.to.row][b.to.col];
+
+      // Capture heuristics: MVV-LVA (Most Valuable Victim - Least Valuable Attacker)
+      if (targetA) scoreA = 10 * PIECE_VALUES[targetA.type] - PIECE_VALUES[pieceA!.type];
+      if (targetB) scoreB = 10 * PIECE_VALUES[targetB.type] - PIECE_VALUES[pieceB!.type];
+
+      // Promotion heuristics
+      if (pieceA?.type === 'p' && (a.to.row === 0 || a.to.row === 5)) scoreA += 800;
+      if (pieceB?.type === 'p' && (b.to.row === 0 || b.to.row === 5)) scoreB += 800;
+
+      return scoreB - scoreA;
+    });
   }
 
   private getPseudoLegalMoves(row: number, col: number): Move[] {
@@ -130,11 +210,9 @@ export class ChessGame {
         const dir = color === 'white' ? -1 : 1;
         const nextR = row + dir;
         if (nextR >= 0 && nextR < BOARD_SIZE) {
-          // Forward
           if (!this.board[nextR][col]) {
             moves.push({ from: { row, col }, to: { row: nextR, col: col } });
           }
-          // Captures
           for (const dc of [-1, 1]) {
             const nextC = col + dc;
             if (nextC >= 0 && nextC < BOARD_SIZE) {
@@ -245,12 +323,10 @@ export class ChessGame {
 
     if (!isLegal) return false;
 
-    // Execute move
     const piece = this.board[move.from.row][move.from.col];
     this.board[move.to.row][move.to.col] = piece;
     this.board[move.from.row][move.from.col] = null;
 
-    // Pawn Promotion Logic
     if (piece?.type === 'p') {
       if ((piece.color === 'white' && move.to.row === 0) || (piece.color === 'black' && move.to.row === BOARD_SIZE - 1)) {
         piece.type = 'q';
@@ -291,16 +367,11 @@ export class ChessGame {
         if (p) pieces.push(p);
       }
     }
-
-    // King vs King
     if (pieces.length === 2) return true;
-
-    // King + Minor Piece vs King
     if (pieces.length === 3) {
       const minorPieces = pieces.filter(p => p.type === 'n' || p.type === 'b');
       if (minorPieces.length === 1) return true;
     }
-
     return false;
   }
 
@@ -311,13 +382,25 @@ export class ChessGame {
         const piece = this.board[r][c];
         if (piece) {
           const val = PIECE_VALUES[piece.type];
-          score += piece.color === 'white' ? val : -val;
+          const isWhite = piece.color === 'white';
           
-          // Basic positional bonuses
-          if (piece.type === 'p') {
-            const pawnRankBonus = piece.color === 'white' ? (5 - r) * 10 : r * 10;
-            score += piece.color === 'white' ? pawnRankBonus : -pawnRankBonus;
+          // Base Material Value
+          score += isWhite ? val : -val;
+          
+          // Positional Value (PST)
+          let pstValue = 0;
+          const pstRow = isWhite ? r : (BOARD_SIZE - 1 - r);
+          const pstCol = c;
+
+          switch (piece.type) {
+            case 'p': pstValue = PAWN_PST[pstRow][pstCol]; break;
+            case 'n': pstValue = KNIGHT_PST[pstRow][pstCol]; break;
+            case 'b': pstValue = BISHOP_PST[pstRow][pstCol]; break;
+            case 'r': pstValue = ROOK_PST[pstRow][pstCol]; break;
+            case 'q': pstValue = QUEEN_PST[pstRow][pstCol]; break;
+            case 'k': pstValue = KING_PST[pstRow][pstCol]; break;
           }
+          score += isWhite ? pstValue : -pstValue;
         }
       }
     }
@@ -336,14 +419,7 @@ export class ChessGame {
       const piece = cloned.board[move.from.row][move.from.col];
       cloned.board[move.to.row][move.to.col] = piece;
       cloned.board[move.from.row][move.from.col] = null;
-      
-      // AI Awareness of promotion
-      if (piece?.type === 'p') {
-        if ((piece.color === 'white' && move.to.row === 0) || (piece.color === 'black' && move.to.row === BOARD_SIZE - 1)) {
-          piece.type = 'q';
-        }
-      }
-
+      if (piece?.type === 'p' && (move.to.row === 0 || move.to.row === 5)) piece.type = 'q';
       cloned.turn = cloned.turn === 'white' ? 'black' : 'white';
 
       const score = this.minimax(cloned, depth - 1, -Infinity, Infinity, false);
@@ -377,11 +453,7 @@ export class ChessGame {
         const piece = cloned.board[move.from.row][move.from.col];
         cloned.board[move.to.row][move.to.col] = piece;
         cloned.board[move.from.row][move.from.col] = null;
-        if (piece?.type === 'p') {
-          if ((piece.color === 'white' && move.to.row === 0) || (piece.color === 'black' && move.to.row === BOARD_SIZE - 1)) {
-            piece.type = 'q';
-          }
-        }
+        if (piece?.type === 'p' && (move.to.row === 0 || move.to.row === 5)) piece.type = 'q';
         cloned.turn = 'black';
         const evaluation = this.minimax(cloned, depth - 1, alpha, beta, false);
         maxEval = Math.max(maxEval, evaluation);
@@ -396,11 +468,7 @@ export class ChessGame {
         const piece = cloned.board[move.from.row][move.from.col];
         cloned.board[move.to.row][move.to.col] = piece;
         cloned.board[move.from.row][move.from.col] = null;
-        if (piece?.type === 'p') {
-          if ((piece.color === 'white' && move.to.row === 0) || (piece.color === 'black' && move.to.row === BOARD_SIZE - 1)) {
-            piece.type = 'q';
-          }
-        }
+        if (piece?.type === 'p' && (move.to.row === 0 || move.to.row === 5)) piece.type = 'q';
         cloned.turn = 'white';
         const evaluation = this.minimax(cloned, depth - 1, alpha, beta, true);
         minEval = Math.min(minEval, evaluation);

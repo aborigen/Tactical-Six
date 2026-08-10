@@ -58,7 +58,7 @@ export async function aiMoveSuggestion(input: AIMoveSuggestionInput): Promise<AI
 
   return {
     suggestedMove: algebraic,
-    explanation: `Calculated via Local Tactical Engine (Depth ${searchDepth}). The position score is evaluated at ${(result.score / 100).toFixed(2)}. This move prioritizes material balance and positional control within the 6x6 matrix.`,
+    explanation: `Tactical Engine (Depth ${searchDepth}) identified this move using Positional Heuristics. Evaluation: ${(result.score / 100).toFixed(2)}. This manoeuvre prioritizes material parity, center dominance, and king safety within the 6x6 matrix.`,
     depth: searchDepth
   };
 }
