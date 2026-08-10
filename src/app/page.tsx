@@ -278,7 +278,8 @@ export default function Home() {
     if (gameMode === 'pve' && game.turn === 'black' && !game.isGameOver && !isSuggesting && !isReviewMode && !isAdPlaying && !isBriefingOpen) {
       const triggerAiOpponent = async () => {
         setIsSuggesting(true);
-        await new Promise(resolve => setTimeout(resolve, 800));
+        // AI takes a mandatory 2-second delay to "think"
+        await new Promise(resolve => setTimeout(resolve, 2000));
         
         try {
           const boardStr = game.exportToString();
