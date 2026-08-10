@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
@@ -365,35 +364,38 @@ export default function Home() {
 
   const EnginePanel = (
     <div className="flex flex-col h-full overflow-hidden">
-      <div className="flex-1 min-h-0 bg-secondary/10 rounded-xl p-4 border border-white/5 relative overflow-hidden flex flex-col">
+      <div className="flex-1 min-h-0 bg-secondary/10 rounded-xl p-2 sm:p-4 border border-white/5 relative overflow-hidden flex flex-col">
         {isReviewMode ? (
-          <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
-            <History className="w-10 h-10 text-muted-foreground/30" />
-            <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest leading-relaxed">{t.history_playback_back}</p>
+          <div className="flex flex-col items-center justify-center h-full text-center space-y-2">
+            <History className="w-6 h-6 sm:w-10 sm:h-10 text-muted-foreground/30" />
+            <p className="text-[8px] sm:text-[9px] font-bold text-muted-foreground uppercase tracking-widest leading-relaxed">{t.history_playback_back}</p>
           </div>
         ) : (
           <>
             {!explanation && !isSuggesting && (
-              <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
-                <Lightbulb className="w-8 h-8 text-accent/40" />
-                <div className="space-y-1">
-                  <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">{t.engine_awaiting}</p>
-                  <p className="text-[8px] text-muted-foreground/60 uppercase tracking-tight">{(t as any)[`diff_${difficulty}`]} Depth Active</p>
+              <div className="flex flex-col items-center justify-center h-full text-center space-y-2 sm:space-y-4">
+                <Lightbulb className="w-5 h-5 sm:w-8 sm:h-8 text-accent/40" />
+                <div className="space-y-0.5">
+                  <p className="text-[8px] sm:text-[9px] font-black text-muted-foreground uppercase tracking-widest">{t.engine_awaiting}</p>
+                  <p className="text-[7px] sm:text-[8px] text-muted-foreground/60 uppercase tracking-tight">{(t as any)[`diff_${difficulty}`]} Depth</p>
                 </div>
-                <Button variant="outline" size="sm" onClick={getAiHint} className="h-7 text-[9px] border-accent/30">{t.engine_initiate}</Button>
+                <Button variant="outline" size="sm" onClick={getAiHint} className="h-6 sm:h-7 px-2 text-[8px] sm:text-[9px] border-accent/30">
+                  <Zap className="w-3 h-3 sm:mr-1" />
+                  <span className="hidden sm:inline">{t.engine_initiate}</span>
+                </Button>
               </div>
             )}
             {isSuggesting && (
-              <div className="flex flex-col items-center justify-center h-full space-y-4">
-                <div className="w-8 h-8 border-2 border-accent/20 border-t-accent rounded-full animate-spin" />
-                <p className="text-[9px] font-black text-accent uppercase tracking-widest animate-pulse">{t.engine_calculating}</p>
+              <div className="flex flex-col items-center justify-center h-full space-y-2">
+                <div className="w-6 h-6 border-2 border-accent/20 border-t-accent rounded-full animate-spin" />
+                <p className="text-[8px] font-black text-accent uppercase tracking-widest animate-pulse">{t.engine_calculating}</p>
               </div>
             )}
             {explanation && !isSuggesting && (
               <ScrollArea className="h-full">
-                <div className="space-y-4">
-                  <Badge className="bg-accent/20 text-accent font-black tracking-widest px-3 py-0.5 text-[8px] border border-accent/30">{t.engine_eval}</Badge>
-                  <p className="text-[10px] text-foreground/90 leading-relaxed font-medium italic border-l border-accent/30 pl-3">"{explanation}"</p>
+                <div className="space-y-2 sm:space-y-4">
+                  <Badge className="bg-accent/20 text-accent font-black tracking-widest px-2 py-0.5 text-[7px] sm:text-[8px] border border-accent/30">{t.engine_eval}</Badge>
+                  <p className="text-[9px] sm:text-[10px] text-foreground/90 leading-tight sm:leading-relaxed font-medium italic border-l border-accent/30 pl-2 sm:pl-3">"{explanation}"</p>
                 </div>
               </ScrollArea>
             )}
@@ -478,35 +480,35 @@ export default function Home() {
         </DialogContent>
       </Dialog>
       
-      <header className="px-4 py-2 flex items-center justify-between shrink-0 border-b border-white/5 bg-secondary/10 backdrop-blur-md z-40">
+      <header className="px-4 py-1.5 sm:py-2 flex items-center justify-between shrink-0 border-b border-white/5 bg-secondary/10 backdrop-blur-md z-40">
         <div className="flex items-center gap-2">
-          <div className="bg-primary p-1.5 rounded-lg shadow-lg shadow-primary/20 ring-1 ring-white/10">
-            <svg viewBox="0 0 45 45" className="w-5 h-5 fill-white">
+          <div className="bg-primary p-1 rounded-lg shadow-lg shadow-primary/20 ring-1 ring-white/10 sm:p-1.5">
+            <svg viewBox="0 0 45 45" className="w-4 h-4 sm:w-5 sm:h-5 fill-white">
               <path d="M22.5 11.63V6M20 8h5M22.5 25s4.5-7.5 3-10c-1.5-2.5-6-2.5-6 0-1.5 2.5 3 10 3 10" stroke="white" strokeWidth="2" />
             </svg>
           </div>
           <div>
-            <h1 className="text-sm md:text-xl font-black tracking-tighter text-foreground uppercase leading-none">{t.title}</h1>
-            <p className="hidden xs:block text-[8px] font-black text-accent/60 uppercase tracking-widest">{t.subtitle}</p>
+            <h1 className="text-xs sm:text-xl font-black tracking-tighter text-foreground uppercase leading-none">{t.title}</h1>
+            <p className="hidden xs:block text-[7px] sm:text-[8px] font-black text-accent/60 uppercase tracking-widest">{t.subtitle}</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 bg-secondary/40 border border-white/5 p-1 rounded-lg">
-            <div className="px-1.5 flex flex-col items-center">
-              <span className="text-[7px] font-black text-muted-foreground leading-none">W</span>
-              <span className="text-[10px] font-black text-foreground">{scores.white}</span>
+        <div className="flex items-center gap-1 sm:gap-2">
+          <div className="flex items-center gap-1 sm:gap-1.5 bg-secondary/40 border border-white/5 p-0.5 sm:p-1 rounded-lg">
+            <div className="px-1 flex flex-col items-center">
+              <span className="text-[6px] sm:text-[7px] font-black text-muted-foreground leading-none uppercase">W</span>
+              <span className="text-[9px] sm:text-[10px] font-black text-foreground">{scores.white}</span>
             </div>
-            <div className="px-1.5 flex flex-col items-center border-l border-white/5">
-              <span className="text-[7px] font-black text-accent/40 leading-none">B</span>
-              <span className="text-[10px] font-black text-accent">{scores.black}</span>
+            <div className="px-1 flex flex-col items-center border-l border-white/5">
+              <span className="text-[6px] sm:text-[7px] font-black text-accent/40 leading-none uppercase">B</span>
+              <span className="text-[9px] sm:text-[10px] font-black text-accent">{scores.black}</span>
             </div>
           </div>
 
           <div className="flex items-center gap-1">
-            <Button variant="outline" size="sm" onClick={() => setIsLogOpen(true)} className="gap-2 border-primary/20 bg-primary/5 hover:bg-primary/10 font-bold text-primary h-8 px-3">
+            <Button variant="outline" size="sm" onClick={() => setIsLogOpen(true)} className="border-primary/20 bg-primary/5 hover:bg-primary/10 font-bold text-primary h-8 px-2 sm:px-3">
               <History className="w-4 h-4" />
-              <span className="hidden sm:inline">{t.history_btn}</span>
+              <span className="hidden sm:inline ml-2">{t.history_btn}</span>
             </Button>
             <RulesHelp lang={lang} />
             <SettingsDialog 
@@ -577,23 +579,23 @@ export default function Home() {
         {/* Central Tactical Arena: Board & Primary Status */}
         <div className="flex-1 flex flex-col items-center justify-center p-2 lg:col-span-6 lg:p-0 min-h-0 landscape:flex-[2]">
           {/* Top Turn Indicator */}
-          <div className="w-full max-w-[550px] mb-2 flex justify-between items-center px-4 py-2 bg-secondary/10 rounded-xl border border-white/5 backdrop-blur-sm shrink-0">
+          <div className="w-full max-w-[550px] mb-1.5 sm:mb-2 flex justify-between items-center px-4 py-1.5 sm:py-2 bg-secondary/10 rounded-xl border border-white/5 backdrop-blur-sm shrink-0">
             <div className={cn(
               "flex items-center gap-2 transition-all duration-300",
               displayedGame.turn === 'white' ? "opacity-100" : "opacity-20 grayscale"
             )}>
-              <div className="w-2 h-2 rounded-full bg-foreground shadow-[0_0_5px_currentColor]" />
-              <span className="text-[10px] font-black tracking-tight">{t.player_white_command}</span>
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-foreground shadow-[0_0_5px_currentColor]" />
+              <span className="text-[9px] sm:text-[10px] font-black tracking-tight">{t.player_white_command}</span>
             </div>
             
-            <div className="flex-1 mx-4 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+            <div className="flex-1 mx-3 sm:mx-4 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
             <div className={cn(
               "flex items-center gap-2 transition-all duration-300",
               displayedGame.turn === 'black' ? "opacity-100" : "opacity-20 grayscale"
             )}>
-              <span className="text-[10px] font-black tracking-tight text-accent">{t.player_black_command}</span>
-              <div className="w-2 h-2 rounded-full bg-accent shadow-[0_0_5px_hsl(var(--accent))]" />
+              <span className="text-[9px] sm:text-[10px] font-black tracking-tight text-accent">{t.player_black_command}</span>
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-accent shadow-[0_0_5px_hsl(var(--accent))]" />
             </div>
           </div>
 
@@ -602,7 +604,7 @@ export default function Home() {
             <Board game={displayedGame} onMove={handleMove} hintMove={hintMove} pieceSet={pieceSet} />
             {(isReviewMode || isAdPlaying || isBriefingOpen) && (
               <div className="absolute inset-0 bg-background/20 backdrop-blur-[1px] pointer-events-none z-10 rounded-2xl flex items-center justify-center">
-                <div className="bg-primary/90 text-white px-4 py-1.5 rounded-full shadow-2xl font-black text-[9px] uppercase tracking-widest border border-white/20">
+                <div className="bg-primary/90 text-white px-3 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-2xl font-black text-[8px] sm:text-[9px] uppercase tracking-widest border border-white/20">
                   {isAdPlaying ? "TRANSMISSION ACTIVE" : isBriefingOpen ? "BRIEFING IN PROGRESS" : "REVIEW MODE"}
                 </div>
               </div>
@@ -610,28 +612,31 @@ export default function Home() {
           </div>
 
           {/* Bottom Status Bar */}
-          <div className="w-full max-w-[550px] mt-2 shrink-0">
+          <div className="w-full max-w-[550px] mt-1.5 sm:mt-2 shrink-0">
             <div className={cn(
-              "px-4 py-3 rounded-xl border transition-all duration-500",
+              "px-3 py-2 sm:px-4 sm:py-3 rounded-xl border transition-all duration-500",
               displayedGame.isGameOver 
                 ? "bg-primary/20 border-primary/50 shadow-xl" 
                 : "bg-secondary/40 border-white/5"
             )}>
               {displayedGame.isGameOver ? (
                 <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <Trophy className="w-4 h-4 text-primary animate-bounce" />
-                    <h2 className="text-xs font-black text-foreground uppercase italic">{getLocalizedStatus(displayedGame.status)}</h2>
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary animate-bounce" />
+                    <h2 className="text-[10px] sm:text-xs font-black text-foreground uppercase italic leading-tight">{getLocalizedStatus(displayedGame.status)}</h2>
                   </div>
                   {!isReviewMode && (
-                    <Button size="sm" onClick={initiateBriefing} className="h-7 bg-primary text-white font-black px-4 text-[9px]">{t.replay}</Button>
+                    <Button size="sm" onClick={initiateBriefing} className="h-7 bg-primary text-white font-black px-3 sm:px-4 text-[8px] sm:text-[9px]">
+                      <RotateCcw className="w-3 h-3 sm:mr-1" />
+                      <span className="hidden sm:inline">{t.replay}</span>
+                    </Button>
                   )}
                 </div>
               ) : (
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <div className={cn("w-1.5 h-1.5 rounded-full bg-primary", !isReviewMode && "animate-ping")} />
-                    <span className="text-[11px] font-bold text-foreground/90 italic tracking-tight uppercase">
+                    <div className={cn("w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-primary", !isReviewMode && "animate-ping")} />
+                    <span className="text-[10px] sm:text-[11px] font-bold text-foreground/90 italic tracking-tight uppercase leading-none">
                       {isSuggesting && gameMode === 'pve' && displayedGame.turn === 'black' && !isReviewMode
                         ? t.engine_calculating
                         : getLocalizedStatus(displayedGame.status)
@@ -643,9 +648,9 @@ export default function Home() {
                     variant="ghost" 
                     onClick={getAiHint} 
                     disabled={game.isGameOver || isSuggesting || isReviewMode || isAdPlaying}
-                    className="h-7 w-7 p-0"
+                    className="h-6 w-6 sm:h-7 sm:w-7 p-0"
                   >
-                    <Lightbulb className={cn("w-4 h-4", isSuggesting ? "animate-spin text-accent" : "text-muted-foreground")} />
+                    <Lightbulb className={cn("w-3.5 h-3.5 sm:w-4 sm:h-4", isSuggesting ? "animate-spin text-accent" : "text-muted-foreground")} />
                   </Button>
                 </div>
               )}
@@ -682,8 +687,8 @@ export default function Home() {
         </div>
 
         {/* Mobile Console: Bottom in Portrait, Side in Landscape */}
-        <div className="lg:hidden shrink-0 h-[100px] landscape:h-full landscape:w-[280px] px-2 pb-2 landscape:p-4 landscape:border-l landscape:border-white/5">
-          <div className="h-full bg-card/50 rounded-lg p-2 border border-white/5 overflow-hidden">
+        <div className="lg:hidden shrink-0 h-[70px] sm:h-[100px] landscape:h-full landscape:w-[280px] px-2 pb-2 sm:pb-4 landscape:p-4 landscape:border-l landscape:border-white/5">
+          <div className="h-full bg-card/50 rounded-lg p-1 sm:p-2 border border-white/5 overflow-hidden">
             {EnginePanel}
           </div>
         </div>
@@ -706,7 +711,7 @@ export default function Home() {
               <div className="flex items-center gap-4">
                  <Button variant="outline" size="sm" onClick={copyHistory} className="h-9 gap-2 font-black uppercase text-[10px] border-border bg-secondary/20">
                   {hasCopied ? <Check className="w-4 h-4 text-accent" /> : <Copy className="w-4 h-4" />}
-                  {hasCopied ? "COPIED" : "COPY LOG"}
+                  <span className="hidden sm:inline">{hasCopied ? "COPIED" : "COPY LOG"}</span>
                 </Button>
                 <Button variant="ghost" size="icon" onClick={() => setIsLogOpen(false)} className="h-10 w-10">
                   <X className="w-6 h-6" />

@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -36,9 +35,9 @@ const RulesHelp: React.FC<RulesHelpProps> = ({ lang }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2 border-primary/20 bg-primary/5 hover:bg-primary/10 font-bold text-primary">
+        <Button variant="outline" size="sm" className="gap-2 border-primary/20 bg-primary/5 hover:bg-primary/10 font-bold text-primary h-8">
           <BookOpen className="w-4 h-4" />
-          {t.rules_btn}
+          <span className="hidden sm:inline">{t.rules_btn}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[550px] bg-card/95 backdrop-blur-xl border-border/50 shadow-2xl p-0 overflow-hidden ring-1 ring-white/10">
