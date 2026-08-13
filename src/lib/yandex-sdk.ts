@@ -18,7 +18,6 @@ export interface YandexSDK {
         onOpen?: () => void;
         onRewarded?: () => void;
         onClose?: () => void;
-        onError?: (error: string) => void;
       };
     }) => void;
   };
@@ -34,6 +33,9 @@ export interface YandexSDK {
     };
   };
   features: {
+    LoadingAPI?: {
+      ready: () => void;
+    };
     LoadingProgress?: {
       ready: () => void;
     };
@@ -102,17 +104,20 @@ export function getYandexSDK(): YandexSDK | null {
 
 /**
  * Signals to Yandex that the game is ready and finished loading.
- * This should be called once the application has restored its state and prepared the UI.
+ * Uses LoadingAPI.ready() per latest SDK specifications.
  */
 export function gameReady() {
   const sdk = getYandexSDK();
   
-  if (sdk?.features?.LoadingProgress) {
+  if (sdk?.features?.LoadingAPI) {
+    sdk.features.LoadingAPI.ready();
+    console.log('Yandex Games: LoadingAPI.ready() signal sent');
+  } else if (sdk?.features?.LoadingProgress) {
+    // Fallback for older SDK feature versions
     sdk.features.LoadingProgress.ready();
-    console.log('Yandex Games: LoadingProgress.ready() signal sent');
+    console.log('Yandex Games: LoadingProgress.ready() signal sent (fallback)');
   } else if (typeof window !== 'undefined' && window.YaGames) {
-    // Only warn if we are actually in a Yandex environment
-    console.warn('Yandex Games: LoadingProgress feature missing despite SDK initialization');
+    console.warn('Yandex Games: Loading feature missing despite SDK initialization');
   }
 }
 
@@ -134,7 +139,7 @@ export function showFullscreenAd(options?: { onOpen?: () => void; onClose?: () =
         },
         onError: (err) => {
           console.error('Ad error:', err);
-          options?.onClose?.(); // Ensure game resumes even on error
+          options?.onClose?.(); 
         },
         onOffline: () => {
           console.log('Ad offline');
@@ -143,7 +148,6 @@ export function showFullscreenAd(options?: { onOpen?: () => void; onClose?: () =
       }
     });
   } else {
-    // Fallback if SDK not initialized
     console.warn('Yandex SDK not ready for advertisement.');
     options?.onClose?.();
   }
