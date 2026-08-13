@@ -72,71 +72,77 @@ export default function Home() {
   const t = translations[lang];
 
   useEffect(() => {
-    const savedScores = localStorage.getItem(SCORE_STORAGE_KEY);
-    if (savedScores) {
-      try {
-        setScores(JSON.parse(savedScores));
-      } catch (e) {
-        console.error('Failed to load scores', e);
-      }
-    }
-
-    const savedDifficulty = localStorage.getItem(DIFFICULTY_STORAGE_KEY) as Difficulty;
-    if (savedDifficulty && DIFFICULTY_MAP[savedDifficulty]) {
-      setDifficulty(savedDifficulty);
-    }
-
-    const savedPieceSet = localStorage.getItem(PIECE_SET_STORAGE_KEY);
-    if (savedPieceSet) {
-      setPieceSet(savedPieceSet as PieceSetStyle);
-    }
-
-    const savedMode = localStorage.getItem(GAME_MODE_STORAGE_KEY);
-    if (savedMode) {
-      setGameMode(savedMode as GameMode);
-    }
-
-    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) as 'light' | 'dark';
-    if (savedTheme) {
-      setTheme(savedTheme);
-    }
-
-    const savedHistory = localStorage.getItem(HISTORY_STORAGE_KEY);
-    if (savedHistory) {
-      try {
-        const moves = JSON.parse(savedHistory) as Move[];
-        if (moves.length > 0) {
-          const newGame = ChessGame.fromHistory(moves);
-          setGame(newGame);
+    const initializeApp = async () => {
+      // 1. Load data from LocalStorage
+      const savedScores = localStorage.getItem(SCORE_STORAGE_KEY);
+      if (savedScores) {
+        try {
+          setScores(JSON.parse(savedScores));
+        } catch (e) {
+          console.error('Failed to load scores', e);
         }
-      } catch (e) {
-        console.error('Failed to load history', e);
       }
-    } else {
-      setIsBriefingOpen(true);
-    }
 
-    const setupYandex = async () => {
-      const sdk = await initYandexSDK();
-      if (sdk) {
-        const sdkLang = sdk.environment.i18n.lang.split('-')[0];
-        if (sdkLang === 'ru') {
-          setLang('ru');
-        } else {
-          setLang('en');
+      const savedDifficulty = localStorage.getItem(DIFFICULTY_STORAGE_KEY) as Difficulty;
+      if (savedDifficulty && DIFFICULTY_MAP[savedDifficulty]) {
+        setDifficulty(savedDifficulty);
+      }
+
+      const savedPieceSet = localStorage.getItem(PIECE_SET_STORAGE_KEY);
+      if (savedPieceSet) {
+        setPieceSet(savedPieceSet as PieceSetStyle);
+      }
+
+      const savedMode = localStorage.getItem(GAME_MODE_STORAGE_KEY);
+      if (savedMode) {
+        setGameMode(savedMode as GameMode);
+      }
+
+      const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) as 'light' | 'dark';
+      if (savedTheme) {
+        setTheme(savedTheme);
+      }
+
+      const savedHistory = localStorage.getItem(HISTORY_STORAGE_KEY);
+      if (savedHistory) {
+        try {
+          const moves = JSON.parse(savedHistory) as Move[];
+          if (moves.length > 0) {
+            const newGame = ChessGame.fromHistory(moves);
+            setGame(newGame);
+          }
+        } catch (e) {
+          console.error('Failed to load history', e);
         }
-        
-        gameReady();
-
-        showFullscreenAd({
-          onOpen: () => setIsAdPlaying(true),
-          onClose: () => setIsAdPlaying(false)
-        });
+      } else {
+        setIsBriefingOpen(true);
       }
+
+      // 2. Initialize Yandex SDK and signal readiness
+      try {
+        const sdk = await initYandexSDK();
+        if (sdk) {
+          const sdkLang = sdk.environment.i18n.lang.split('-')[0];
+          setLang(sdkLang === 'ru' ? 'ru' : 'en');
+          
+          // Signal that the game is ready after all resources/state are loaded
+          gameReady();
+
+          // Optional: Initial ad placement
+          showFullscreenAd({
+            onOpen: () => setIsAdPlaying(true),
+            onClose: () => setIsAdPlaying(false)
+          });
+        }
+      } catch (sdkError) {
+        console.warn('Yandex SDK initialization skipped or failed:', sdkError);
+      }
+
+      // 3. Flag that local state initialization is complete
+      setIsInitialized(true);
     };
-    setupYandex();
 
-    setIsInitialized(true);
+    initializeApp();
   }, []);
 
   useEffect(() => {

@@ -103,12 +103,13 @@ export function getYandexSDK(): YandexSDK | null {
 
 /**
  * Signals to Yandex that the game is ready and finished loading.
+ * This should be called once the application has restored its state and prepared the UI.
  */
 export function gameReady() {
   const sdk = getYandexSDK();
   if (sdk && sdk.features && sdk.features.LoadingProgress) {
     sdk.features.LoadingProgress.ready();
-    console.log('Yandex Games: Game Ready signal sent');
+    console.log('Yandex Games: LoadingProgress.ready() signal sent');
   } else {
     console.warn('Yandex Games: Ready signal could not be sent (SDK or Feature missing)');
   }
