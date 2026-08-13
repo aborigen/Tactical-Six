@@ -118,16 +118,13 @@ export default function Home() {
         setIsBriefingOpen(true);
       }
 
-      // 2. Initialize Yandex SDK and signal readiness
+      // 2. Initialize Yandex SDK
       try {
         const sdk = await initYandexSDK();
         if (sdk) {
           const sdkLang = sdk.environment.i18n.lang.split('-')[0];
           setLang(sdkLang === 'ru' ? 'ru' : 'en');
           
-          // Signal that the game is ready after all resources/state are loaded
-          gameReady();
-
           // Optional: Initial ad placement
           showFullscreenAd({
             onOpen: () => setIsAdPlaying(true),
@@ -140,6 +137,9 @@ export default function Home() {
 
       // 3. Flag that local state initialization is complete
       setIsInitialized(true);
+      
+      // 4. Signal that the game is ready after all resources/state are loaded
+      gameReady();
     };
 
     initializeApp();

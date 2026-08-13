@@ -74,10 +74,10 @@ export async function initYandexSDK(): Promise<YandexSDK | null> {
     if (window.YaGames) {
       try {
         ysdkInstance = await window.YaGames.init();
-        console.log('Yandex Games SDK initialized');
+        console.log('Yandex Games: SDK initialized successfully');
         return ysdkInstance;
       } catch (e) {
-        console.error('Failed to initialize Yandex Games SDK', e);
+        console.error('Yandex Games: Failed to initialize SDK', e);
         return null;
       }
     }
@@ -87,7 +87,6 @@ export async function initYandexSDK(): Promise<YandexSDK | null> {
       return tryInit(retries - 1);
     }
     
-    console.warn('Yandex Games SDK script not found after retries.');
     return null;
   };
 
@@ -107,11 +106,13 @@ export function getYandexSDK(): YandexSDK | null {
  */
 export function gameReady() {
   const sdk = getYandexSDK();
-  if (sdk && sdk.features && sdk.features.LoadingProgress) {
+  
+  if (sdk?.features?.LoadingProgress) {
     sdk.features.LoadingProgress.ready();
     console.log('Yandex Games: LoadingProgress.ready() signal sent');
-  } else {
-    console.warn('Yandex Games: Ready signal could not be sent (SDK or Feature missing)');
+  } else if (typeof window !== 'undefined' && window.YaGames) {
+    // Only warn if we are actually in a Yandex environment
+    console.warn('Yandex Games: LoadingProgress feature missing despite SDK initialization');
   }
 }
 
