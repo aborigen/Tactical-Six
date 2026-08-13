@@ -5,26 +5,21 @@ Tactical Six is a sophisticated 6x6 chess variant designed for fast-paced, high-
 ## 🚀 Key Features
 
 - **6x6 Matrix Combat**: A condensed arena that forces tactical engagement and rewards precise positioning. Features a standard back-rank deployment (R-N-B-Q-K-R) optimized for the 6-file grid.
-- **Local Tactical Engine**: Powered by a custom Minimax algorithm with Alpha-Beta pruning. Includes 5 selectable difficulty levels: **Recruit** (Depth 1), **Cadet** (Depth 2), **Specialist** (Depth 3), **Commander** (Depth 4), and **Grandmaster** (Depth 5).
-- **Static Matrix Architecture**: Optimized for deployment on static hosting environments (GitHub Pages, Yandex Games). This app contains **zero Server Actions**, running entirely in the browser for maximum portability.
-- **Persistent Mission Tally**: Integrated score tracking and difficulty settings saved to `localStorage`, allowing you to monitor your campaign progress across sessions.
-- **Multilingual Command**: Full localization for English and Russian, covering all interface elements, tactical hints, and rule protocols.
-- **Synthesized Tactical Audio**: Real-time auditory feedback synthesized via Web Audio API for moves, captures, checks, and mission conclusions.
-- **Local Font Optimization**: Self-hosted Inter font integration for high-performance rendering without external network requests.
-- **Advanced Rule Enforcement**: Comprehensive logic for Checkmate, Stalemate, and Insufficient Material draws.
+- **Advanced Tactical Engine**: Powered by a refactored Minimax algorithm with Alpha-Beta pruning, Move Ordering (MVV-LVA), and Piece-Square Tables (PST). Includes 5 difficulty levels from **Recruit** to **Grandmaster**.
+- **Static Matrix Architecture**: Optimized for deployment on static hosting environments (GitHub Pages, Yandex Games). Runs entirely in the browser for maximum portability.
+- **Persistent Mission Tally**: Integrated score tracking and difficulty settings saved to `localStorage`, allowing you to monitor your campaign progress.
+- **Localized Intelligence**: Full localization for English and Russian, including real-time AI tactical evaluation explanations.
+- **Onboarding Protocol**: Interactive mission briefing system for new commanders.
+- **Synthesized Tactical Audio**: Real-time auditory feedback synthesized via Web Audio API.
 
 ## 🧠 Chess Engine Technical Logic
 
 The AI in Tactical Six is a deterministic search engine implemented in TypeScript. It follows these core principles:
 
-1. **Minimax Search**: The engine builds a tree of possible moves. For every move it considers, it simulates the opponent's best response.
-2. **Alpha-Beta Pruning**: A critical optimization that stops evaluating a move as soon as it's determined to be worse than a previously evaluated option.
-3. **Variable Search Depth**:
-   - **Recruit**: Depth 1 (Immediate consequences only).
-   - **Cadet**: Depth 2 (Standard foundational tactics).
-   - **Specialist**: Depth 3 (Balanced tactical vision).
-   - **Commander**: Depth 4 (Advanced tactical foresight).
-   - **Grandmaster**: Depth 5 (Deep strategic coordination).
+1. **Minimax Search**: Builds a recursive tree of possible moves, assuming optimal play from the opponent.
+2. **Alpha-Beta Pruning**: Critical optimization that stops evaluating branches once they are proven suboptimal.
+3. **Move Ordering**: Evaluates captures and promotions first to trigger faster pruning.
+4. **Positional Heuristics**: Uses PST to value central control and pawn structure over simple material counting.
 
 ## 🛠 Tech Stack
 
@@ -32,48 +27,7 @@ The AI in Tactical Six is a deterministic search engine implemented in TypeScrip
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 - **UI Components**: [ShadCN UI](https://ui.shadcn.com/)
 - **Audio**: Web Audio API (Logic-based synthesis)
-- **Persistence**: Browser LocalStorage
 - **SDK**: Yandex Games SDK v2 Integration
 
-## 🛰 Deployment & Troubleshooting
-
-### Static Export Deployment
-1. Run `npm run build`.
-2. The static files will be generated in the `/out` directory.
-3. For Yandex Games, zip the contents of the `/out` directory and upload the archive.
-4. **Note**: The app is configured with `trailingSlash: true` and `unoptimized: true` images to ensure compatibility with all static hosting providers.
-
-### Yandex Games Publishing
-Refer to `src/app/lib/promo-data.json` for localized metadata (Titles, Descriptions, Keywords) required for the Yandex Games Console. 
-
-**Image Asset Checklist:**
-- **Icon**: 512x512px. A suggested icon is provided in `public/icon.svg`.
-- **Cover**: 800x470px. Showcase the 6x6 board with tactical highlighting active.
-- **Screenshots**: At least one showing the Board and one showing the Tactical Engine evaluation panel.
-
-### Git Troubleshooting Protocol
-
-If you encounter errors during `git push`, follow these tactical protocols:
-
-**Error: Permission Denied (403)**
-This occurs when GitHub rejects your local credentials. Use one of the following fixes to force Git to ask for new credentials:
-
-- **macOS (Keychain Access)**:
-  1. Press **Cmd + Space**, type **"Keychain Access"**, and press Enter.
-  2. In the search bar at the top right, type **`github.com`**.
-  3. Find the entry labeled **"Internet Password"** for `github.com`.
-  4. Right-click the entry and select **Delete "github.com"**.
-  5. Close Keychain Access and return to your terminal.
-  6. The next time you `git push`, Git will ask for your username and **Personal Access Token**.
-- **Windows (Credential Manager)**:
-  1. Open **Control Panel** > **User Accounts** > **Credential Manager**.
-  2. Select **Windows Credentials**.
-  3. Find `git:https://github.com` and click **Remove**.
-
-**Error: ECONNREFUSED / socket error**
-This occurs when the VS Code Git bridge is stale.
-1. **Restart VS Code**: Closing and reopening the environment usually resets the communication socket.
-2. **Use External Terminal**: Run your git commands from the system terminal instead of the integrated VS Code terminal to bypass the broken socket.
-
 ---
-*Tactical Operational Manual v1.3.1*
+*Tactical Operational Manual v1.6.0*

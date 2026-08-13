@@ -2,62 +2,28 @@
 
 All notable tactical upgrades to the 6x6 combat matrix are documented here.
 
-## [1.6.0] - Tactical Depth & UI Hardening
+## [1.6.0] - Tactical Depth & AI Hardening
 ### Added
-- **Engine Heuristics**: Integrated Piece-Square Tables (PST) for positional evaluation, favoring center control and pawn advancement.
-- **Move Ordering**: Implemented MVV-LVA (Most Valuable Victim - Least Valuable Attacker) heuristics to optimize Alpha-Beta pruning efficiency.
-- **Simulated Latency**: Added a 2000ms "calculation delay" to the AI opponent for a more immersive strategic feel.
-- **Orientation-Specific Layouts**: Introduced a dynamic landscape mode for mobile devices that places the tactical engine panel adjacent to the combat arena.
+- **Engine Intelligence**: Refactored recursive Minimax search with depth-weighted checkmate scoring, ensuring the AI pursues the most direct path to victory.
+- **Move Ordering**: Implemented MVV-LVA (Most Valuable Victim - Least Valuable Attacker) heuristics to optimize Alpha-Beta pruning efficiency and search depth.
+- **Localized Evaluation**: AI tactical reasoning and evaluation strings are now fully localized in English and Russian.
+- **Positional Heuristics**: Integrated Piece-Square Tables (PST) to incentivize center control, pawn advancement, and king safety.
+- **Onboarding Protocol**: Added a cinematic mission briefing flow to guide new commanders through the 6x6 matrix and tactical interface.
 
 ### Changed
 - **Mobile Command Interface**: Replaced text-heavy buttons with icon-driven navigation in portrait mode to prevent viewport clipping and cut-offs.
-- **Piece Scaling**: Reduced internal piece padding from 10px to 2px, allowing pieces to occupy 95% of the square area for improved visibility.
-- **Tactical Evaluation Logic**: Upgraded internal Minimax logic to prioritize checkmates and material advantage more aggressively via refined scoring weights.
+- **Orientation-Specific Layouts**: Introduced a dynamic landscape mode for mobile devices that places the tactical engine panel adjacent to the combat arena.
+- **Piece Scaling**: Optimized internal padding from 10px to 2px, allowing pieces to occupy 95% of the square area for improved visibility on small displays.
 
 ### Fixed
 - **Viewport Integrity**: Resolved layout overflow issues on high-aspect-ratio portrait displays.
-- **Hydration Sync**: Optimized the initial piece set loading to prevent visual flashes during style injection.
+- **Search Logic Leak**: Fixed a state-management issue in the AI search tree where turn synchronization could drift during deep-state analysis.
 
 ## [1.5.0] - Platform Hardening & Global Readiness
 ### Added
-- **Vector Asset Matrix**: Generated a comprehensive set of high-fidelity SVG promotional assets (Covers, Screenshots, Banners) in both English and Russian for store submissions.
+- **Vector Asset Matrix**: Generated a comprehensive set of high-fidelity SVG promotional assets in both English and Russian.
 - **Global Promo Metadata**: Integrated localized store descriptions and keywords for Yandex Games, Google Play, and Poki.
-- **Vanguard Piece Refinement**: Optimized the silhouettes of the Knight and King pieces in the Vanguard set for improved clarity on high-density mobile displays.
-
-### Changed
-- **Yandex SDK Optimization**: Implemented the `LoadingProgress.ready()` signal to ensure accurate performance metrics in the Yandex Games Console.
-- **Enhanced Initialization**: Refined the SDK bootstrap sequence to prioritize language detection before the first tactical render.
-
-## [1.4.0] - Strategic Expansion & AI Optimization
-### Added
-- **Expanded AI Difficulty Matrix**: Implemented five distinct tactical depths:
-  - **Recruit** (Depth 1): Immediate situational awareness.
-  - **Cadet** (Depth 2): Basic tactical patterns.
-  - **Specialist** (Depth 3): Balanced positional play.
-  - **Commander** (Depth 4): Advanced strategic foresight.
-  - **Grandmaster** (Depth 5): Deep-state computational analysis.
-- **Classical Piece Set**: High-fidelity Staunton-inspired vector pieces for traditional tactical engagement.
-- **Vanguard Piece Set**: Redesigned primary piece set with professional silhouettes and consistent 2px stroke geometry.
-- **Mission Briefing Protocol**: New pre-engagement flow requiring commanders to select difficulty and mission profile (VS AI / PvP) before initialization.
-- **Light/Dark Vision Modes**: Fully integrated theme engine with persistent state and a pre-hydration script to eliminate "theme flash" on load.
-- **Tactical Log Screen**: Relocated move history and playback controls to a dedicated, full-screen analysis environment.
-
-### Changed
-- **Dual-Layout Architecture**: 
-  - **Desktop Landscape**: 12-column grid with dual sidebars for player profiles and real-time engine evaluation.
-  - **Mobile Portrait**: Compact, scroll-free tactical grid with a tabbed "Command Center" console.
-- **Streamlined Interface**: Removed the difficulty selector from the active combat view to minimize distractions; moved to the Mission Briefing stage.
-- **SDK-Driven Localization**: Replaced hardcoded HTML language attributes with dynamic synchronization via the Yandex Games SDK environment.
-
-### Fixed
-- **Visual Inconsistency**: Synchronized internal "Vanguard" branding across the UI and component architecture.
-- **Mobile Viewport Integrity**: Eliminated vertical scrolling in portrait orientation by optimizing header and status bar spacing.
-
-## [1.3.0] - Platform Synchronization & Visual Overhaul
-### Added
-- **Merida Tactical Set**: High-fidelity vector piece paths inspired by the classic Merida chess font.
-- **Yandex SDK Localization**: Automatic UI language synchronization with the Yandex Games environment (EN/RU).
-- **Command Settings Dialog**: New centralized hub for language and audio parameters.
+- **Yandex SDK Optimization**: Implemented the `LoadingProgress.ready()` signal for accurate performance telemetry.
 
 ---
 *Operational Intelligence Report Generated by Tactical Six Engine*
