@@ -29,6 +29,8 @@ const PIECE_VALUES: Record<PieceType, number> = {
   k: 20000,
 };
 
+const CHECKMATE_VALUE = 50000;
+
 /**
  * Piece-Square Tables (PST) for the 6x6 matrix.
  * Positive values favor White, negative favor Black (when indexed correctly).
@@ -105,8 +107,6 @@ export class ChessGame {
 
   private initializeBoard(): BoardState {
     const board: BoardState = Array(BOARD_SIZE).fill(null).map(() => Array(BOARD_SIZE).fill(null));
-
-    // Standard 6x6 variant setup: R N B Q K R
     const backRank: PieceType[] = ['r', 'n', 'b', 'q', 'k', 'r'];
 
     // Black pieces
@@ -158,10 +158,6 @@ export class ChessGame {
     return this.orderMoves(moves);
   }
 
-  /**
-   * Sorts moves to optimize Alpha-Beta pruning.
-   * Prioritizes captures and promotions.
-   */
   private orderMoves(moves: Move[]): Move[] {
     return moves.sort((a, b) => {
       let scoreA = 0;
@@ -172,11 +168,9 @@ export class ChessGame {
       const pieceB = this.board[b.from.row][b.from.col];
       const targetB = this.board[b.to.row][b.to.col];
 
-      // Capture heuristics: MVV-LVA (Most Valuable Victim - Least Valuable Attacker)
       if (targetA) scoreA = 10 * PIECE_VALUES[targetA.type] - PIECE_VALUES[pieceA!.type];
       if (targetB) scoreB = 10 * PIECE_VALUES[targetB.type] - PIECE_VALUES[pieceB!.type];
 
-      // Promotion heuristics
       if (pieceA?.type === 'p' && (a.to.row === 0 || a.to.row === 5)) scoreA += 800;
       if (pieceB?.type === 'p' && (b.to.row === 0 || b.to.row === 5)) scoreB += 800;
 
@@ -323,21 +317,26 @@ export class ChessGame {
 
     if (!isLegal) return false;
 
-    const piece = this.board[move.from.row][move.from.col];
-    this.board[move.to.row][move.to.col] = piece;
-    this.board[move.from.row][move.from.col] = null;
+    this.makeMoveInternal(move);
+    this.history.push(move);
+    this.updateStatus();
+    return true;
+  }
 
+  /**
+   * Internal move application for AI search and legal moves.
+   * Skips legality checks and status updates for speed.
+   */
+  public makeMoveInternal(move: Move) {
+    const piece = this.board[move.from.row][move.from.col];
     if (piece?.type === 'p') {
       if ((piece.color === 'white' && move.to.row === 0) || (piece.color === 'black' && move.to.row === BOARD_SIZE - 1)) {
         piece.type = 'q';
       }
     }
-
-    this.history.push(move);
+    this.board[move.to.row][move.to.col] = piece;
+    this.board[move.from.row][move.from.col] = null;
     this.turn = this.turn === 'white' ? 'black' : 'white';
-
-    this.updateStatus();
-    return true;
   }
 
   private updateStatus() {
@@ -383,11 +382,8 @@ export class ChessGame {
         if (piece) {
           const val = PIECE_VALUES[piece.type];
           const isWhite = piece.color === 'white';
-          
-          // Base Material Value
           score += isWhite ? val : -val;
           
-          // Positional Value (PST)
           let pstValue = 0;
           const pstRow = isWhite ? r : (BOARD_SIZE - 1 - r);
           const pstCol = c;
@@ -416,13 +412,9 @@ export class ChessGame {
 
     for (const move of moves) {
       const cloned = this.clone();
-      const piece = cloned.board[move.from.row][move.from.col];
-      cloned.board[move.to.row][move.to.col] = piece;
-      cloned.board[move.from.row][move.from.col] = null;
-      if (piece?.type === 'p' && (move.to.row === 0 || move.to.row === 5)) piece.type = 'q';
-      cloned.turn = cloned.turn === 'white' ? 'black' : 'white';
+      cloned.makeMoveInternal(move);
 
-      const score = this.minimax(cloned, depth - 1, -Infinity, Infinity, false);
+      const score = this.minimax(cloned, depth - 1, -Infinity, Infinity, this.turn === 'black');
       
       if (this.turn === 'white') {
         if (score > bestScore) {
@@ -441,20 +433,24 @@ export class ChessGame {
   }
 
   private minimax(game: ChessGame, depth: number, alpha: number, beta: number, isMaximizing: boolean): number {
-    if (depth === 0) return game.evaluate();
-
     const moves = game.getLegalMoves(game.turn);
-    if (moves.length === 0) return game.evaluate();
+    
+    // Check for terminal states
+    if (moves.length === 0) {
+      if (game.isInCheck(game.turn)) {
+        // Favor faster mates by adding/subtracting depth
+        return isMaximizing ? -CHECKMATE_VALUE - depth : CHECKMATE_VALUE + depth;
+      }
+      return 0; // Stalemate
+    }
+
+    if (depth === 0) return game.evaluate();
 
     if (isMaximizing) {
       let maxEval = -Infinity;
       for (const move of moves) {
         const cloned = game.clone();
-        const piece = cloned.board[move.from.row][move.from.col];
-        cloned.board[move.to.row][move.to.col] = piece;
-        cloned.board[move.from.row][move.from.col] = null;
-        if (piece?.type === 'p' && (move.to.row === 0 || move.to.row === 5)) piece.type = 'q';
-        cloned.turn = 'black';
+        cloned.makeMoveInternal(move);
         const evaluation = this.minimax(cloned, depth - 1, alpha, beta, false);
         maxEval = Math.max(maxEval, evaluation);
         alpha = Math.max(alpha, evaluation);
@@ -465,11 +461,7 @@ export class ChessGame {
       let minEval = Infinity;
       for (const move of moves) {
         const cloned = game.clone();
-        const piece = cloned.board[move.from.row][move.from.col];
-        cloned.board[move.to.row][move.to.col] = piece;
-        cloned.board[move.from.row][move.from.col] = null;
-        if (piece?.type === 'p' && (move.to.row === 0 || move.to.row === 5)) piece.type = 'q';
-        cloned.turn = 'white';
+        cloned.makeMoveInternal(move);
         const evaluation = this.minimax(cloned, depth - 1, alpha, beta, true);
         minEval = Math.min(minEval, evaluation);
         beta = Math.min(beta, evaluation);
