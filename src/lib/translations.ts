@@ -72,6 +72,8 @@ export const translations = {
     status_checkmate_black: "Checkmate! Black wins.",
     status_draw: "Draw! Stalemate.",
     status_draw_material: "Draw! Insufficient material.",
+    // Engine Explanations
+    engine_eval_template: "Tactical Engine (Depth {depth}) identified this move using Positional Heuristics. Evaluation: {score}. This manoeuvre prioritizes material parity, center dominance, and king safety within the 6x6 matrix.",
     // Mission Briefing
     briefing_title: "Mission Briefing",
     briefing_subtitle: "Configure Tactical Parameters",
@@ -192,6 +194,8 @@ export const translations = {
     status_checkmate_black: "Мат! Черные победили.",
     status_draw: "Ничья! Пат.",
     status_draw_material: "Ничья! Недостаточно фигур.",
+    // Engine Explanations
+    engine_eval_template: "Тактический движок (Глубина {depth}) определил этот ход на основе позиционных эвристик. Оценка: {score}. Этот маневр приоритизирует материальное равенство, доминирование в центре и безопасность короля в матрице 6x6.",
     // Mission Briefing
     briefing_title: "Боевое задание",
     briefing_subtitle: "Настройка тактических параметров",

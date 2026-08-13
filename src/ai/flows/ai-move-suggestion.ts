@@ -4,12 +4,14 @@
  */
 
 import { ChessGame } from '@/lib/chess-logic';
+import { translations, Language } from '@/lib/translations';
 
 export interface AIMoveSuggestionInput {
   boardState: string;
   currentPlayer: 'white' | 'black';
   legalMoves: string[];
   depth?: number;
+  lang?: Language;
 }
 
 export interface AIMoveSuggestionOutput {
@@ -29,6 +31,7 @@ export async function aiMoveSuggestion(input: AIMoveSuggestionInput): Promise<AI
 
   const game = new ChessGame();
   const searchDepth = input.depth || 3;
+  const lang = input.lang || 'en';
   
   // Reconstruct board from string
   const ranks = input.boardState.split('\n');
@@ -55,10 +58,17 @@ export async function aiMoveSuggestion(input: AIMoveSuggestionInput): Promise<AI
   }
 
   const algebraic = ChessGame.toAlgebraic(result.move);
+  const t = translations[lang];
+  
+  // Localized explanation string
+  const score = (result.score / 100).toFixed(2);
+  const explanation = t.engine_eval_template
+    .replace('{depth}', searchDepth.toString())
+    .replace('{score}', score);
 
   return {
     suggestedMove: algebraic,
-    explanation: `Tactical Engine (Depth ${searchDepth}) identified this move using Positional Heuristics. Evaluation: ${(result.score / 100).toFixed(2)}. This manoeuvre prioritizes material parity, center dominance, and king safety within the 6x6 matrix.`,
+    explanation,
     depth: searchDepth
   };
 }

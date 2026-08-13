@@ -288,7 +288,8 @@ export default function Home() {
             boardState: boardStr,
             currentPlayer: 'black',
             legalMoves: legalMoves,
-            depth: DIFFICULTY_MAP[difficulty]
+            depth: DIFFICULTY_MAP[difficulty],
+            lang: lang
           });
 
           if (suggestion.suggestedMove) {
@@ -310,7 +311,7 @@ export default function Home() {
 
       triggerAiOpponent();
     }
-  }, [game.turn, gameMode, game.isGameOver, handleMove, toast, game, t, isSuggesting, isReviewMode, difficulty, isAdPlaying, isBriefingOpen]);
+  }, [game.turn, gameMode, game.isGameOver, handleMove, toast, game, t, isSuggesting, isReviewMode, difficulty, isAdPlaying, isBriefingOpen, lang]);
 
   const getAiHint = async () => {
     if (game.isGameOver || isSuggesting || isReviewMode || isAdPlaying) return;
@@ -326,7 +327,8 @@ export default function Home() {
         boardState: boardStr,
         currentPlayer: game.turn,
         legalMoves: legalMoves,
-        depth: DIFFICULTY_MAP[difficulty]
+        depth: DIFFICULTY_MAP[difficulty],
+        lang: lang
       });
 
       if (suggestion.suggestedMove) {
