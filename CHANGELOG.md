@@ -2,20 +2,26 @@
 
 All notable tactical upgrades to the 6x6 combat matrix are documented here.
 
+## [1.7.0] - Visual Fidelity & Audio Synthesis Refinement
+### Added
+- **Visual Skin Redesign**: Vanguard and Cyber sets overhauled with high-contrast "gaming" aesthetics (Mecha and Neon-Hacker styles).
+- **Merida Classical Set**: Redesigned the classical set with refined Merida-inspired Staunton geometry.
+- **Enhanced Tactical Audio**: Implemented sharper, more abrupt synthesis for Check and Checkmate states using high-frequency chirps and tighter decay envelopes.
+- **Settings Accessibility**: Integrated vertical scrolling support for settings to ensure full accessibility on compact mobile displays.
+
 ## [1.6.0] - Tactical Depth & SDK Hardening
 ### Added
-- **Engine Intelligence**: Refactored recursive Minimax search with depth-weighted checkmate scoring, ensuring the AI pursues the most direct path to victory.
+- **Engine Intelligence**: Refactored recursive Minimax search with depth-weighted checkmate scoring.
 - **Move Ordering**: Implemented MVV-LVA (Most Valuable Victim - Least Valuable Attacker) heuristics to optimize Alpha-Beta pruning efficiency.
-- **Localized Evaluation**: AI tactical reasoning and evaluation strings are now fully localized in English and Russian.
+- **Localized Evaluation**: AI tactical reasoning strings are now fully localized in English and Russian.
 - **Onboarding Protocol**: Added a cinematic mission briefing flow to guide new commanders.
 
 ### Changed
-- **Yandex SDK Optimization**: Updated the readiness signal to use the correct `LoadingAPI.ready()` protocol, ensuring the loading screen clears only when the app is fully operational.
-- **Mobile Command Interface**: Replaced text-heavy buttons with icon-driven navigation in portrait mode.
-- **Orientation-Specific Layouts**: Introduced a dynamic landscape mode for mobile devices.
+- **Yandex SDK Optimization**: Updated the readiness signal to use the correct `LoadingAPI.ready()` protocol.
+- **Mobile Command Interface**: Replaced text-heavy buttons with icon-driven navigation and enhanced landscape mode for mobile devices.
 
 ### Fixed
-- **Terminal State Logic**: Resolved an issue where the AI would suboptimaly delay checkmates.
+- **Terminal State Logic**: Resolved an issue where the AI would suboptimally delay checkmates.
 - **SDK Readiness Leak**: Fixed a warning where the ready signal was attempted before feature availability.
 
 ---
