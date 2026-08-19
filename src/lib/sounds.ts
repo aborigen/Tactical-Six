@@ -57,34 +57,37 @@ export class SoundManager {
   playCheck() {
     const ctx = this.init();
     if (!ctx) return;
-    [0, 0.1].forEach(delay => {
+    // Abrupt high-frequency double chirp
+    [0, 0.05].forEach(delay => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(880, ctx.currentTime + delay);
-      gain.gain.setValueAtTime(0.05, ctx.currentTime + delay);
-      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + delay + 0.1);
+      osc.frequency.setValueAtTime(980, ctx.currentTime + delay);
+      osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + delay + 0.04);
+      gain.gain.setValueAtTime(0.06, ctx.currentTime + delay);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + 0.04);
       osc.connect(gain);
       gain.connect(ctx.destination);
       osc.start(ctx.currentTime + delay);
-      osc.stop(ctx.currentTime + delay + 0.1);
+      osc.stop(ctx.currentTime + delay + 0.05);
     });
   }
 
   playGameOver() {
     const ctx = this.init();
     if (!ctx) return;
-    [0, 0.2, 0.4].forEach((delay, i) => {
+    // Decision terminal sound: rapid descending staccato
+    [0, 0.08, 0.16].forEach((delay, i) => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(440 + i * 110, ctx.currentTime + delay);
-      gain.gain.setValueAtTime(0.05, ctx.currentTime + delay);
-      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + delay + 0.5);
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(660 - i * 110, ctx.currentTime + delay);
+      gain.gain.setValueAtTime(0.04, ctx.currentTime + delay);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + 0.1);
       osc.connect(gain);
       gain.connect(ctx.destination);
       osc.start(ctx.currentTime + delay);
-      osc.stop(ctx.currentTime + delay + 0.5);
+      osc.stop(ctx.currentTime + delay + 0.12);
     });
   }
 }
