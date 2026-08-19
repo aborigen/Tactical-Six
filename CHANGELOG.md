@@ -2,6 +2,12 @@
 
 All notable tactical upgrades to the 6x6 combat matrix are documented here.
 
+## [1.8.0] - Tactical Leaderboard & Difficulty-Weighted Scoring
+### Added
+- **Weighted Rewards**: Implemented a difficulty-based point system (10-250 EXP) that rewards players more for victories at higher AI search depths.
+- **Leaderboard Integration**: Automated synchronization with the Yandex Games `TACTICAL_LEADERBOARD` upon mission success.
+- **Tactical EXP Persistence**: Enhanced score tracking to include cumulative experience points saved to local storage.
+
 ## [1.7.0] - Visual Fidelity & Audio Synthesis Refinement
 ### Added
 - **Visual Skin Redesign**: Vanguard and Cyber sets overhauled with high-contrast "gaming" aesthetics (Mecha and Neon-Hacker styles).

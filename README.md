@@ -30,4 +30,4 @@ The AI in Tactical Six is a deterministic search engine implemented in TypeScrip
 - **SDK**: Yandex Games SDK v2 Integration
 
 ---
-*Tactical Operational Manual v1.6.0*
+*Tactical Operational Manual v1.8.0*
