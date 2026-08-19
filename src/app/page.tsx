@@ -16,7 +16,7 @@ import { Label } from '@/components/ui/label';
 import { 
   RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, 
   Trash2, Copy, Check, ChevronLeft, ChevronLast, ChevronFirst,
-  PlayCircle, Zap, Settings, X, Target, Swords, Activity, Star
+  PlayCircle, Zap, Settings, X, Target, Swords, Activity, Star, Shield
 } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
@@ -199,20 +199,17 @@ export default function Home() {
       
       if (status.includes('white wins')) {
         nextScores.white += 1;
-        // User (White) gets points based on difficulty
         nextScores.tacticalPoints += DIFFICULTY_POINTS[difficulty];
       } else if (status.includes('black wins')) {
         nextScores.black += 1;
       } else if (status.includes('draw') || status.includes('stalemate') || status.includes('insufficient material')) {
         nextScores.draws += 1;
-        // Partial reward for a draw
         nextScores.tacticalPoints += Math.floor(DIFFICULTY_POINTS[difficulty] / 5);
       }
       
       setScores(nextScores);
       setGameCounted(true);
 
-      // Leaderboard Sync
       const sdk = getYandexSDK();
       if (sdk) {
         sdk.getLeaderboards().then(lb => {
@@ -508,16 +505,19 @@ export default function Home() {
         </DialogContent>
       </Dialog>
       
-      <header className="px-4 py-1.5 sm:py-2 flex items-center justify-between shrink-0 border-b border-white/5 bg-secondary/10 backdrop-blur-md z-40">
-        <div className="flex items-center gap-2">
-          <div className="bg-primary p-1 rounded-lg shadow-lg shadow-primary/20 ring-1 ring-white/10 sm:p-1.5">
-            <svg viewBox="0 0 45 45" className="w-4 h-4 sm:w-5 sm:h-5 fill-white">
-              <path d="M22.5 11.63V6M20 8h5M22.5 25s4.5-7.5 3-10c-1.5-2.5-6-2.5-6 0-1.5 2.5 3 10 3 10" stroke="white" strokeWidth="2" />
+      <header className="px-4 py-2 sm:py-3 flex items-center justify-between shrink-0 border-b border-white/5 bg-secondary/10 backdrop-blur-xl z-40">
+        <div className="flex items-center gap-3">
+          <div className="bg-primary p-1.5 rounded-xl shadow-2xl shadow-primary/30 ring-1 ring-white/20 sm:p-2 transition-transform hover:scale-105 duration-300">
+            <svg viewBox="0 0 24 24" className="w-5 h-5 sm:w-6 sm:h-6 fill-none stroke-white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+              <circle cx="12" cy="11" r="3" className="fill-white/20" />
+              <path d="M12 8v6" />
+              <path d="M10 11h4" />
             </svg>
           </div>
-          <div>
-            <h1 className="text-xs sm:text-xl font-black tracking-tighter text-foreground uppercase leading-none">{t.title}</h1>
-            <p className="hidden xs:block text-[7px] sm:text-[8px] font-black text-accent/60 uppercase tracking-widest">{t.subtitle}</p>
+          <div className="flex flex-col">
+            <h1 className="text-sm sm:text-2xl font-black tracking-[-0.05em] text-foreground uppercase leading-none mb-0.5">{t.title}</h1>
+            <p className="hidden xs:block text-[8px] sm:text-[9px] font-black text-primary uppercase tracking-[0.25em] opacity-70">{t.subtitle}</p>
           </div>
         </div>
 
