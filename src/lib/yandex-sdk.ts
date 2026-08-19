@@ -25,7 +25,7 @@ export interface YandexSDK {
     openAuthDialog: () => Promise<void>;
   };
   getPlayer: (options?: { scopes?: boolean }) => Promise<YandexPlayer>;
-  getLeaderboards: () => Promise<YandexLeaderboards>;
+  leaderboards: YandexLeaderboards;
   environment: {
     i18n: {
       lang: string;

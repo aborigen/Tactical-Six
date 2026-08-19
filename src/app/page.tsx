@@ -211,10 +211,9 @@ export default function Home() {
       setGameCounted(true);
 
       const sdk = getYandexSDK();
-      if (sdk) {
-        sdk.getLeaderboards().then(lb => {
-          lb.setLeaderboardScore('TACTICALLEADERBOARD', nextScores.tacticalPoints);
-        }).catch(err => console.warn('Leaderboard submission skipped', err));
+      if (sdk && sdk.leaderboards) {
+        sdk.leaderboards.setLeaderboardScore('TACTICALLEADERBOARD', nextScores.tacticalPoints)
+          .catch(err => console.warn('Leaderboard submission skipped', err));
       }
       
       const adTimeout = setTimeout(() => {
@@ -650,7 +649,7 @@ export default function Home() {
               {displayedGame.isGameOver ? (
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-2 sm:gap-3">
-                    <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary animate-bounce" />
+                    <Trophy className="w-3.5 h-3.5 sm:w-4 h-4 text-primary animate-bounce" />
                     <h2 className="text-[10px] sm:text-xs font-black text-foreground uppercase italic leading-tight">{getLocalizedStatus(displayedGame.status)}</h2>
                   </div>
                   {!isReviewMode && (
