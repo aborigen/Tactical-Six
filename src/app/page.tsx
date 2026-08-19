@@ -216,7 +216,7 @@ export default function Home() {
       const sdk = getYandexSDK();
       if (sdk) {
         sdk.getLeaderboards().then(lb => {
-          lb.setLeaderboardScore('TACTICAL_LEADERBOARD', nextScores.tacticalPoints);
+          lb.setLeaderboardScore('TACTICALLEADERBOARD', nextScores.tacticalPoints);
         }).catch(err => console.warn('Leaderboard submission skipped', err));
       }
       

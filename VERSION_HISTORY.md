@@ -6,7 +6,7 @@ This document tracks the iterative deployment of the 6x6 tactical arena and its 
 **Release Date: 2024-06-05**
 ### Scoring & Platform
 - **Strategic Rewards**: Introduced difficulty-weighted EXP. Commanders now earn up to 250 points for a Grandmaster victory, compared to 10 points for Recruit level.
-- **Yandex Synchronization**: Integrated the `TACTICAL_LEADERBOARD` protocol to sync cumulative tactical points with the global platform rankings.
+- **Yandex Synchronization**: Integrated the `TACTICALLEADERBOARD` protocol to sync cumulative tactical points with the global platform rankings.
 - **Local Persistence**: Refined the storage matrix to track cumulative EXP alongside mission win/loss records.
 
 ## [1.7.0] - Visual Overhaul & Audio Hardening
