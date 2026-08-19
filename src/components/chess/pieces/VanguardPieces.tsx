@@ -6,92 +6,99 @@ interface PieceIconProps {
 }
 
 /**
- * Vanguard Piece Set: A modern, simplified high-fidelity professional chess set.
- * Designed with a clean silhouette and consistent 2px stroke weight.
+ * Vanguard Piece Set: Redesigned with a "Mecha-Tactical" aesthetic.
+ * Features aggressive silhouettes, sharp angles, and tech-inspired details.
  */
 
 export const VanguardPawn: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
     <path
-      d="M22.5 12c-2.5 0-4.5 2-4.5 4.5 0 1.5.8 2.8 2 3.5-2.5 2-3.5 5-3.5 9v4h12v-4c0-4-1-7-3.5-9 1.2-.7 2-2 2-3.5 0-2.5-2-4.5-4.5-4.5z"
+      d="M22.5 10l-6 6v4l2 2-2 10h12l-2-10 2-2v-4l-6-6z"
       fill={fillColor}
       stroke={strokeColor}
-      strokeWidth="2"
-      strokeLinejoin="round"
+      strokeWidth="2.5"
+      strokeLinejoin="miter"
     />
-    <path d="M16 36h13" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
+    <path d="M18 34h9" stroke={strokeColor} strokeWidth="2" strokeLinecap="square" />
+    <rect x="21" y="14" width="3" height="3" fill={strokeColor} opacity="0.4" />
   </svg>
 );
 
 export const VanguardRook: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
     <path
-      d="M13 33V15h2v-4h3v3h3v-3h3v3h3v-3h3v4h2v18H13z"
+      d="M12 34V12h4v3h2v-3h2v3h2v-3h2v3h4v22H12z"
       fill={fillColor}
       stroke={strokeColor}
-      strokeWidth="2"
-      strokeLinejoin="round"
+      strokeWidth="2.5"
+      strokeLinejoin="miter"
     />
-    <path d="M12 37h21" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
+    <path d="M12 37h21M16 20h13M16 26h13" stroke={strokeColor} strokeWidth="2" strokeLinecap="square" />
+    <path d="M22.5 15v19" stroke={strokeColor} strokeWidth="1" opacity="0.2" />
   </svg>
 );
 
 export const VanguardKnight: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
     <path
-      d="M14 33c0-8 2-15 10-18 6-2 10 2 10 8 0 4-3 7-5 8l-2 10h-13z"
+      d="M14 34c0-10 4-18 10-20 6-2 9 4 7 10 3-2 6 2 4 6l-2 8h-12z"
       fill={fillColor}
       stroke={strokeColor}
-      strokeWidth="2"
-      strokeLinejoin="round"
+      strokeWidth="2.5"
+      strokeLinejoin="miter"
     />
-    <path d="M14 37h17" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
+    <path d="M12 37h21" stroke={strokeColor} strokeWidth="2" strokeLinecap="square" />
+    <path d="M24 18l3 3" stroke={strokeColor} strokeWidth="2" strokeLinecap="square" />
+    <circle cx="28" cy="18" r="1.5" fill={strokeColor} />
   </svg>
 );
 
 export const VanguardBishop: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
     <path
-      d="M22.5 9c-3.5 0-6 4-6 9s2.5 9 6 15 6-10 6-15-2.5-9-6-9z"
+      d="M22.5 8l-7 12 4 4-2 10h10l-2-10 4-4-7-12z"
       fill={fillColor}
       stroke={strokeColor}
-      strokeWidth="2"
-      strokeLinejoin="round"
+      strokeWidth="2.5"
+      strokeLinejoin="miter"
     />
-    <path d="M16 33h13M15 37h15" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
-    <path d="M22.5 9v4" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
+    <path d="M16 34h13M15 37h15" stroke={strokeColor} strokeWidth="2" strokeLinecap="square" />
+    <path d="M22.5 8v6" stroke={strokeColor} strokeWidth="2" strokeLinecap="square" />
+    <circle cx="22.5" cy="22" r="2" fill={strokeColor} opacity="0.3" />
   </svg>
 );
 
 export const VanguardQueen: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
     <path
-      d="M22.5 9l-4 7-6-2 3 9-5 3 8 7h8l8-7-5-3 3-9-6 2-4-7z"
+      d="M22.5 6l-5 8-8-2 4 10-6 4 9 8h12l9-8-6-4 4-10-8 2-5-8z"
       fill={fillColor}
       stroke={strokeColor}
-      strokeWidth="2"
-      strokeLinejoin="round"
+      strokeWidth="2.5"
+      strokeLinejoin="miter"
     />
-    <path d="M14 37h17" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
-    <circle cx="22.5" cy="18" r="2" fill={strokeColor} />
+    <path d="M14 37h17" stroke={strokeColor} strokeWidth="2" strokeLinecap="square" />
+    <path d="M22.5 16v12M16 22h13" stroke={strokeColor} strokeWidth="1.5" opacity="0.3" />
+    <circle cx="22.5" cy="22" r="3" fill={strokeColor} />
   </svg>
 );
 
 export const VanguardKing: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
     <path
-      d="M22.5 13v-4M20.5 11h4"
+      d="M22.5 12V6M19 9h7"
       stroke={strokeColor}
-      strokeWidth="2"
-      strokeLinecap="round"
+      strokeWidth="2.5"
+      strokeLinecap="square"
     />
     <path
-      d="M13 33c0-10 4-15 9.5-15s9.5 5 9.5 15H13z"
+      d="M13 34c0-12 4-18 9.5-18s9.5 6 9.5 18H13z"
       fill={fillColor}
       stroke={strokeColor}
-      strokeWidth="2"
-      strokeLinejoin="round"
+      strokeWidth="2.5"
+      strokeLinejoin="miter"
     />
-    <path d="M12 37h21" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
+    <path d="M11 37h23" stroke={strokeColor} strokeWidth="2" strokeLinecap="square" />
+    <path d="M22.5 16v18" stroke={strokeColor} strokeWidth="1" opacity="0.2" />
   </svg>
 );
