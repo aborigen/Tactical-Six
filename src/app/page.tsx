@@ -515,10 +515,6 @@ export default function Home() {
               <path d="M10 11h4" />
             </svg>
           </div>
-          <div className="flex flex-col">
-            <h1 className="text-sm sm:text-2xl font-black tracking-[-0.05em] text-foreground uppercase leading-none mb-0.5">{t.title}</h1>
-            <p className="hidden xs:block text-[8px] sm:text-[9px] font-black text-primary uppercase tracking-[0.25em] opacity-70">{t.subtitle}</p>
-          </div>
         </div>
 
         <div className="flex items-center gap-1 sm:gap-2">
@@ -682,7 +678,7 @@ export default function Home() {
                     disabled={game.isGameOver || isSuggesting || isReviewMode || isAdPlaying}
                     className="h-6 w-6 sm:h-7 sm:w-7 p-0"
                   >
-                    <Lightbulb className={cn("w-3.5 h-3.5 sm:w-4 sm:h-4", isSuggesting ? "animate-spin text-accent" : "text-muted-foreground")} />
+                    <Lightbulb className={cn("w-3.5 h-3.5 sm:w-4 h-4", isSuggesting ? "animate-spin text-accent" : "text-muted-foreground")} />
                   </Button>
                 </div>
               )}
