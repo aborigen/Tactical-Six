@@ -16,7 +16,7 @@ import { Label } from '@/components/ui/label';
 import { 
   RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, 
   Trash2, Copy, Check, ChevronLeft, ChevronLast, ChevronFirst,
-  PlayCircle, Zap, Settings, X, Target, Swords, Activity
+  PlayCircle, Zap, Settings, X, Target, Swords, Activity, Star
 } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
@@ -27,11 +27,11 @@ import Onboarding from '@/components/onboarding/Onboarding';
 import RulesHelp from '@/components/help/RulesHelp';
 import SettingsDialog from '@/components/settings/SettingsDialog';
 import { soundManager } from '@/lib/sounds';
-import { initYandexSDK, showFullscreenAd, gameReady } from '@/lib/yandex-sdk';
+import { initYandexSDK, showFullscreenAd, gameReady, getYandexSDK } from '@/lib/yandex-sdk';
 
 type GameMode = 'pvp' | 'pve';
 type Difficulty = 'recruit' | 'cadet' | 'specialist' | 'commander' | 'grandmaster';
-type Score = { white: number; black: number; draws: number };
+type Score = { white: number; black: number; draws: number; tacticalPoints: number };
 
 const SCORE_STORAGE_KEY = 'tactical_six_scores';
 const HISTORY_STORAGE_KEY = 'tactical_six_history';
@@ -48,6 +48,14 @@ const DIFFICULTY_MAP: Record<Difficulty, number> = {
   grandmaster: 5
 };
 
+const DIFFICULTY_POINTS: Record<Difficulty, number> = {
+  recruit: 10,
+  cadet: 25,
+  specialist: 50,
+  commander: 100,
+  grandmaster: 250
+};
+
 export default function Home() {
   const [game, setGame] = useState(new ChessGame());
   const [gameMode, setGameMode] = useState<GameMode>('pve'); 
@@ -60,7 +68,7 @@ export default function Home() {
   const [lang, setLang] = useState<Language>('en');
   const [isMuted, setIsMuted] = useState(false);
   const [isAdPlaying, setIsAdPlaying] = useState(false);
-  const [scores, setScores] = useState<Score>({ white: 0, black: 0, draws: 0 });
+  const [scores, setScores] = useState<Score>({ white: 0, black: 0, draws: 0, tacticalPoints: 0 });
   const [gameCounted, setGameCounted] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [hasCopied, setHasCopied] = useState(false);
@@ -73,11 +81,16 @@ export default function Home() {
 
   useEffect(() => {
     const initializeApp = async () => {
-      // 1. Load data from LocalStorage
       const savedScores = localStorage.getItem(SCORE_STORAGE_KEY);
       if (savedScores) {
         try {
-          setScores(JSON.parse(savedScores));
+          const parsed = JSON.parse(savedScores);
+          setScores({
+            white: parsed.white || 0,
+            black: parsed.black || 0,
+            draws: parsed.draws || 0,
+            tacticalPoints: parsed.tacticalPoints || 0
+          });
         } catch (e) {
           console.error('Failed to load scores', e);
         }
@@ -118,14 +131,12 @@ export default function Home() {
         setIsBriefingOpen(true);
       }
 
-      // 2. Initialize Yandex SDK
       try {
         const sdk = await initYandexSDK();
         if (sdk) {
           const sdkLang = sdk.environment.i18n.lang.split('-')[0];
           setLang(sdkLang === 'ru' ? 'ru' : 'en');
           
-          // Optional: Initial ad placement
           showFullscreenAd({
             onOpen: () => setIsAdPlaying(true),
             onClose: () => setIsAdPlaying(false)
@@ -135,10 +146,7 @@ export default function Home() {
         console.warn('Yandex SDK initialization skipped or failed:', sdkError);
       }
 
-      // 3. Flag that local state initialization is complete
       setIsInitialized(true);
-      
-      // 4. Signal that the game is ready after all resources/state are loaded
       gameReady();
     };
 
@@ -191,14 +199,26 @@ export default function Home() {
       
       if (status.includes('white wins')) {
         nextScores.white += 1;
+        // User (White) gets points based on difficulty
+        nextScores.tacticalPoints += DIFFICULTY_POINTS[difficulty];
       } else if (status.includes('black wins')) {
         nextScores.black += 1;
       } else if (status.includes('draw') || status.includes('stalemate') || status.includes('insufficient material')) {
         nextScores.draws += 1;
+        // Partial reward for a draw
+        nextScores.tacticalPoints += Math.floor(DIFFICULTY_POINTS[difficulty] / 5);
       }
       
       setScores(nextScores);
       setGameCounted(true);
+
+      // Leaderboard Sync
+      const sdk = getYandexSDK();
+      if (sdk) {
+        sdk.getLeaderboards().then(lb => {
+          lb.setLeaderboardScore('TACTICAL_LEADERBOARD', nextScores.tacticalPoints);
+        }).catch(err => console.warn('Leaderboard submission skipped', err));
+      }
       
       const adTimeout = setTimeout(() => {
         showFullscreenAd({
@@ -208,7 +228,7 @@ export default function Home() {
       }, 3000);
       return () => clearTimeout(adTimeout);
     }
-  }, [game.isGameOver, game.status, gameCounted, scores]);
+  }, [game.isGameOver, game.status, gameCounted, scores, difficulty]);
 
   const displayedGame = useMemo(() => {
     if (viewIndex === -1 || viewIndex >= game.history.length) {
@@ -284,7 +304,6 @@ export default function Home() {
     if (gameMode === 'pve' && game.turn === 'black' && !game.isGameOver && !isSuggesting && !isReviewMode && !isAdPlaying && !isBriefingOpen) {
       const triggerAiOpponent = async () => {
         setIsSuggesting(true);
-        // AI takes a mandatory 2-second delay to "think"
         await new Promise(resolve => setTimeout(resolve, 2000));
         
         try {
@@ -514,6 +533,11 @@ export default function Home() {
             </div>
           </div>
 
+          <div className="hidden md:flex items-center gap-1.5 bg-accent/20 border border-accent/30 px-2 py-1 rounded-lg">
+            <Star className="w-3 h-3 text-accent fill-accent" />
+            <span className="text-[10px] font-black text-accent uppercase tracking-tighter">{scores.tacticalPoints} EXP</span>
+          </div>
+
           <div className="flex items-center gap-1">
             <Button variant="outline" size="sm" onClick={() => setIsLogOpen(true)} className="border-primary/20 bg-primary/5 hover:bg-primary/10 font-bold text-primary h-8 px-2 sm:px-3">
               <History className="w-4 h-4" />
@@ -539,7 +563,6 @@ export default function Home() {
 
       <main className="flex-1 flex flex-col landscape:flex-row lg:grid lg:grid-cols-12 lg:gap-8 lg:p-6 overflow-hidden">
         
-        {/* Desktop Left Sidebar: Player Profile */}
         <div className="hidden lg:col-span-3 lg:flex flex-col gap-6 overflow-hidden">
            <Card className="flex-1 bg-card border-border shadow-2xl overflow-hidden flex flex-col">
             <CardHeader className="py-3 px-4 bg-secondary/20 border-b border-border/50">
@@ -571,6 +594,10 @@ export default function Home() {
                   />
                 </div>
               </div>
+              <div className="w-full bg-accent/10 border border-accent/20 p-2 rounded-lg flex justify-between items-center">
+                 <span className="text-[8px] font-black text-accent uppercase">{t.score_tactical}</span>
+                 <span className="text-xs font-black text-accent">{scores.tacticalPoints}</span>
+              </div>
             </CardContent>
           </Card>
           
@@ -585,9 +612,7 @@ export default function Home() {
           </Card>
         </div>
 
-        {/* Central Tactical Arena: Board & Primary Status */}
         <div className="flex-1 flex flex-col items-center justify-center p-2 lg:col-span-6 lg:p-0 min-h-0 landscape:flex-[2]">
-          {/* Top Turn Indicator */}
           <div className="w-full max-w-[550px] mb-1.5 sm:mb-2 flex justify-between items-center px-4 py-1.5 sm:py-2 bg-secondary/10 rounded-xl border border-white/5 backdrop-blur-sm shrink-0">
             <div className={cn(
               "flex items-center gap-2 transition-all duration-300",
@@ -608,7 +633,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Chess Board */}
           <div className="relative flex-1 w-full max-w-[550px] flex items-center justify-center min-h-0">
             <Board game={displayedGame} onMove={handleMove} hintMove={hintMove} pieceSet={pieceSet} />
             {(isReviewMode || isAdPlaying || isBriefingOpen) && (
@@ -620,7 +644,6 @@ export default function Home() {
             )}
           </div>
 
-          {/* Bottom Status Bar */}
           <div className="w-full max-w-[550px] mt-1.5 sm:mt-2 shrink-0">
             <div className={cn(
               "px-3 py-2 sm:px-4 sm:py-3 rounded-xl border transition-all duration-500",
@@ -667,7 +690,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Desktop Right Sidebar: Engine Analysis */}
         <div className="hidden lg:col-span-3 lg:flex flex-col gap-6 overflow-hidden">
           <Card className="flex-1 bg-card border-border shadow-2xl overflow-hidden flex flex-col">
             <CardHeader className="py-3 px-4 bg-secondary/20 border-b border-border/50">
@@ -695,7 +717,6 @@ export default function Home() {
           </Card>
         </div>
 
-        {/* Mobile Console: Bottom in Portrait, Side in Landscape */}
         <div className="lg:hidden shrink-0 h-[70px] sm:h-[100px] landscape:h-full landscape:w-[280px] px-2 pb-2 sm:pb-4 landscape:p-4 landscape:border-l landscape:border-white/5">
           <div className="h-full bg-card/50 rounded-lg p-1 sm:p-2 border border-white/5 overflow-hidden">
             {EnginePanel}
@@ -703,7 +724,6 @@ export default function Home() {
         </div>
       </main>
 
-      {/* History Log Modal (Separate Screen) */}
       <Dialog open={isLogOpen} onOpenChange={setIsLogOpen}>
         <DialogContent className="max-w-none w-full h-full p-0 bg-background/95 backdrop-blur-2xl border-none z-50">
           <div className="flex flex-col h-full">
@@ -729,7 +749,6 @@ export default function Home() {
             </header>
 
             <div className="flex-1 overflow-hidden flex flex-col lg:grid lg:grid-cols-2 gap-8 p-6">
-              {/* Review Board */}
               <div className="flex flex-col items-center justify-center space-y-6">
                 <div className="relative w-full max-w-[500px] aspect-square">
                    <Board game={displayedGame} onMove={() => {}} pieceSet={pieceSet} />
@@ -740,7 +759,6 @@ export default function Home() {
                    </div>
                 </div>
 
-                {/* Playback Controls */}
                 <div className="w-full max-w-[500px] grid grid-cols-5 gap-2 p-2 bg-secondary/30 rounded-2xl border border-border">
                   <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-foreground/5" onClick={() => setStep(0)} disabled={viewIndex === 0 || game.history.length === 0}>
                     <ChevronFirst className="w-5 h-5" />
@@ -760,7 +778,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Move List */}
               <Card className="flex flex-col bg-card/50 border-border overflow-hidden">
                 <ScrollArea className="flex-1 p-6">
                   {game.history.length === 0 ? (

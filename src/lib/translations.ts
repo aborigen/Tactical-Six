@@ -121,6 +121,7 @@ export const translations = {
     score_white: "White",
     score_black: "Black",
     score_draw: "Draw",
+    score_tactical: "TACTICAL EXP",
     toast_score_reset: "Mission tally cleared."
   },
   ru: {
@@ -243,6 +244,7 @@ export const translations = {
     score_white: "Белые",
     score_black: "Черные",
     score_draw: "Ничьи",
+    score_tactical: "ТАКТ. ОПЫТ",
     toast_score_reset: "История сражений очищена."
   }
 };
