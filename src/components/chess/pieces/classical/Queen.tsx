@@ -1,7 +1,9 @@
-
 import React from 'react';
 import { PieceIconProps } from '../types';
 
+/**
+ * Classical Queen: Refined Merida crown with multiple tactical points.
+ */
 export const ClassicalQueen: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
     <path
@@ -16,6 +18,6 @@ export const ClassicalQueen: React.FC<PieceIconProps> = ({ fillColor, strokeColo
     <circle cx="33" cy="17" r="1.5" fill={fillColor} stroke={strokeColor} strokeWidth="1" />
     <circle cx="11" cy="28" r="1.5" fill={fillColor} stroke={strokeColor} strokeWidth="1" />
     <circle cx="34" cy="28" r="1.5" fill={fillColor} stroke={strokeColor} strokeWidth="1" />
-    <path d="M12 37h21M13 33h19" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
+    <path d="M12 37h21M13 33h19" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" />
   </svg>
 );

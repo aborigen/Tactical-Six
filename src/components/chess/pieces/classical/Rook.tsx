@@ -1,7 +1,9 @@
-
 import React from 'react';
 import { PieceIconProps } from '../types';
 
+/**
+ * Classical Rook: Solid, Staunton-inspired battlement geometry.
+ */
 export const ClassicalRook: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
     <path

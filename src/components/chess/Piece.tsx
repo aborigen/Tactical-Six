@@ -1,7 +1,6 @@
-
 /**
  * @fileOverview This component renders chess pieces using multiple high-fidelity styles.
- * Supports 'vanguard', 'cyber', and 'classical' piece sets, now organized into modular folders.
+ * Pieces are organized into modular files per set.
  */
 
 import React from 'react';
@@ -23,7 +22,7 @@ import { CyberBishop } from './pieces/cyber/Bishop';
 import { CyberQueen } from './pieces/cyber/Queen';
 import { CyberKing } from './pieces/cyber/King';
 
-// Classical Pieces
+// Classical Pieces (Merida inspired)
 import { ClassicalPawn } from './pieces/classical/Pawn';
 import { ClassicalRook } from './pieces/classical/Rook';
 import { ClassicalKnight } from './pieces/classical/Knight';
@@ -43,6 +42,7 @@ interface PieceProps {
 const Piece: React.FC<PieceProps> = ({ type, color, style = 'vanguard', className }) => {
   const isWhite = color === 'white';
   
+  // Tactical colors for modern feel
   const fillColor = isWhite ? '#FFFFFF' : 'hsl(var(--accent))';
   const strokeColor = isWhite ? 'hsl(var(--primary))' : 'hsl(var(--background))';
 
