@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -45,21 +44,21 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
 
   const themeOptions = [
     { 
-      id: 'light', 
+      id: 'light' as const, 
       icon: Sun, 
       label: t.theme_light, 
       colorClass: "bg-[#f8f9fa]", 
       iconClass: "text-slate-600" 
     },
     { 
-      id: 'dark', 
+      id: 'dark' as const, 
       icon: Moon, 
       label: t.theme_dark, 
       colorClass: "bg-[#0f172a]", 
       iconClass: "text-slate-200" 
     },
     { 
-      id: 'brown', 
+      id: 'brown' as const, 
       icon: Coffee, 
       label: t.theme_brown, 
       colorClass: "bg-[#2a1a0f]", 
@@ -109,7 +108,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
                 </Badge>
               </div>
               
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-3 gap-3">
                 {themeOptions.map((opt) => {
                   const Icon = opt.icon;
                   const isActive = theme === opt.id;
@@ -118,22 +117,22 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
                     <Button
                       key={opt.id}
                       variant="outline"
-                      onClick={() => setTheme(opt.id as any)}
+                      onClick={() => setTheme(opt.id)}
                       className={cn(
-                        "h-auto py-3 px-1 flex flex-col gap-2 border-2 transition-all duration-300",
+                        "h-auto py-4 px-2 flex flex-col gap-2 border-2 transition-all duration-200",
                         isActive 
-                          ? "border-primary bg-primary/10 shadow-[0_0_15px_rgba(var(--primary),0.2)]" 
+                          ? "border-primary bg-primary/10 shadow-lg shadow-primary/20 scale-[1.02]" 
                           : "border-transparent bg-secondary/20 hover:bg-secondary/40 hover:border-white/5"
                       )}
                     >
                       <div className={cn(
-                        "w-8 h-8 rounded-full flex items-center justify-center border border-white/10 shadow-inner",
+                        "w-10 h-10 rounded-full flex items-center justify-center border border-white/10 shadow-inner",
                         opt.colorClass
                       )}>
-                        <Icon className={cn("w-4 h-4", opt.iconClass)} />
+                        <Icon className={cn("w-5 h-5", opt.iconClass)} />
                       </div>
                       <span className={cn(
-                        "text-[9px] font-black uppercase tracking-tighter",
+                        "text-[9px] font-black uppercase tracking-widest",
                         isActive ? "text-primary" : "text-muted-foreground"
                       )}>
                         {opt.label}

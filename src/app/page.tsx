@@ -170,13 +170,14 @@ export default function Home() {
   }, [gameMode, isInitialized]);
 
   useEffect(() => {
-    if (!isInitialized) return;
-    
-    localStorage.setItem(THEME_STORAGE_KEY, theme);
     const html = document.documentElement;
     html.classList.remove('dark', 'brown');
-    if (theme === 'dark' || theme === 'brown') {
+    if (theme !== 'light') {
       html.classList.add(theme);
+    }
+    
+    if (isInitialized) {
+      localStorage.setItem(THEME_STORAGE_KEY, theme);
     }
   }, [theme, isInitialized]);
 
