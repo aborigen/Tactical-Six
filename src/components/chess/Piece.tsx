@@ -1,6 +1,6 @@
 /**
  * @fileOverview This component renders chess pieces using multiple high-fidelity styles.
- * Pieces are organized into modular files per set.
+ * Supports both React-based dynamic sets and static local SVG sets.
  */
 
 import React from 'react';
@@ -22,14 +22,6 @@ import { CyberBishop } from './pieces/cyber/Bishop';
 import { CyberQueen } from './pieces/cyber/Queen';
 import { CyberKing } from './pieces/cyber/King';
 
-// Classical Pieces (Merida inspired)
-import { ClassicalPawn } from './pieces/classical/Pawn';
-import { ClassicalRook } from './pieces/classical/Rook';
-import { ClassicalKnight } from './pieces/classical/Knight';
-import { ClassicalBishop } from './pieces/classical/Bishop';
-import { ClassicalQueen } from './pieces/classical/Queen';
-import { ClassicalKing } from './pieces/classical/King';
-
 export type PieceSetStyle = 'vanguard' | 'cyber' | 'classical' | 'tactical';
 
 interface PieceProps {
@@ -42,11 +34,30 @@ interface PieceProps {
 const Piece: React.FC<PieceProps> = ({ type, color, style = 'vanguard', className }) => {
   const isWhite = color === 'white';
   
-  // Tactical colors for modern feel
+  // Tactical colors for modern feel in dynamic sets
   const fillColor = isWhite ? '#FFFFFF' : 'hsl(var(--accent))';
   const strokeColor = isWhite ? 'hsl(var(--primary))' : 'hsl(var(--background))';
-
   const props = { fillColor, strokeColor };
+
+  // 1. Static SVG Set Handling (Classical)
+  if (style === 'classical') {
+    const colorPrefix = isWhite ? 'w' : 'b';
+    const pieceCode = type.toUpperCase();
+    const assetPath = `./pieces/classical/${colorPrefix}${pieceCode}.svg`;
+    
+    return (
+      <div className="w-full h-full flex items-center justify-center p-1">
+        <img 
+          src={assetPath} 
+          alt={`${color} ${type}`} 
+          className="w-full h-full piece-shadow object-contain select-none"
+          draggable={false}
+        />
+      </div>
+    );
+  }
+
+  // 2. React Dynamic Set Handling (Vanguard & Cyber)
   const activeStyle = style === 'tactical' ? 'vanguard' : style;
 
   if (activeStyle === 'cyber') {
@@ -57,18 +68,6 @@ const Piece: React.FC<PieceProps> = ({ type, color, style = 'vanguard', classNam
       case 'b': return <CyberBishop {...props} />;
       case 'q': return <CyberQueen {...props} />;
       case 'k': return <CyberKing {...props} />;
-      default: return null;
-    }
-  }
-
-  if (activeStyle === 'classical') {
-    switch (type) {
-      case 'p': return <ClassicalPawn {...props} />;
-      case 'r': return <ClassicalRook {...props} />;
-      case 'n': return <ClassicalKnight {...props} />;
-      case 'b': return <ClassicalBishop {...props} />;
-      case 'q': return <ClassicalQueen {...props} />;
-      case 'k': return <ClassicalKing {...props} />;
       default: return null;
     }
   }
