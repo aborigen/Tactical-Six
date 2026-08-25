@@ -1,15 +1,37 @@
+
 /**
  * @fileOverview This component renders chess pieces using multiple high-fidelity styles.
- * Supports 'vanguard' (Professional), 'cyber' (Geometric), and 'classical' (Staunton) piece sets.
+ * Supports 'vanguard', 'cyber', and 'classical' piece sets, now organized into modular folders.
  */
 
 import React from 'react';
 import { PieceType, PlayerColor } from '@/lib/chess-logic';
-import * as Vanguard from './pieces/VanguardPieces';
-import * as Cyber from './pieces/CyberPieces';
-import * as Classical from './pieces/ClassicalPieces';
 
-export type PieceSetStyle = 'vanguard' | 'cyber' | 'classical' | 'tactical'; // 'tactical' kept for backwards compat
+// Vanguard Pieces
+import { VanguardPawn } from './pieces/vanguard/Pawn';
+import { VanguardRook } from './pieces/vanguard/Rook';
+import { VanguardKnight } from './pieces/vanguard/Knight';
+import { VanguardBishop } from './pieces/vanguard/Bishop';
+import { VanguardQueen } from './pieces/vanguard/Queen';
+import { VanguardKing } from './pieces/vanguard/King';
+
+// Cyber Pieces
+import { CyberPawn } from './pieces/cyber/Pawn';
+import { CyberRook } from './pieces/cyber/Rook';
+import { CyberKnight } from './pieces/cyber/Knight';
+import { CyberBishop } from './pieces/cyber/Bishop';
+import { CyberQueen } from './pieces/cyber/Queen';
+import { CyberKing } from './pieces/cyber/King';
+
+// Classical Pieces
+import { ClassicalPawn } from './pieces/classical/Pawn';
+import { ClassicalRook } from './pieces/classical/Rook';
+import { ClassicalKnight } from './pieces/classical/Knight';
+import { ClassicalBishop } from './pieces/classical/Bishop';
+import { ClassicalQueen } from './pieces/classical/Queen';
+import { ClassicalKing } from './pieces/classical/King';
+
+export type PieceSetStyle = 'vanguard' | 'cyber' | 'classical' | 'tactical';
 
 interface PieceProps {
   type: PieceType;
@@ -21,48 +43,44 @@ interface PieceProps {
 const Piece: React.FC<PieceProps> = ({ type, color, style = 'vanguard', className }) => {
   const isWhite = color === 'white';
   
-  // Tactical color palette integration
-  // White pieces: Pure white fill with primary blue stroke
-  // Black pieces: Cyan accent fill with deep background stroke
   const fillColor = isWhite ? '#FFFFFF' : 'hsl(var(--accent))';
   const strokeColor = isWhite ? 'hsl(var(--primary))' : 'hsl(var(--background))';
 
   const props = { fillColor, strokeColor };
-
   const activeStyle = style === 'tactical' ? 'vanguard' : style;
 
   if (activeStyle === 'cyber') {
     switch (type) {
-      case 'p': return <Cyber.CyberPawn {...props} />;
-      case 'r': return <Cyber.CyberRook {...props} />;
-      case 'n': return <Cyber.CyberKnight {...props} />;
-      case 'b': return <Cyber.CyberBishop {...props} />;
-      case 'q': return <Cyber.CyberQueen {...props} />;
-      case 'k': return <Cyber.CyberKing {...props} />;
+      case 'p': return <CyberPawn {...props} />;
+      case 'r': return <CyberRook {...props} />;
+      case 'n': return <CyberKnight {...props} />;
+      case 'b': return <CyberBishop {...props} />;
+      case 'q': return <CyberQueen {...props} />;
+      case 'k': return <CyberKing {...props} />;
       default: return null;
     }
   }
 
   if (activeStyle === 'classical') {
     switch (type) {
-      case 'p': return <Classical.ClassicalPawn {...props} />;
-      case 'r': return <Classical.ClassicalRook {...props} />;
-      case 'n': return <Classical.ClassicalKnight {...props} />;
-      case 'b': return <Classical.ClassicalBishop {...props} />;
-      case 'q': return <Classical.ClassicalQueen {...props} />;
-      case 'k': return <Classical.ClassicalKing {...props} />;
+      case 'p': return <ClassicalPawn {...props} />;
+      case 'r': return <ClassicalRook {...props} />;
+      case 'n': return <ClassicalKnight {...props} />;
+      case 'b': return <ClassicalBishop {...props} />;
+      case 'q': return <ClassicalQueen {...props} />;
+      case 'k': return <ClassicalKing {...props} />;
       default: return null;
     }
   }
 
   // Default to Vanguard
   switch (type) {
-    case 'p': return <Vanguard.VanguardPawn {...props} />;
-    case 'r': return <Vanguard.VanguardRook {...props} />;
-    case 'n': return <Vanguard.VanguardKnight {...props} />;
-    case 'b': return <Vanguard.VanguardBishop {...props} />;
-    case 'q': return <Vanguard.VanguardQueen {...props} />;
-    case 'k': return <Vanguard.VanguardKing {...props} />;
+    case 'p': return <VanguardPawn {...props} />;
+    case 'r': return <VanguardRook {...props} />;
+    case 'n': return <VanguardKnight {...props} />;
+    case 'b': return <VanguardBishop {...props} />;
+    case 'q': return <VanguardQueen {...props} />;
+    case 'k': return <VanguardKing {...props} />;
     default: return null;
   }
 };
