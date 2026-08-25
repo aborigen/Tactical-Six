@@ -52,7 +52,13 @@ export interface YandexPlayer {
 }
 
 export interface YandexLeaderboards {
-  setScore: (name: string, score: number, extraData?: string) => Promise<void>;
+  /**
+   * Sets a new score for the player in the specified leaderboard.
+   * @param leaderboardName Unique identifier of the leaderboard.
+   * @param score Numerical value of the score.
+   * @param extraData Additional string-based tactical data.
+   */
+  setScore: (leaderboardName: string, score: number, extraData?: string) => Promise<void>;
   getLeaderboardEntries: (name: string, options?: any) => Promise<any>;
 }
 
@@ -105,88 +111,58 @@ export function getYandexSDK(): YandexSDK | null {
 
 /**
  * Signals to Yandex that the game is ready and finished loading.
- * Uses LoadingAPI.ready() per latest SDK specifications.
  */
 export function gameReady() {
   const sdk = getYandexSDK();
-  
   if (sdk?.features?.LoadingAPI) {
     sdk.features.LoadingAPI.ready();
-    console.log('Yandex Games: LoadingAPI.ready() signal sent');
   } else if (sdk?.features?.LoadingProgress) {
-    // Fallback for older SDK feature versions
     sdk.features.LoadingProgress.ready();
-    console.log('Yandex Games: LoadingProgress.ready() signal sent (fallback)');
   }
 }
 
 /**
- * Shows a fullscreen advertisement with standard callbacks for game state management.
+ * Shows a fullscreen advertisement.
  */
 export function showFullscreenAd(options?: { onOpen?: () => void; onClose?: () => void }) {
   const sdk = getYandexSDK();
   if (sdk) {
     sdk.adv.showFullscreenAdv({
       callbacks: {
-        onOpen: () => {
-          console.log('Ad opened');
-          options?.onOpen?.();
-        },
-        onClose: (wasShown) => {
-          console.log('Ad closed, was shown:', wasShown);
-          options?.onClose?.();
-        },
-        onError: (err) => {
-          console.error('Ad error:', err);
-          options?.onClose?.(); 
-        },
-        onOffline: () => {
-          console.log('Ad offline');
-          options?.onClose?.();
-        }
+        onOpen: () => options?.onOpen?.(),
+        onClose: () => options?.onClose?.(),
+        onError: () => options?.onClose?.(),
+        onOffline: () => options?.onClose?.()
       }
     });
   } else {
-    console.warn('Yandex SDK not ready for advertisement.');
     options?.onClose?.();
   }
 }
 
 /**
- * Safely sets the leaderboard score using the correct setScore method.
- * Handles both the deprecated getLeaderboards() and the newer leaderboards property.
+ * Safely sets the leaderboard score using the correct setScore() method.
+ * Following Yandex Games SDK v2 documentation and provided signature.
  */
-export async function setYandexLeaderboardScore(name: string, score: number) {
+export async function setYandexLeaderboardScore(name: string, score: number, extraData?: string) {
   const sdk = getYandexSDK();
   if (!sdk) return;
 
   try {
-    let lb: YandexLeaderboards | null = null;
+    let lb: YandexLeaderboards;
 
-    // 1. Try using the leaderboards property (modern way)
+    // Use the non-deprecated leaderboards property if available, otherwise fallback to getLeaderboards()
     if (sdk.leaderboards) {
       lb = await Promise.resolve(sdk.leaderboards);
-    } 
-    
-    // 2. Fallback to getLeaderboards() if the property is missing or invalid
-    if (!lb || (typeof (lb as any).setScore !== 'function' && typeof (lb as any).setLeaderboardScore !== 'function')) {
-      if (typeof sdk.getLeaderboards === 'function') {
-        lb = await sdk.getLeaderboards();
-      }
+    } else {
+      lb = await sdk.getLeaderboards();
     }
 
-    // 3. Call the correct method
-    if (lb) {
-      if (typeof lb.setScore === 'function') {
-        await lb.setScore(name, score);
-        console.log(`Yandex Games: Score ${score} successfully set via setScore() for "${name}"`);
-      } else if (typeof (lb as any).setLeaderboardScore === 'function') {
-        // Extreme fallback for older environments if needed
-        await (lb as any).setLeaderboardScore(name, score);
-        console.log(`Yandex Games: Score ${score} set via fallback setLeaderboardScore() for "${name}"`);
-      }
+    if (lb && typeof lb.setScore === 'function') {
+      await lb.setScore(name, score, extraData);
+      console.log(`Yandex Games: Score ${score} successfully set for "${name}"`);
     } else {
-      console.warn('Yandex Games: Leaderboards feature not found');
+      console.warn('Yandex Games: Leaderboard setScore() method not found.');
     }
   } catch (err) {
     console.error('Yandex Games: Leaderboard score submission failed', err);
