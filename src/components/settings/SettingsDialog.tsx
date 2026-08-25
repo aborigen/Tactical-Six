@@ -16,7 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { translations, Language } from '@/lib/translations';
-import { Settings, Globe, Volume2, VolumeX, ShieldCheck, Palette, Sun, Moon } from 'lucide-react';
+import { Settings, Globe, Volume2, VolumeX, ShieldCheck, Palette, Sun, Moon, Coffee } from 'lucide-react';
 import { PieceSetStyle } from '@/components/chess/Piece';
 
 interface SettingsDialogProps {
@@ -26,8 +26,8 @@ interface SettingsDialogProps {
   setIsMuted: (muted: boolean) => void;
   pieceSet: PieceSetStyle;
   setPieceSet: (style: PieceSetStyle) => void;
-  theme: 'light' | 'dark';
-  setTheme: (theme: 'light' | 'dark') => void;
+  theme: 'light' | 'dark' | 'brown';
+  setTheme: (theme: 'light' | 'dark' | 'brown') => void;
 }
 
 const SettingsDialog: React.FC<SettingsDialogProps> = ({ 
@@ -85,15 +85,18 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
               </div>
               <Tabs 
                 value={theme} 
-                onValueChange={(v) => setTheme(v as 'light' | 'dark')}
+                onValueChange={(v) => setTheme(v as 'light' | 'dark' | 'brown')}
                 className="w-full bg-secondary/40 border border-border p-1 rounded-xl"
               >
-                <TabsList className="grid grid-cols-2 bg-transparent gap-1 h-9 sm:h-10">
+                <TabsList className="grid grid-cols-3 bg-transparent gap-1 h-9 sm:h-10">
                   <TabsTrigger value="light" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-2 uppercase text-[9px] sm:text-[10px]">
                     <Sun className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1.5" /> {t.theme_light}
                   </TabsTrigger>
                   <TabsTrigger value="dark" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-2 uppercase text-[9px] sm:text-[10px]">
                     <Moon className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1.5" /> {t.theme_dark}
+                  </TabsTrigger>
+                  <TabsTrigger value="brown" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-2 uppercase text-[9px] sm:text-[10px]">
+                    <Coffee className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1.5" /> {t.theme_brown}
                   </TabsTrigger>
                 </TabsList>
               </Tabs>

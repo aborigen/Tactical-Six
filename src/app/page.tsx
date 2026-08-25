@@ -32,6 +32,7 @@ import { initYandexSDK, showFullscreenAd, gameReady, setYandexLeaderboardScore }
 type GameMode = 'pvp' | 'pve';
 type Difficulty = 'recruit' | 'cadet' | 'specialist' | 'commander' | 'grandmaster';
 type Score = { white: number; black: number; draws: number; tacticalPoints: number };
+type ThemeMode = 'light' | 'dark' | 'brown';
 
 const SCORE_STORAGE_KEY = 'tactical_six_scores';
 const HISTORY_STORAGE_KEY = 'tactical_six_history';
@@ -61,7 +62,7 @@ export default function Home() {
   const [gameMode, setGameMode] = useState<GameMode>('pve'); 
   const [difficulty, setDifficulty] = useState<Difficulty>('specialist');
   const [pieceSet, setPieceSet] = useState<PieceSetStyle>('vanguard');
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const [theme, setTheme] = useState<ThemeMode>('dark');
   const [hintMove, setHintMove] = useState<Move | null>(null);
   const [isSuggesting, setIsSuggesting] = useState(false);
   const [explanation, setExplanation] = useState<string | null>(null);
@@ -111,7 +112,7 @@ export default function Home() {
         setGameMode(savedMode as GameMode);
       }
 
-      const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) as 'light' | 'dark';
+      const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) as ThemeMode;
       if (savedTheme) {
         setTheme(savedTheme);
       }
@@ -176,10 +177,9 @@ export default function Home() {
   useEffect(() => {
     if (!isInitialized) return;
     localStorage.setItem(THEME_STORAGE_KEY, theme);
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
+    document.documentElement.classList.remove('dark', 'brown');
+    if (theme !== 'light') {
+      document.documentElement.classList.add(theme);
     }
   }, [theme, isInitialized]);
 
@@ -210,7 +210,6 @@ export default function Home() {
       setScores(nextScores);
       setGameCounted(true);
 
-      // Safe platform-agnostic leaderboard synchronization
       setYandexLeaderboardScore('TACTICALLEADERBOARD', nextScores.tacticalPoints);
       
       const adTimeout = setTimeout(() => {
