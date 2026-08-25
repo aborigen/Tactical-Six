@@ -2,7 +2,7 @@ import React from 'react';
 import { PieceIconProps } from '../types';
 
 /**
- * Classical Bishop: Elegant Merida-style mitre with a deep tactical slot.
+ * Classical Bishop: Elegant Mitre with a tactical slot and rounded top ball.
  */
 export const ClassicalBishop: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
@@ -14,13 +14,7 @@ export const ClassicalBishop: React.FC<PieceIconProps> = ({ fillColor, strokeCol
       strokeLinejoin="round"
     />
     <circle cx="22.5" cy="9" r="1.5" fill={fillColor} stroke={strokeColor} strokeWidth="1" />
-    {/* Tactical mitre slot */}
-    <path 
-      d="M18.5 16.5l8 6" 
-      stroke={strokeColor} 
-      strokeWidth="1.5" 
-      strokeLinecap="round" 
-    />
-    <path d="M15 37h15M14 33h17" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" />
+    <path d="M17.5 17.5l9 6" stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M14 37h17M15 33h15" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
   </svg>
 );

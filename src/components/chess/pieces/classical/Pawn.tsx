@@ -2,7 +2,7 @@ import React from 'react';
 import { PieceIconProps } from '../types';
 
 /**
- * Classical Pawn: Smooth, rounded Merida-inspired infantry unit.
+ * Classical Pawn: High-fidelity Staunton silhouette with a smooth rounded head and flared base.
  */
 export const ClassicalPawn: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
@@ -13,6 +13,6 @@ export const ClassicalPawn: React.FC<PieceIconProps> = ({ fillColor, strokeColor
       strokeWidth="1.5"
       strokeLinejoin="round"
     />
-    <path d="M15 36h15" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
+    <path d="M14 36h17M16 32h13" stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
   </svg>
 );

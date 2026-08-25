@@ -2,8 +2,8 @@ import React from 'react';
 import { PieceIconProps } from '../types';
 
 /**
- * Refined Classical Knight: Merida-inspired Staunton geometry.
- * Features a more expressive silhouette with a distinct snout, ears, and mane.
+ * Refined Classical Knight: Professional Merida-inspired Staunton geometry.
+ * Features an elegant neck curve, distinct ears, and a refined snout.
  */
 export const ClassicalKnight: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
   <svg viewBox="0 0 45 45" className="w-full h-full piece-shadow">
@@ -14,33 +14,34 @@ export const ClassicalKnight: React.FC<PieceIconProps> = ({ fillColor, strokeCol
       strokeWidth="1.5"
       strokeLinejoin="round"
     />
-    {/* Merida Snout & Jawline */}
     <path 
       d="M24 18c2.5 0 5 1.5 5 4.5s-2 4-5 4" 
       fill="none" 
       stroke={strokeColor} 
-      strokeWidth="1.5" 
+      strokeWidth="1.2" 
       strokeLinecap="round" 
     />
-    {/* Distinct Merida Ear */}
     <path 
-      d="M20 12l-2.5-3.5L15 12" 
+      d="M9.5 25.5A.5.5 0 1 1 9 25a.5.5 0 0 1 .5.5z" 
+      fill={strokeColor} 
+      opacity="0"
+    />
+    <path 
+      d="M15 15.5l-3-4.5 5 2.5" 
       fill={fillColor} 
       stroke={strokeColor} 
-      strokeWidth="1.5" 
+      strokeWidth="1.2" 
       strokeLinejoin="round" 
     />
-    {/* Expressive Eye */}
-    <circle cx="27.5" cy="16.5" r="1.2" fill={strokeColor} />
-    {/* Detailed Mane */}
+    <circle cx="27" cy="16" r="1.2" fill={strokeColor} />
     <path 
-      d="M14.5 28c-1.5-6 1-12 5-14.5" 
+      d="M14 31c-1.5-6 1-12 5-14.5" 
       fill="none" 
       stroke={strokeColor} 
       strokeWidth="1" 
-      strokeDasharray="2 1" 
-      opacity="0.6"
+      strokeDasharray="1 1" 
+      opacity="0.5"
     />
-    <path d="M11 37h23" stroke={strokeColor} strokeWidth="3" strokeLinecap="round" />
+    <path d="M11 37h23M13 33h19" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
   </svg>
 );
