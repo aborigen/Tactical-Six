@@ -151,7 +151,7 @@ export async function setYandexLeaderboardScore(name: string, score: number, ext
   try {
     let lb: YandexLeaderboards;
 
-    // Use the non-deprecated leaderboards property if available, otherwise fallback to getLeaderboards()
+    // Use the non-deprecated leaderboards property if available
     if (sdk.leaderboards) {
       lb = await Promise.resolve(sdk.leaderboards);
     } else {

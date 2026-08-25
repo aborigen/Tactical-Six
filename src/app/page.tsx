@@ -49,13 +49,8 @@ const DIFFICULTY_MAP: Record<Difficulty, number> = {
   grandmaster: 5
 };
 
-const DIFFICULTY_POINTS: Record<Difficulty, number> = {
-  recruit: 10,
-  cadet: 25,
-  specialist: 50,
-  commander: 100,
-  grandmaster: 250
-};
+const WIN_POINTS = 100;
+const DRAW_POINTS = 20;
 
 export default function Home() {
   const [game, setGame] = useState(new ChessGame());
@@ -177,7 +172,6 @@ export default function Home() {
   useEffect(() => {
     if (!isInitialized) return;
     
-    // Hardened theme application
     localStorage.setItem(THEME_STORAGE_KEY, theme);
     const html = document.documentElement;
     html.classList.remove('dark', 'brown');
@@ -202,12 +196,12 @@ export default function Home() {
       
       if (status.includes('white wins')) {
         nextScores.white += 1;
-        nextScores.tacticalPoints += DIFFICULTY_POINTS[difficulty];
+        nextScores.tacticalPoints += WIN_POINTS;
       } else if (status.includes('black wins')) {
         nextScores.black += 1;
       } else if (status.includes('draw') || status.includes('stalemate') || status.includes('insufficient material')) {
         nextScores.draws += 1;
-        nextScores.tacticalPoints += Math.floor(DIFFICULTY_POINTS[difficulty] / 5);
+        nextScores.tacticalPoints += DRAW_POINTS;
       }
       
       setScores(nextScores);
