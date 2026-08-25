@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -16,7 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { translations, Language } from '@/lib/translations';
-import { Settings, Globe, Volume2, VolumeX, ShieldCheck, Palette, Sun, Moon, Coffee } from 'lucide-react';
+import { Settings, Globe, Volume2, VolumeX, ShieldCheck, Palette, Sun, Moon, Coffee, Eye } from 'lucide-react';
 import { PieceSetStyle } from '@/components/chess/Piece';
 
 interface SettingsDialogProps {
@@ -41,6 +42,30 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
   setTheme
 }) => {
   const t = translations[lang];
+
+  const themeOptions = [
+    { 
+      id: 'light', 
+      icon: Sun, 
+      label: t.theme_light, 
+      colorClass: "bg-[#f8f9fa]", 
+      iconClass: "text-slate-600" 
+    },
+    { 
+      id: 'dark', 
+      icon: Moon, 
+      label: t.theme_dark, 
+      colorClass: "bg-[#0f172a]", 
+      iconClass: "text-slate-200" 
+    },
+    { 
+      id: 'brown', 
+      icon: Coffee, 
+      label: t.theme_brown, 
+      colorClass: "bg-[#2a1a0f]", 
+      iconClass: "text-[#e6d5c3]" 
+    },
+  ];
 
   return (
     <Dialog>
@@ -74,32 +99,49 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
 
         <ScrollArea className="max-h-[75vh]">
           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8">
-            <div className="space-y-3 sm:space-y-4">
+            <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <Label className="text-[10px] sm:text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                  <Sun className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {t.settings_theme_label}
+                  <Eye className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {t.settings_theme_label}
                 </Label>
                 <Badge variant="outline" className="text-[7px] sm:text-[8px] font-mono border-border text-muted-foreground uppercase px-1.5 py-0">
                   VISION_MODE
                 </Badge>
               </div>
-              <Tabs 
-                value={theme} 
-                onValueChange={(v) => setTheme(v as 'light' | 'dark' | 'brown')}
-                className="w-full bg-secondary/40 border border-border p-1 rounded-xl"
-              >
-                <TabsList className="grid grid-cols-3 bg-transparent gap-1 h-9 sm:h-10">
-                  <TabsTrigger value="light" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-2 uppercase text-[9px] sm:text-[10px]">
-                    <Sun className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1.5" /> {t.theme_light}
-                  </TabsTrigger>
-                  <TabsTrigger value="dark" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-2 uppercase text-[9px] sm:text-[10px]">
-                    <Moon className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1.5" /> {t.theme_dark}
-                  </TabsTrigger>
-                  <TabsTrigger value="brown" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-2 uppercase text-[9px] sm:text-[10px]">
-                    <Coffee className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1.5" /> {t.theme_brown}
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
+              
+              <div className="grid grid-cols-3 gap-2">
+                {themeOptions.map((opt) => {
+                  const Icon = opt.icon;
+                  const isActive = theme === opt.id;
+                  
+                  return (
+                    <Button
+                      key={opt.id}
+                      variant="outline"
+                      onClick={() => setTheme(opt.id as any)}
+                      className={cn(
+                        "h-auto py-3 px-1 flex flex-col gap-2 border-2 transition-all duration-300",
+                        isActive 
+                          ? "border-primary bg-primary/10 shadow-[0_0_15px_rgba(var(--primary),0.2)]" 
+                          : "border-transparent bg-secondary/20 hover:bg-secondary/40 hover:border-white/5"
+                      )}
+                    >
+                      <div className={cn(
+                        "w-8 h-8 rounded-full flex items-center justify-center border border-white/10 shadow-inner",
+                        opt.colorClass
+                      )}>
+                        <Icon className={cn("w-4 h-4", opt.iconClass)} />
+                      </div>
+                      <span className={cn(
+                        "text-[9px] font-black uppercase tracking-tighter",
+                        isActive ? "text-primary" : "text-muted-foreground"
+                      )}>
+                        {opt.label}
+                      </span>
+                    </Button>
+                  );
+                })}
+              </div>
             </div>
 
             <div className="space-y-3 sm:space-y-4">
