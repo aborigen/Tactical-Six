@@ -176,10 +176,13 @@ export default function Home() {
 
   useEffect(() => {
     if (!isInitialized) return;
+    
+    // Hardened theme application
     localStorage.setItem(THEME_STORAGE_KEY, theme);
-    document.documentElement.classList.remove('dark', 'brown');
-    if (theme !== 'light') {
-      document.documentElement.classList.add(theme);
+    const html = document.documentElement;
+    html.classList.remove('dark', 'brown');
+    if (theme === 'dark' || theme === 'brown') {
+      html.classList.add(theme);
     }
   }, [theme, isInitialized]);
 
