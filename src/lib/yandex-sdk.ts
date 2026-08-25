@@ -52,7 +52,7 @@ export interface YandexPlayer {
 }
 
 export interface YandexLeaderboards {
-  setLeaderboardScore: (name: string, score: number, extraData?: string) => Promise<void>;
+  setScore: (name: string, score: number, extraData?: string) => Promise<void>;
   getLeaderboardEntries: (name: string, options?: any) => Promise<any>;
 }
 
@@ -153,9 +153,8 @@ export function showFullscreenAd(options?: { onOpen?: () => void; onClose?: () =
 }
 
 /**
- * Safely sets the leaderboard score using the best available SDK method.
- * Handles both the potentially deprecated getLeaderboards() and the newer leaderboards property,
- * accounting for cases where the property might be a Promise.
+ * Safely sets the leaderboard score using the correct setScore method.
+ * Handles both the deprecated getLeaderboards() and the newer leaderboards property.
  */
 export async function setYandexLeaderboardScore(name: string, score: number) {
   const sdk = getYandexSDK();
@@ -164,23 +163,30 @@ export async function setYandexLeaderboardScore(name: string, score: number) {
   try {
     let lb: YandexLeaderboards | null = null;
 
-    // Check if leaderboards is a property (it might be a Promise or the object itself)
+    // 1. Try using the leaderboards property (modern way)
     if (sdk.leaderboards) {
       lb = await Promise.resolve(sdk.leaderboards);
     } 
     
-    // Fallback to getLeaderboards() if the property didn't work, is missing the method, or doesn't exist
-    if (!lb || typeof lb.setLeaderboardScore !== 'function') {
+    // 2. Fallback to getLeaderboards() if the property is missing or invalid
+    if (!lb || (typeof (lb as any).setScore !== 'function' && typeof (lb as any).setLeaderboardScore !== 'function')) {
       if (typeof sdk.getLeaderboards === 'function') {
         lb = await sdk.getLeaderboards();
       }
     }
 
-    if (lb && typeof lb.setLeaderboardScore === 'function') {
-      await lb.setLeaderboardScore(name, score);
-      console.log(`Yandex Games: Score ${score} successfully set for leaderboard "${name}"`);
+    // 3. Call the correct method
+    if (lb) {
+      if (typeof lb.setScore === 'function') {
+        await lb.setScore(name, score);
+        console.log(`Yandex Games: Score ${score} successfully set via setScore() for "${name}"`);
+      } else if (typeof (lb as any).setLeaderboardScore === 'function') {
+        // Extreme fallback for older environments if needed
+        await (lb as any).setLeaderboardScore(name, score);
+        console.log(`Yandex Games: Score ${score} set via fallback setLeaderboardScore() for "${name}"`);
+      }
     } else {
-      console.warn('Yandex Games: Leaderboards feature not found or unsupported SDK structure');
+      console.warn('Yandex Games: Leaderboards feature not found');
     }
   } catch (err) {
     console.error('Yandex Games: Leaderboard score submission failed', err);
