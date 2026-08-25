@@ -25,7 +25,8 @@ export interface YandexSDK {
     openAuthDialog: () => Promise<void>;
   };
   getPlayer: (options?: { scopes?: boolean }) => Promise<YandexPlayer>;
-  leaderboards: YandexLeaderboards;
+  getLeaderboards: () => Promise<YandexLeaderboards>;
+  leaderboards?: YandexLeaderboards | Promise<YandexLeaderboards>;
   environment: {
     i18n: {
       lang: string;
@@ -116,8 +117,6 @@ export function gameReady() {
     // Fallback for older SDK feature versions
     sdk.features.LoadingProgress.ready();
     console.log('Yandex Games: LoadingProgress.ready() signal sent (fallback)');
-  } else if (typeof window !== 'undefined' && window.YaGames) {
-    console.warn('Yandex Games: Loading feature missing despite SDK initialization');
   }
 }
 
@@ -150,5 +149,40 @@ export function showFullscreenAd(options?: { onOpen?: () => void; onClose?: () =
   } else {
     console.warn('Yandex SDK not ready for advertisement.');
     options?.onClose?.();
+  }
+}
+
+/**
+ * Safely sets the leaderboard score using the best available SDK method.
+ * Handles both the potentially deprecated getLeaderboards() and the newer leaderboards property,
+ * accounting for cases where the property might be a Promise.
+ */
+export async function setYandexLeaderboardScore(name: string, score: number) {
+  const sdk = getYandexSDK();
+  if (!sdk) return;
+
+  try {
+    let lb: YandexLeaderboards | null = null;
+
+    // Check if leaderboards is a property (it might be a Promise or the object itself)
+    if (sdk.leaderboards) {
+      lb = await Promise.resolve(sdk.leaderboards);
+    } 
+    
+    // Fallback to getLeaderboards() if the property didn't work, is missing the method, or doesn't exist
+    if (!lb || typeof lb.setLeaderboardScore !== 'function') {
+      if (typeof sdk.getLeaderboards === 'function') {
+        lb = await sdk.getLeaderboards();
+      }
+    }
+
+    if (lb && typeof lb.setLeaderboardScore === 'function') {
+      await lb.setLeaderboardScore(name, score);
+      console.log(`Yandex Games: Score ${score} successfully set for leaderboard "${name}"`);
+    } else {
+      console.warn('Yandex Games: Leaderboards feature not found or unsupported SDK structure');
+    }
+  } catch (err) {
+    console.error('Yandex Games: Leaderboard score submission failed', err);
   }
 }

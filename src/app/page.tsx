@@ -27,7 +27,7 @@ import Onboarding from '@/components/onboarding/Onboarding';
 import RulesHelp from '@/components/help/RulesHelp';
 import SettingsDialog from '@/components/settings/SettingsDialog';
 import { soundManager } from '@/lib/sounds';
-import { initYandexSDK, showFullscreenAd, gameReady, getYandexSDK } from '@/lib/yandex-sdk';
+import { initYandexSDK, showFullscreenAd, gameReady, setYandexLeaderboardScore } from '@/lib/yandex-sdk';
 
 type GameMode = 'pvp' | 'pve';
 type Difficulty = 'recruit' | 'cadet' | 'specialist' | 'commander' | 'grandmaster';
@@ -210,11 +210,8 @@ export default function Home() {
       setScores(nextScores);
       setGameCounted(true);
 
-      const sdk = getYandexSDK();
-      if (sdk && sdk.leaderboards) {
-        sdk.leaderboards.setLeaderboardScore('TACTICALLEADERBOARD', nextScores.tacticalPoints)
-          .catch(err => console.warn('Leaderboard submission skipped', err));
-      }
+      // Safe platform-agnostic leaderboard synchronization
+      setYandexLeaderboardScore('TACTICALLEADERBOARD', nextScores.tacticalPoints);
       
       const adTimeout = setTimeout(() => {
         showFullscreenAd({
@@ -794,7 +791,7 @@ export default function Home() {
                             <div 
                               onClick={() => setStep(i * 2)} 
                               className={cn(
-                                "flex justify-between items-center px-4 py-3 rounded-xl border text-xs font-mono cursor-pointer transition-all", 
+                                "flex justify-between items-center px-4 py-3 rounded-xl border text-xs font-mono cursive-pointer transition-all", 
                                 viewIndex === i * 2 ? "bg-primary border-primary shadow-[0_0_15px_rgba(46,117,184,0.4)] text-white" : "bg-secondary/20 border-border hover:bg-secondary/40"
                               )}
                             >
@@ -805,7 +802,7 @@ export default function Home() {
                               <div 
                                 onClick={() => setStep(i * 2 + 1)} 
                                 className={cn(
-                                  "flex justify-between items-center px-4 py-3 rounded-xl border text-xs font-mono cursor-pointer transition-all", 
+                                  "flex justify-between items-center px-4 py-3 rounded-xl border text-xs font-mono cursive-pointer transition-all", 
                                   viewIndex === i * 2 + 1 ? "bg-accent border-accent shadow-[0_0_15px_rgba(96,222,222,0.4)] text-white" : "bg-accent/5 border-accent/10 hover:bg-accent/10"
                                 )}
                               >
