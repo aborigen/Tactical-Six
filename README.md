@@ -11,6 +11,7 @@ Tactical Six is a sophisticated 6x6 chess variant designed for fast-paced, high-
 - **Localized Intelligence**: Full localization for English and Russian, including real-time AI tactical evaluation explanations.
 - **Onboarding Protocol**: Interactive mission briefing system for new commanders.
 - **Synthesized Tactical Audio**: Real-time auditory feedback synthesized via Web Audio API.
+- **UI Component Matrix**: Detailed documentation of all command center components is available in [UI_MANIFEST.md](./UI_MANIFEST.md).
 
 ## 🧠 Chess Engine Technical Logic
 
