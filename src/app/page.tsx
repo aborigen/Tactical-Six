@@ -434,70 +434,72 @@ export default function Home() {
       <Onboarding lang={lang} />
       
       <Dialog open={isBriefingOpen} onOpenChange={setIsBriefingOpen}>
-        <DialogContent className="sm:max-w-[550px] bg-card/95 backdrop-blur-xl border-border/50 shadow-2xl p-0 overflow-hidden ring-1 ring-white/10">
-          <div className="h-28 w-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center px-8">
-            <div className="flex items-center gap-4">
-              <div className="bg-primary p-2.5 rounded-xl shadow-lg shadow-primary/20">
-                <Target className="w-6 h-6 text-white" />
+        <DialogContent className="w-[95vw] sm:max-w-[550px] bg-card/95 backdrop-blur-xl border-border/50 shadow-2xl p-0 overflow-hidden ring-1 ring-white/10 max-h-[90vh] flex flex-col">
+          <div className="h-20 sm:h-28 w-full shrink-0 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center px-6 sm:px-8">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="bg-primary p-2 sm:p-2.5 rounded-xl shadow-lg shadow-primary/20">
+                <Target className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div>
-                <DialogTitle className="text-xl font-black tracking-tight text-white uppercase">
+                <DialogTitle className="text-lg sm:text-xl font-black tracking-tight text-white uppercase">
                   {t.briefing_title}
                 </DialogTitle>
-                <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em] opacity-80">
+                <p className="text-[9px] sm:text-[10px] font-black text-primary uppercase tracking-[0.2em] opacity-80">
                   {t.briefing_subtitle}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="p-8 space-y-8">
-             <div className="space-y-4">
-              <Label className="text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                <Swords className="w-3.5 h-3.5" /> {t.briefing_mode_label}
-              </Label>
-              <Tabs value={gameMode} onValueChange={(v) => setGameMode(v as GameMode)} className="w-full bg-secondary/40 border border-white/5 p-1 rounded-xl">
-                <TabsList className="grid grid-cols-2 bg-transparent gap-1 h-10">
-                  <TabsTrigger value="pve" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-3 uppercase text-[10px]">
-                    <Cpu className="w-3.5 h-3.5 mr-2" /> {t.mode_ai}
-                  </TabsTrigger>
-                  <TabsTrigger value="pvp" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-3 uppercase text-[10px]">
-                    <Users className="w-3.5 h-3.5 mr-2" /> {t.mode_2p}
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-            </div>
+          <ScrollArea className="flex-1 overflow-y-auto">
+            <div className="p-6 sm:p-8 space-y-6 sm:space-y-8">
+               <div className="space-y-3 sm:space-y-4">
+                <Label className="text-[10px] sm:text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                  <Swords className="w-3.5 h-3.5" /> {t.briefing_mode_label}
+                </Label>
+                <Tabs value={gameMode} onValueChange={(v) => setGameMode(v as GameMode)} className="w-full bg-secondary/40 border border-white/5 p-1 rounded-xl">
+                  <TabsList className="grid grid-cols-2 bg-transparent gap-1 h-9 sm:h-10">
+                    <TabsTrigger value="pve" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-2 uppercase text-[9px] sm:text-[10px]">
+                      <Cpu className="w-3.5 h-3.5 mr-2" /> {t.mode_ai}
+                    </TabsTrigger>
+                    <TabsTrigger value="pvp" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-2 uppercase text-[9px] sm:text-[10px]">
+                      <Users className="w-3.5 h-3.5 mr-2" /> {t.mode_2p}
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </div>
 
-            <div className="space-y-4">
-              <Label className="text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                <Zap className="w-3.5 h-3.5" /> {t.briefing_difficulty_label}
-              </Label>
-              <Tabs value={difficulty} onValueChange={(v) => setDifficulty(v as Difficulty)} className="w-full bg-secondary/40 border border-white/5 p-1 rounded-xl">
-                <TabsList className="grid grid-cols-5 bg-transparent gap-1 h-10">
-                  <TabsTrigger value="recruit" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-1 text-[8px] uppercase">
-                    {t.diff_recruit}
-                  </TabsTrigger>
-                  <TabsTrigger value="cadet" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-1 text-[8px] uppercase">
-                    {t.diff_cadet}
-                  </TabsTrigger>
-                  <TabsTrigger value="specialist" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-1 text-[8px] uppercase">
-                    {t.diff_specialist}
-                  </TabsTrigger>
-                  <TabsTrigger value="commander" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-1 text-[8px] uppercase">
-                    {t.diff_commander}
-                  </TabsTrigger>
-                  <TabsTrigger value="grandmaster" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-1 text-[8px] uppercase">
-                    {t.diff_grandmaster}
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-            </div>
+              <div className="space-y-3 sm:space-y-4">
+                <Label className="text-[10px] sm:text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                  <Zap className="w-3.5 h-3.5" /> {t.briefing_difficulty_label}
+                </Label>
+                <Tabs value={difficulty} onValueChange={(v) => setDifficulty(v as Difficulty)} className="w-full bg-secondary/40 border border-white/5 p-1 rounded-xl">
+                  <TabsList className="grid grid-cols-5 bg-transparent gap-1 h-9 sm:h-10">
+                    <TabsTrigger value="recruit" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-0.5 text-[7px] sm:text-[8px] uppercase">
+                      {t.diff_recruit}
+                    </TabsTrigger>
+                    <TabsTrigger value="cadet" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-0.5 text-[7px] sm:text-[8px] uppercase">
+                      {t.diff_cadet}
+                    </TabsTrigger>
+                    <TabsTrigger value="specialist" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-0.5 text-[7px] sm:text-[8px] uppercase">
+                      {t.diff_specialist}
+                    </TabsTrigger>
+                    <TabsTrigger value="commander" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-0.5 text-[7px] sm:text-[8px] uppercase">
+                      {t.diff_commander}
+                    </TabsTrigger>
+                    <TabsTrigger value="grandmaster" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-0.5 text-[7px] sm:text-[8px] uppercase">
+                      {t.diff_grandmaster}
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </div>
 
-            <Button onClick={startNewMission} className="w-full h-12 bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest shadow-xl shadow-primary/20">
-              {t.briefing_engage}
-              <ChevronRight className="w-5 h-5 ml-2" />
-            </Button>
-          </div>
+              <Button onClick={startNewMission} className="w-full h-10 sm:h-12 bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest shadow-xl shadow-primary/20 text-[10px] sm:text-xs">
+                {t.briefing_engage}
+                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
+              </Button>
+            </div>
+          </ScrollArea>
         </DialogContent>
       </Dialog>
       
