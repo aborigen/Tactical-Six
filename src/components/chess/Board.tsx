@@ -170,7 +170,7 @@ const Board: React.FC<BoardProps> = ({
                     className={cn(
                       "w-full h-full p-0 transition-all duration-300 flex items-center justify-center",
                       !game.isGameOver && piece.color === game.turn ? "cursor-grab active:cursor-grabbing" : "cursor-default",
-                      isSelected ? "scale-105 drop-shadow-2xl z-20" : "scale-95 drop-shadow-lg",
+                      isSelected ? "scale-110 drop-shadow-2xl z-20" : "scale-95 drop-shadow-lg",
                       game.isGameOver ? "grayscale-[0.3]" : ""
                     )}
                   >
@@ -189,7 +189,7 @@ const Board: React.FC<BoardProps> = ({
                     <div className={cn(
                       "rounded-full transition-all duration-500",
                       piece 
-                        ? "w-[95%] h-[95%] border-[3px] border-accent/40 animate-pulse scale-90" 
+                        ? "w-[95%] h-[95%] border-[3px] border-accent/40 animate-pulse scale-100" 
                         : "w-3 h-3 bg-accent/40 shadow-[0_0_10px_rgba(96,222,222,0.4)]"
                     )} />
                   </div>

@@ -16,7 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { translations, Language } from '@/lib/translations';
-import { Settings, Globe, Volume2, VolumeX, ShieldCheck, Palette, Sun, Moon, Coffee, Eye, Cpu, Zap, Layout } from 'lucide-react';
+import { Settings, Globe, Volume2, VolumeX, ShieldCheck, Palette, Sun, Moon, Coffee, Eye, Cpu, Zap, Layout, Heart } from 'lucide-react';
 import { PiecePartStyle } from '@/components/chess/Piece';
 
 interface SettingsDialogProps {
@@ -96,15 +96,18 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
         onValueChange={(v) => onChange(v as PiecePartStyle)}
         className="w-full bg-secondary/40 border border-border p-1 rounded-xl"
       >
-        <TabsList className="grid grid-cols-3 bg-transparent gap-1 h-8">
-          <TabsTrigger value="vanguard" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-1 text-[7px] uppercase">
+        <TabsList className="grid grid-cols-4 bg-transparent gap-1 h-8">
+          <TabsTrigger value="vanguard" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-0.5 text-[7px] uppercase">
             Vanguard
           </TabsTrigger>
-          <TabsTrigger value="cyber" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-bold rounded-lg px-1 text-[7px] uppercase">
+          <TabsTrigger value="cyber" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-bold rounded-lg px-0.5 text-[7px] uppercase">
             Cyber
           </TabsTrigger>
-          <TabsTrigger value="classical" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-1 text-[7px] uppercase">
+          <TabsTrigger value="classical" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-0.5 text-[7px] uppercase">
             Classic
+          </TabsTrigger>
+          <TabsTrigger value="soft" className="data-[state=active]:bg-pink-500 data-[state=active]:text-white font-bold rounded-lg px-0.5 text-[7px] uppercase">
+            Soft
           </TabsTrigger>
         </TabsList>
       </Tabs>

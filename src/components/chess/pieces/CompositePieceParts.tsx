@@ -52,6 +52,41 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
     }
   }
 
+  if (style === 'soft') {
+    switch (type) {
+      case 'p': return <circle cx="22.5" cy="16" r="6" fill={fillColor} stroke={strokeColor} strokeWidth="2" />;
+      case 'r': return (
+        <g>
+          <rect x="15" y="10" width="15" height="8" rx="4" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
+          <circle cx="18" cy="10" r="2" fill={strokeColor} />
+          <circle cx="22.5" cy="10" r="2" fill={strokeColor} />
+          <circle cx="27" cy="10" r="2" fill={strokeColor} />
+        </g>
+      );
+      case 'n': return <path d="M18 10c8 0 12 4 12 12-4-2-8-2-12 0-3-5-2-12 0-12z" fill={fillColor} stroke={strokeColor} strokeWidth="2" strokeLinejoin="round" />;
+      case 'b': return (
+        <g>
+          <ellipse cx="22.5" cy="18" rx="7" ry="9" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
+          <circle cx="22.5" cy="9" r="2" fill={fillColor} stroke={strokeColor} strokeWidth="1.5" />
+        </g>
+      );
+      case 'q': return (
+        <g>
+          <ellipse cx="22.5" cy="22" rx="10" ry="7" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
+          <circle cx="22.5" cy="14" r="3" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
+          <circle cx="16" cy="17" r="2" fill={fillColor} stroke={strokeColor} strokeWidth="1.5" />
+          <circle cx="29" cy="17" r="2" fill={fillColor} stroke={strokeColor} strokeWidth="1.5" />
+        </g>
+      );
+      case 'k': return (
+        <g>
+          <circle cx="22.5" cy="18" r="8" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
+          <path d="M22.5 6v6M19.5 9h6" stroke={strokeColor} strokeWidth="3" strokeLinecap="round" />
+        </g>
+      );
+    }
+  }
+
   // Default: Vanguard
   switch (type) {
     case 'p': return <path d="M22.5 10l-6 6v4l6 6 6-6v-4l-6-6z" fill={fillColor} stroke={strokeColor} strokeWidth="2" />;
@@ -70,6 +105,9 @@ export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strok
   if (style === 'cyber') {
     return <path d="M22.5 15v20" stroke={strokeColor} strokeWidth="1" strokeDasharray="2 2" />;
   }
+  if (style === 'soft') {
+    return <rect x="20" y="20" width="5" height="14" rx="2.5" fill={fillColor} stroke={strokeColor} strokeWidth="2" opacity="0.9" />;
+  }
   // Vanguard
   return <path d="M20 22h5v12h-5z" fill={fillColor} stroke={strokeColor} strokeWidth="2" opacity="0.8" />;
 };
@@ -80,6 +118,9 @@ export const CompositePieceBase: React.FC<PartProps> = ({ type, fillColor, strok
   }
   if (style === 'cyber') {
     return <rect x="12" y="32" width="21" height="4" fill="none" stroke={strokeColor} strokeWidth="1" strokeDasharray="1 1" />;
+  }
+  if (style === 'soft') {
+    return <rect x="13" y="34" width="19" height="5" rx="2.5" fill={fillColor} stroke={strokeColor} strokeWidth="2" />;
   }
   // Vanguard
   return <path d="M12 34h21v3H12z" fill={fillColor} stroke={strokeColor} strokeWidth="2" />;
