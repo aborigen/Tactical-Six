@@ -35,7 +35,11 @@ const Piece: React.FC<PieceProps> = ({
   const props = { type, fillColor, strokeColor };
 
   return (
-    <svg viewBox="0 0 45 45" className={`w-full h-full piece-shadow ${className || ''}`} xmlns="http://www.w3.org/2000/svg">
+    <svg 
+      viewBox="0 0 45 45" 
+      className={`w-[98%] h-[98%] piece-shadow transition-transform duration-300 ${className || ''}`} 
+      xmlns="http://www.w3.org/2000/svg"
+    >
       {/* 1. Base Stabilizer */}
       <CompositePieceBase {...props} style={baseStyle} />
       
