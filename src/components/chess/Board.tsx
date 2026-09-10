@@ -1,19 +1,27 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
 import { ChessGame, BOARD_SIZE, Position, Move } from '@/lib/chess-logic';
-import Piece, { PieceSetStyle } from './Piece';
+import Piece, { PiecePartStyle } from './Piece';
 import { cn } from '@/lib/utils';
 
 interface BoardProps {
   game: ChessGame;
   onMove: (move: Move) => void;
   hintMove?: Move | null;
-  pieceSet?: PieceSetStyle;
+  headSkin?: PiecePartStyle;
+  bodySkin?: PiecePartStyle;
+  baseSkin?: PiecePartStyle;
 }
 
-const Board: React.FC<BoardProps> = ({ game, onMove, hintMove, pieceSet = 'tactical' }) => {
+const Board: React.FC<BoardProps> = ({ 
+  game, 
+  onMove, 
+  hintMove, 
+  headSkin = 'vanguard',
+  bodySkin = 'vanguard',
+  baseSkin = 'vanguard'
+}) => {
   const [selectedSquare, setSelectedSquare] = useState<Position | null>(null);
   const [legalMovesFromSelected, setLegalMovesFromSelected] = useState<Position[]>([]);
 
@@ -166,7 +174,13 @@ const Board: React.FC<BoardProps> = ({ game, onMove, hintMove, pieceSet = 'tacti
                       game.isGameOver ? "grayscale-[0.3]" : ""
                     )}
                   >
-                    <Piece type={piece.type} color={piece.color} style={pieceSet} />
+                    <Piece 
+                      type={piece.type} 
+                      color={piece.color} 
+                      headStyle={headSkin} 
+                      bodyStyle={bodySkin} 
+                      baseStyle={baseSkin} 
+                    />
                   </div>
                 )}
 

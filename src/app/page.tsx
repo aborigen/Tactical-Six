@@ -3,7 +3,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { ChessGame, Move } from '@/lib/chess-logic';
 import Board from '@/components/chess/Board';
-import { PieceSetStyle } from '@/components/chess/Piece';
+import { PiecePartStyle } from '@/components/chess/Piece';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -37,7 +37,9 @@ type ThemeMode = 'light' | 'dark' | 'brown';
 const SCORE_STORAGE_KEY = 'tactical_six_scores';
 const HISTORY_STORAGE_KEY = 'tactical_six_history';
 const DIFFICULTY_STORAGE_KEY = 'tactical_six_difficulty';
-const PIECE_SET_STORAGE_KEY = 'tactical_six_piece_set';
+const HEAD_SKIN_STORAGE_KEY = 'tactical_six_head_skin';
+const BODY_SKIN_STORAGE_KEY = 'tactical_six_body_skin';
+const BASE_SKIN_STORAGE_KEY = 'tactical_six_base_skin';
 const GAME_MODE_STORAGE_KEY = 'tactical_six_game_mode';
 const THEME_STORAGE_KEY = 'tactical_six_theme';
 
@@ -56,7 +58,9 @@ export default function Home() {
   const [game, setGame] = useState(new ChessGame());
   const [gameMode, setGameMode] = useState<GameMode>('pve'); 
   const [difficulty, setDifficulty] = useState<Difficulty>('specialist');
-  const [pieceSet, setPieceSet] = useState<PieceSetStyle>('vanguard');
+  const [headSkin, setHeadSkin] = useState<PiecePartStyle>('vanguard');
+  const [bodySkin, setBodySkin] = useState<PiecePartStyle>('vanguard');
+  const [baseSkin, setBaseSkin] = useState<PiecePartStyle>('vanguard');
   const [theme, setTheme] = useState<ThemeMode>('dark');
   const [hintMove, setHintMove] = useState<Move | null>(null);
   const [isSuggesting, setIsSuggesting] = useState(false);
@@ -97,20 +101,18 @@ export default function Home() {
         setDifficulty(savedDifficulty);
       }
 
-      const savedPieceSet = localStorage.getItem(PIECE_SET_STORAGE_KEY);
-      if (savedPieceSet) {
-        setPieceSet(savedPieceSet as PieceSetStyle);
-      }
+      const savedHead = localStorage.getItem(HEAD_SKIN_STORAGE_KEY);
+      if (savedHead) setHeadSkin(savedHead as PiecePartStyle);
+      const savedBody = localStorage.getItem(BODY_SKIN_STORAGE_KEY);
+      if (savedBody) setBodySkin(savedBody as PiecePartStyle);
+      const savedBase = localStorage.getItem(BASE_SKIN_STORAGE_KEY);
+      if (savedBase) setBaseSkin(savedBase as PiecePartStyle);
 
       const savedMode = localStorage.getItem(GAME_MODE_STORAGE_KEY);
-      if (savedMode) {
-        setGameMode(savedMode as GameMode);
-      }
+      if (savedMode) setGameMode(savedMode as GameMode);
 
       const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) as ThemeMode;
-      if (savedTheme) {
-        setTheme(savedTheme);
-      }
+      if (savedTheme) setTheme(savedTheme);
 
       const savedHistory = localStorage.getItem(HISTORY_STORAGE_KEY);
       if (savedHistory) {
@@ -161,8 +163,10 @@ export default function Home() {
 
   useEffect(() => {
     if (!isInitialized) return;
-    localStorage.setItem(PIECE_SET_STORAGE_KEY, pieceSet);
-  }, [pieceSet, isInitialized]);
+    localStorage.setItem(HEAD_SKIN_STORAGE_KEY, headSkin);
+    localStorage.setItem(BODY_SKIN_STORAGE_KEY, bodySkin);
+    localStorage.setItem(BASE_SKIN_STORAGE_KEY, baseSkin);
+  }, [headSkin, bodySkin, baseSkin, isInitialized]);
 
   useEffect(() => {
     if (!isInitialized) return;
@@ -540,8 +544,12 @@ export default function Home() {
               setLang={setLang} 
               isMuted={isMuted} 
               setIsMuted={setIsMuted} 
-              pieceSet={pieceSet}
-              setPieceSet={setPieceSet}
+              headSkin={headSkin}
+              setHeadSkin={setHeadSkin}
+              bodySkin={bodySkin}
+              setBodySkin={setBodySkin}
+              baseSkin={baseSkin}
+              setBaseSkin={setBaseSkin}
               theme={theme}
               setTheme={setTheme}
             />
@@ -625,7 +633,14 @@ export default function Home() {
           </div>
 
           <div className="relative flex-1 w-full max-w-[550px] flex items-center justify-center min-h-0">
-            <Board game={displayedGame} onMove={handleMove} hintMove={hintMove} pieceSet={pieceSet} />
+            <Board 
+              game={displayedGame} 
+              onMove={handleMove} 
+              hintMove={hintMove} 
+              headSkin={headSkin} 
+              bodySkin={bodySkin} 
+              baseSkin={baseSkin} 
+            />
             {(isReviewMode || isAdPlaying || isBriefingOpen) && (
               <div className="absolute inset-0 bg-background/20 backdrop-blur-[1px] pointer-events-none z-10 rounded-2xl flex items-center justify-center">
                 <div className="bg-primary/90 text-white px-3 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-2xl font-black text-[8px] sm:text-[9px] uppercase tracking-widest border border-white/20">
@@ -742,7 +757,13 @@ export default function Home() {
             <div className="flex-1 overflow-hidden flex flex-col lg:grid lg:grid-cols-2 gap-8 p-6">
               <div className="flex flex-col items-center justify-center space-y-6">
                 <div className="relative w-full max-w-[500px] aspect-square">
-                   <Board game={displayedGame} onMove={() => {}} pieceSet={pieceSet} />
+                   <Board 
+                      game={displayedGame} 
+                      onMove={() => {}} 
+                      headSkin={headSkin} 
+                      bodySkin={bodySkin} 
+                      baseSkin={baseSkin} 
+                   />
                    <div className="absolute top-4 right-4 z-40">
                       <Badge variant="outline" className="bg-primary text-white font-black tracking-widest px-4 py-1.5 text-[10px] border-white/20 shadow-2xl">
                         {viewIndex === -1 ? `MOVE ${game.history.length}` : `MOVE ${viewIndex + 1}`}

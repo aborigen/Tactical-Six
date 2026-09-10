@@ -16,16 +16,20 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { translations, Language } from '@/lib/translations';
-import { Settings, Globe, Volume2, VolumeX, ShieldCheck, Palette, Sun, Moon, Coffee, Eye } from 'lucide-react';
-import { PieceSetStyle } from '@/components/chess/Piece';
+import { Settings, Globe, Volume2, VolumeX, ShieldCheck, Palette, Sun, Moon, Coffee, Eye, Cpu, Zap, Layout } from 'lucide-react';
+import { PiecePartStyle } from '@/components/chess/Piece';
 
 interface SettingsDialogProps {
   lang: Language;
   setLang: (lang: Language) => void;
   isMuted: boolean;
   setIsMuted: (muted: boolean) => void;
-  pieceSet: PieceSetStyle;
-  setPieceSet: (style: PieceSetStyle) => void;
+  headSkin: PiecePartStyle;
+  setHeadSkin: (style: PiecePartStyle) => void;
+  bodySkin: PiecePartStyle;
+  setBodySkin: (style: PiecePartStyle) => void;
+  baseSkin: PiecePartStyle;
+  setBaseSkin: (style: PiecePartStyle) => void;
   theme: 'light' | 'dark' | 'brown';
   setTheme: (theme: 'light' | 'dark' | 'brown') => void;
 }
@@ -35,8 +39,12 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
   setLang, 
   isMuted, 
   setIsMuted,
-  pieceSet,
-  setPieceSet,
+  headSkin,
+  setHeadSkin,
+  bodySkin,
+  setBodySkin,
+  baseSkin,
+  setBaseSkin,
   theme,
   setTheme
 }) => {
@@ -65,6 +73,43 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
       iconClass: "text-[#e6d5c3]" 
     },
   ];
+
+  const SkinSelector = ({ 
+    label, 
+    value, 
+    onChange, 
+    icon: Icon 
+  }: { 
+    label: string, 
+    value: PiecePartStyle, 
+    onChange: (v: PiecePartStyle) => void,
+    icon: any 
+  }) => (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+          <Icon className="w-3 h-3" /> {label}
+        </Label>
+      </div>
+      <Tabs 
+        value={value} 
+        onValueChange={(v) => onChange(v as PiecePartStyle)}
+        className="w-full bg-secondary/40 border border-border p-1 rounded-xl"
+      >
+        <TabsList className="grid grid-cols-3 bg-transparent gap-1 h-8">
+          <TabsTrigger value="vanguard" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-1 text-[7px] uppercase">
+            Vanguard
+          </TabsTrigger>
+          <TabsTrigger value="cyber" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-bold rounded-lg px-1 text-[7px] uppercase">
+            Cyber
+          </TabsTrigger>
+          <TabsTrigger value="classical" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-1 text-[7px] uppercase">
+            Classic
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
+    </div>
+  );
 
   return (
     <Dialog>
@@ -143,14 +188,28 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
               </div>
             </div>
 
-            <div className="space-y-3 sm:space-y-4">
+            <div className="space-y-4 border-t border-border pt-6">
+              <div className="flex items-center justify-between">
+                <Label className="text-[10px] sm:text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                  <Palette className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {t.settings_pieces_label}
+                </Label>
+                <Badge variant="outline" className="text-[7px] sm:text-[8px] font-mono border-border text-muted-foreground uppercase px-1.5 py-0">
+                  SKIN_COMPOSITE
+                </Badge>
+              </div>
+              
+              <div className="space-y-4">
+                <SkinSelector label={t.settings_skin_head} value={headSkin} onChange={setHeadSkin} icon={Zap} />
+                <SkinSelector label={t.settings_skin_body} value={bodySkin} onChange={setBodySkin} icon={Cpu} />
+                <SkinSelector label={t.settings_skin_base} value={baseSkin} onChange={setBaseSkin} icon={Layout} />
+              </div>
+            </div>
+
+            <div className="space-y-3 sm:space-y-4 border-t border-border pt-6">
               <div className="flex items-center justify-between">
                 <Label className="text-[10px] sm:text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
                   <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {t.settings_lang_label}
                 </Label>
-                <Badge variant="outline" className="text-[7px] sm:text-[8px] font-mono border-border text-muted-foreground uppercase px-1.5 py-0">
-                  ISO_639_1
-                </Badge>
               </div>
               <Tabs 
                 value={lang} 
@@ -168,46 +227,12 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
               </Tabs>
             </div>
 
-            <div className="space-y-3 sm:space-y-4">
-              <div className="flex items-center justify-between">
-                <Label className="text-[10px] sm:text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                  <Palette className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {t.settings_pieces_label}
-                </Label>
-                <Badge variant="outline" className="text-[7px] sm:text-[8px] font-mono border-border text-muted-foreground uppercase px-1.5 py-0">
-                  SKIN_PACK
-                </Badge>
-              </div>
-              <Tabs 
-                value={pieceSet} 
-                onValueChange={(v) => setPieceSet(v as PieceSetStyle)}
-                className="w-full bg-secondary/40 border border-border p-1 rounded-xl"
-              >
-                <TabsList className="grid grid-cols-3 bg-transparent gap-1 h-9 sm:h-10">
-                  <TabsTrigger value="vanguard" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-1 text-[8px] sm:text-[9px] uppercase">
-                    {t.piece_set_tactical}
-                  </TabsTrigger>
-                  <TabsTrigger value="cyber" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-bold rounded-lg px-1 text-[8px] sm:text-[9px] uppercase">
-                    {t.piece_set_cyber}
-                  </TabsTrigger>
-                  <TabsTrigger value="classical" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-1 text-[8px] sm:text-[9px] uppercase">
-                    {t.piece_set_classical}
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-            </div>
-
-            <div className="space-y-3 sm:space-y-4">
+            <div className="space-y-3 sm:space-y-4 border-t border-border pt-6">
               <div className="flex items-center justify-between">
                 <Label className="text-[10px] sm:text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
                   {isMuted ? <VolumeX className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> : <Volume2 className="w-3 h-3 sm:w-3.5 sm:h-3.5" />}
                   {t.settings_sound_label}
                 </Label>
-                <Badge variant="outline" className={cn(
-                  "text-[7px] sm:text-[8px] font-mono border-border uppercase px-1.5 py-0",
-                  !isMuted ? "text-accent" : "text-destructive"
-                )}>
-                  {isMuted ? "Muted" : "Active"}
-                </Badge>
               </div>
               <div className="flex items-center justify-between p-3 sm:p-4 bg-secondary/30 rounded-xl border border-border">
                 <div className="flex flex-col">
@@ -229,7 +254,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
                     System integrity confirmed. 
                   </p>
                   <p className="text-[7px] sm:text-[8px] text-muted-foreground/40 font-mono uppercase">
-                    Local execution mode active.
+                    Skin Matrix Calibration: Active
                   </p>
                 </div>
               </div>
