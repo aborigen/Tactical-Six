@@ -28,7 +28,6 @@ const Piece: React.FC<PieceProps> = ({
 }) => {
   const isWhite = color === 'white';
   
-  // Tactical colors for modern feel across all sets
   const fillColor = isWhite ? '#FFFFFF' : 'hsl(var(--accent))';
   const strokeColor = isWhite ? 'hsl(var(--primary))' : 'hsl(var(--background))';
   
@@ -37,16 +36,13 @@ const Piece: React.FC<PieceProps> = ({
   return (
     <svg 
       viewBox="0 0 45 45" 
-      className={`w-[98%] h-[98%] piece-shadow transition-transform duration-300 ${className || ''}`} 
+      className={`w-full h-full piece-shadow transition-transform duration-300 ${className || ''}`} 
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* 1. Base Stabilizer */}
       <CompositePieceBase {...props} style={baseStyle} />
       
-      {/* 2. Core Body */}
       <CompositePieceBody {...props} style={bodyStyle} />
       
-      {/* 3. Head Module */}
       <CompositePieceHead {...props} style={headStyle} />
     </svg>
   );
