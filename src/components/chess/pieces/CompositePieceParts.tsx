@@ -11,13 +11,13 @@ interface PartProps {
 
 /**
  * Composite piece parts library.
- * Now uses external SVG sprite files for optimized rendering.
+ * References external SVG sprite files using relative paths to avoid 404 errors on CDNs.
  */
 
 export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strokeColor, style }) => {
   return (
     <use 
-      href={`/pieces/${style}.svg#${type}-head`}
+      href={`pieces/${style}.svg#${type}-head`}
       style={{ '--piece-fill': fillColor, '--piece-stroke': strokeColor } as React.CSSProperties}
     />
   );
@@ -26,7 +26,7 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
 export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strokeColor, style }) => {
   return (
     <use 
-      href={`/pieces/${style}.svg#body`}
+      href={`pieces/${style}.svg#body`}
       style={{ '--piece-fill': fillColor, '--piece-stroke': strokeColor } as React.CSSProperties}
     />
   );
@@ -35,7 +35,7 @@ export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strok
 export const CompositePieceBase: React.FC<PartProps> = ({ type, fillColor, strokeColor, style }) => {
   return (
     <use 
-      href={`/pieces/${style}.svg#base`}
+      href={`pieces/${style}.svg#base`}
       style={{ '--piece-fill': fillColor, '--piece-stroke': strokeColor } as React.CSSProperties}
     />
   );
