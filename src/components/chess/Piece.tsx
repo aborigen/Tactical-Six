@@ -1,6 +1,7 @@
 /**
  * @fileOverview This component renders chess pieces using a modular skin system.
  * Pieces consist of three distinct parts: Head, Body, and Base, allowing for custom combinations.
+ * Vector assets are loaded from external local SVG files.
  */
 
 import React from 'react';
@@ -28,6 +29,7 @@ const Piece: React.FC<PieceProps> = ({
 }) => {
   const isWhite = color === 'white';
   
+  // Tactical colors mapping
   const fillColor = isWhite ? '#FFFFFF' : 'hsl(var(--accent))';
   const strokeColor = isWhite ? 'hsl(var(--primary))' : 'hsl(var(--background))';
   
@@ -39,10 +41,13 @@ const Piece: React.FC<PieceProps> = ({
       className={`w-full h-full piece-shadow transition-transform duration-300 ${className || ''}`} 
       xmlns="http://www.w3.org/2000/svg"
     >
+      {/* Stabilizer Base Module */}
       <CompositePieceBase {...props} style={baseStyle} />
       
+      {/* Core Body Module */}
       <CompositePieceBody {...props} style={bodyStyle} />
       
+      {/* High-Command Head Module */}
       <CompositePieceHead {...props} style={headStyle} />
     </svg>
   );

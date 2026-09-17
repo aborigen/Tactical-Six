@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="p-head" viewBox="0 0 45 45">
+    <circle cx="22.5" cy="12" r="7" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="2" />
+  </symbol>
+  <symbol id="r-head" viewBox="0 0 45 45">
+    <path d="M8 6h29v7H8V6zm4 7h21v2H12v-2zm-2-7v4h4V6h-4zm7 0v4h4V6h-4zm7 0v4h4V6h-4zm7 0v4h4V6h-4z" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" />
+  </symbol>
+  <symbol id="n-head" viewBox="0 0 45 45">
+    <path d="M12 24c2-8 6-16 16-17 6 1 9 5 9 10 0 5-4 9-7 10-6-3-12-2-18-3z" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" />
+  </symbol>
+  <symbol id="b-head" viewBox="0 0 45 45">
+    <path d="M22.5 5c-4.5 0-8 6-8 13s3.5 12 8 12 8-5 8-12-3.5-13-8-13z" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="2" />
+    <circle cx="22.5" cy="4" r="2" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1.5" />
+    <path d="M16 15l13 4" stroke="var(--piece-stroke)" stroke-width="2" stroke-linecap="round" />
+  </symbol>
+  <symbol id="q-head" viewBox="0 0 45 45">
+    <path d="M22.5 6l-6 11-10-3 5 11 22 0 5-11-10 3-6-11z" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" />
+    <circle cx="22.5" cy="5" r="2.5" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1.5" />
+    <circle cx="6.5" cy="14" r="2" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1.5" />
+    <circle cx="38.5" cy="14" r="2" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1.5" />
+  </symbol>
+  <symbol id="k-head" viewBox="0 0 45 45">
+    <path d="M22.5 2v6M19 5h7" stroke="var(--piece-stroke)" stroke-width="3" stroke-linecap="round" />
+    <path d="M11 28c0-15 5-21 11.5-21S34 13 34 28H11z" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" />
+    <path d="M15 16h15" stroke="var(--piece-stroke)" stroke-width="2" stroke-linecap="round" />
+  </symbol>
+  <symbol id="body" viewBox="0 0 45 45">
+    <path d="M15 22c0 6 2.5 11 7.5 11s7.5-5 7.5-11-2.5-11-7.5-11-7.5 5-7.5 11z" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="2" opacity="0.95" />
+  </symbol>
+  <symbol id="base" viewBox="0 0 45 45">
+    <path d="M4 42h37v-4H4v4zm3-7v3h31v-3H7z" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  </symbol>
+</svg>
