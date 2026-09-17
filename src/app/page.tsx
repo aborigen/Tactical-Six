@@ -614,21 +614,31 @@ export default function Home() {
         <div className="flex-1 flex flex-col items-center justify-center p-2 lg:col-span-6 lg:p-0 min-h-0 landscape:flex-[2]">
           <div className="w-full max-w-[550px] mb-1.5 sm:mb-2 flex justify-between items-center px-4 py-1.5 sm:py-2 bg-secondary/10 rounded-xl border border-white/5 backdrop-blur-sm shrink-0">
             <div className={cn(
-              "flex items-center gap-2 transition-all duration-300",
+              "flex flex-col items-start transition-all duration-300",
               displayedGame.turn === 'white' ? "opacity-100" : "opacity-20 grayscale"
             )}>
-              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-foreground shadow-[0_0_5px_currentColor]" />
-              <span className="text-[9px] sm:text-[10px] font-black tracking-tight">{t.player_white_command}</span>
+              <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-foreground shadow-[0_0_5px_currentColor]" />
+                <span className="text-[9px] sm:text-[10px] font-black tracking-tight">{t.player_white_command}</span>
+              </div>
+              <span className="text-[6px] font-bold text-muted-foreground ml-3.5 uppercase tracking-widest">
+                {displayedGame.turn === 'white' ? "Status: Active" : "Status: Standby"}
+              </span>
             </div>
             
             <div className="flex-1 mx-3 sm:mx-4 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
             <div className={cn(
-              "flex items-center gap-2 transition-all duration-300",
+              "flex flex-col items-end transition-all duration-300",
               displayedGame.turn === 'black' ? "opacity-100" : "opacity-20 grayscale"
             )}>
-              <span className="text-[9px] sm:text-[10px] font-black tracking-tight text-accent">{t.player_black_command}</span>
-              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-accent shadow-[0_0_5px_hsl(var(--accent))]" />
+              <div className="flex items-center gap-2">
+                <span className="text-[9px] sm:text-[10px] font-black tracking-tight text-accent">{t.player_black_command}</span>
+                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-accent shadow-[0_0_5px_hsl(var(--accent))]" />
+              </div>
+              <span className="text-[6px] font-bold text-accent/60 mr-3.5 uppercase tracking-widest">
+                {displayedGame.turn === 'black' ? "Status: Active" : "Status: Standby"}
+              </span>
             </div>
           </div>
 
