@@ -4,79 +4,82 @@
 
 @layer base {
   :root {
-    --background: 200 12% 98%;
-    --foreground: 200 12% 10%;
+    /* Sunny Playroom Theme (Light) */
+    --background: 45 100% 98%;
+    --foreground: 200 20% 15%;
     --card: 0 0% 100%;
-    --card-foreground: 200 12% 10%;
+    --card-foreground: 200 20% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 200 12% 10%;
-    --primary: 210 60% 45%;
+    --popover-foreground: 200 20% 15%;
+    --primary: 45 95% 50%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 200 12% 92%;
-    --secondary-foreground: 200 12% 15%;
-    --muted: 200 12% 95%;
-    --muted-foreground: 200 12% 40%;
-    --accent: 180 67% 40%;
+    --secondary: 45 60% 92%;
+    --secondary-foreground: 45 80% 25%;
+    --muted: 200 20% 95%;
+    --muted-foreground: 200 20% 45%;
+    --accent: 195 90% 55%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 85% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 200 12% 85%;
-    --input: 200 12% 85%;
-    --ring: 210 60% 45%;
-    --radius: 1rem;
+    --border: 45 30% 88%;
+    --input: 45 30% 88%;
+    --ring: 45 95% 50%;
+    --radius: 1.5rem;
 
-    --square-light: 200 12% 90%;
-    --square-dark: 200 12% 80%;
+    --square-light: 45 100% 95%;
+    --square-dark: 45 60% 85%;
   }
 
   .dark {
-    --background: 200 12% 10%;
-    --foreground: 0 0% 98%;
-    --card: 200 12% 12%;
-    --card-foreground: 0 0% 98%;
-    --popover: 200 12% 10%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 210 60% 45%;
+    /* Starry Night Theme (Dark) */
+    --background: 250 45% 10%;
+    --foreground: 250 20% 98%;
+    --card: 250 40% 15%;
+    --card-foreground: 250 20% 98%;
+    --popover: 250 45% 10%;
+    --popover-foreground: 250 20% 98%;
+    --primary: 280 85% 65%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 200 11% 18%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 200 11% 15%;
-    --muted-foreground: 200 11% 60%;
-    --accent: 180 67% 62%;
-    --accent-foreground: 200 11% 10%;
-    --destructive: 0 84.2% 60.2%;
+    --secondary: 250 30% 20%;
+    --secondary-foreground: 250 20% 98%;
+    --muted: 250 30% 18%;
+    --muted-foreground: 250 20% 70%;
+    --accent: 185 95% 60%;
+    --accent-foreground: 250 45% 10%;
+    --destructive: 340 85% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 200 12% 16%;
-    --input: 200 12% 16%;
-    --ring: 180 67% 62%;
+    --border: 250 30% 22%;
+    --input: 250 30% 22%;
+    --ring: 280 85% 65%;
 
-    --square-light: 200 12% 18%;
-    --square-dark: 200 12% 14%;
+    --square-light: 250 35% 25%;
+    --square-dark: 250 40% 18%;
   }
 
   .brown {
-    --background: 25 30% 10%;
-    --foreground: 30 20% 98%;
-    --card: 25 30% 12%;
-    --card-foreground: 30 20% 98%;
-    --popover: 25 30% 10%;
-    --popover-foreground: 30 20% 98%;
-    --primary: 25 50% 45%;
-    --primary-foreground: 30 20% 98%;
-    --secondary: 25 25% 18%;
-    --secondary-foreground: 30 20% 90%;
-    --muted: 25 25% 15%;
-    --muted-foreground: 25 20% 60%;
-    --accent: 35 70% 55%;
-    --accent-foreground: 25 30% 10%;
-    --destructive: 15 80% 50%;
+    /* Cookie & Cream Theme (Brown) */
+    --background: 35 50% 96%;
+    --foreground: 25 40% 20%;
+    --card: 0 0% 100%;
+    --card-foreground: 25 40% 20%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 25 40% 20%;
+    --primary: 30 75% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 35 40% 90%;
+    --secondary-foreground: 25 50% 25%;
+    --muted: 30 20% 92%;
+    --muted-foreground: 30 20% 50%;
+    --accent: 15 80% 45%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 5 80% 50%;
     --destructive-foreground: 0 0% 98%;
-    --border: 25 30% 16%;
-    --input: 25 30% 16%;
-    --ring: 35 70% 55%;
+    --border: 35 30% 85%;
+    --input: 35 30% 85%;
+    --ring: 30 75% 50%;
 
-    --square-light: 30 25% 25%;
-    --square-dark: 25 35% 15%;
+    --square-light: 35 55% 92%;
+    --square-dark: 30 45% 82%;
   }
 }
 
@@ -85,10 +88,10 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground antialiased selection:bg-accent selection:text-accent-foreground transition-colors duration-300;
+    @apply bg-background text-foreground antialiased selection:bg-accent selection:text-accent-foreground transition-colors duration-500;
     background-image: 
-      radial-gradient(circle at top right, rgba(46, 117, 184, 0.05) 0%, transparent 40%),
-      radial-gradient(circle at bottom left, rgba(96, 222, 222, 0.03) 0%, transparent 40%);
+      radial-gradient(circle at top right, hsla(var(--primary), 0.1) 0%, transparent 40%),
+      radial-gradient(circle at bottom left, hsla(var(--accent), 0.08) 0%, transparent 40%);
   }
 }
 
@@ -109,13 +112,13 @@
 }
 
 .square-highlight {
-  @apply bg-primary/30 ring-4 ring-primary ring-inset z-10;
-  box-shadow: inset 0 0 20px rgba(46, 117, 184, 0.3);
+  @apply bg-primary/40 ring-8 ring-primary/20 ring-inset z-10;
+  box-shadow: inset 0 0 30px hsla(var(--primary), 0.2);
 }
 
 .square-hint {
-  @apply bg-accent/20 ring-4 ring-accent ring-inset z-20;
-  box-shadow: inset 0 0 25px rgba(96, 222, 222, 0.4), 0 0 15px rgba(96, 222, 222, 0.2);
+  @apply bg-accent/30 ring-8 ring-accent/30 ring-inset z-20;
+  box-shadow: inset 0 0 35px hsla(var(--accent), 0.3), 0 0 20px hsla(var(--accent), 0.1);
 }
 
 .square-legal {
@@ -123,24 +126,24 @@
 }
 
 .animate-pulse-glow {
-  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: pulse-glow 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 @keyframes pulse-glow {
   0%, 100% { 
     opacity: 1; 
-    filter: brightness(1) drop-shadow(0 0 5px rgba(96, 222, 222, 0.4));
+    filter: brightness(1) drop-shadow(0 0 8px hsla(var(--accent), 0.5));
   }
   50% { 
-    opacity: 0.8; 
-    filter: brightness(1.2) drop-shadow(0 0 15px rgba(96, 222, 222, 0.6));
+    opacity: 0.9; 
+    filter: brightness(1.1) drop-shadow(0 0 20px hsla(var(--accent), 0.7));
   }
 }
 
 .glass {
-  @apply bg-white/5 backdrop-blur-lg border border-white/10;
+  @apply bg-white/10 backdrop-blur-xl border border-white/20;
 }
 
 .piece-shadow {
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.25));
 }
