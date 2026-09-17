@@ -11,13 +11,23 @@ interface PartProps {
 
 /**
  * Composite piece parts library.
- * References external SVG sprite files using relative paths to avoid 404 errors on CDNs.
+ * Now references individual .svg files for each part to allow easy graphical editing.
+ * Uses relative paths for maximum compatibility with CDN hosting like Yandex Games.
  */
 
 export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strokeColor, style }) => {
+  const headMap: Record<PieceType, string> = {
+    'p': 'pawn',
+    'r': 'rook',
+    'n': 'knight',
+    'b': 'bishop',
+    'q': 'queen',
+    'k': 'king'
+  };
+  
   return (
     <use 
-      href={`pieces/${style}.svg#${type}-head`}
+      href={`pieces/${style}/head-${headMap[type]}.svg#part`}
       style={{ '--piece-fill': fillColor, '--piece-stroke': strokeColor } as React.CSSProperties}
     />
   );
@@ -26,7 +36,7 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
 export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strokeColor, style }) => {
   return (
     <use 
-      href={`pieces/${style}.svg#body`}
+      href={`pieces/${style}/body.svg#part`}
       style={{ '--piece-fill': fillColor, '--piece-stroke': strokeColor } as React.CSSProperties}
     />
   );
@@ -35,7 +45,7 @@ export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strok
 export const CompositePieceBase: React.FC<PartProps> = ({ type, fillColor, strokeColor, style }) => {
   return (
     <use 
-      href={`pieces/${style}.svg#base`}
+      href={`pieces/${style}/base.svg#part`}
       style={{ '--piece-fill': fillColor, '--piece-stroke': strokeColor } as React.CSSProperties}
     />
   );

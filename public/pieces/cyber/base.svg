@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+  <g id="part">
+    <rect x="10" y="36" width="25" height="2" fill="var(--piece-stroke)" />
+    <rect x="12" y="39" width="21" height="1" fill="var(--piece-stroke)" opacity="0.5" />
+  </g>
+</svg>

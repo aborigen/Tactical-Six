@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+  <g id="part">
+    <path d="M22.5 10l-6 6v4l2 2 8 0 2-2v-4z" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="2.5" stroke-linejoin="miter" />
+  </g>
+</svg>

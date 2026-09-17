@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+  <g id="part">
+    <rect x="15" y="26" width="15" height="10" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="2" />
+    <path d="M15 31h15" stroke="var(--piece-stroke)" stroke-width="1" stroke-dasharray="2 2" />
+  </g>
+</svg>

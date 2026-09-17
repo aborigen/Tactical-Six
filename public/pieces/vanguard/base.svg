@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+  <g id="part">
+    <path d="M12 37h21" fill="none" stroke="var(--piece-stroke)" stroke-width="2.5" stroke-linecap="square" />
+  </g>
+</svg>
