@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ChessGame, BOARD_SIZE, Position, Move } from '@/lib/chess-logic';
 import Piece, { PiecePartStyle } from './Piece';
 import { cn } from '@/lib/utils';
@@ -26,6 +26,21 @@ const Board: React.FC<BoardProps> = ({
   const [legalMovesFromSelected, setLegalMovesFromSelected] = useState<Position[]>([]);
 
   const lastMove = game.history.length > 0 ? game.history[game.history.length - 1] : null;
+
+  const checkSquare = useMemo(() => {
+    if (game.isGameOver) return null;
+    if (game.isInCheck(game.turn)) {
+      for (let row = 0; row < BOARD_SIZE; row++) {
+        for (let col = 0; col < BOARD_SIZE; col++) {
+          const piece = game.board[row][col];
+          if (piece && piece.type === 'k' && piece.color === game.turn) {
+            return { row, col };
+          }
+        }
+      }
+    }
+    return null;
+  }, [game]);
 
   useEffect(() => {
     if (selectedSquare) {
@@ -131,6 +146,7 @@ const Board: React.FC<BoardProps> = ({
             const isHint = isSquareHint(row, col);
             const isLastMoveFrom = lastMove?.from.row === row && lastMove?.from.col === col;
             const isLastMoveTo = lastMove?.to.row === row && lastMove?.to.col === col;
+            const isCheck = checkSquare?.row === row && checkSquare?.col === col;
 
             return (
               <div
@@ -143,7 +159,8 @@ const Board: React.FC<BoardProps> = ({
                   isDark ? "square-dark" : "square-light",
                   isSelected && "square-highlight",
                   isHint && "square-hint animate-pulse-glow",
-                  (isLastMoveFrom || isLastMoveTo) && !isSelected && !isHint && "bg-primary/10"
+                  isCheck && "square-check",
+                  (isLastMoveFrom || isLastMoveTo) && !isSelected && !isHint && !isCheck && "bg-primary/10"
                 )}
               >
                 {col === 0 && (
@@ -163,6 +180,12 @@ const Board: React.FC<BoardProps> = ({
                   </span>
                 )}
 
+                {isCheck && (
+                  <div className="absolute top-1 right-1 bg-destructive text-destructive-foreground text-[9px] font-black rounded-full w-4 h-4 flex items-center justify-center animate-bounce shadow-lg border border-white/20 z-40">
+                    !
+                  </div>
+                )}
+
                 {piece && (
                   <div 
                     draggable={!game.isGameOver && piece.color === game.turn}
@@ -171,6 +194,7 @@ const Board: React.FC<BoardProps> = ({
                       "w-full h-full p-0 transition-all duration-300 flex items-center justify-center",
                       !game.isGameOver && piece.color === game.turn ? "cursor-grab active:cursor-grabbing" : "cursor-default",
                       isSelected ? "scale-105 drop-shadow-2xl z-20" : "scale-100 drop-shadow-lg",
+                      isCheck ? "animate-check-piece z-30" : "",
                       game.isGameOver ? "grayscale-[0.3]" : ""
                     )}
                   >
