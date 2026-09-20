@@ -16,7 +16,7 @@ import { Label } from '@/components/ui/label';
 import { 
   RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, 
   Trash2, Copy, Check, ChevronLeft, ChevronLast, ChevronFirst,
-  PlayCircle, Zap, Settings, X, Target, Swords, Activity, Star, Shield
+  PlayCircle, Zap, Settings, X, Target, Swords, Activity, Star, Shield, PartyPopper
 } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
@@ -634,18 +634,22 @@ export default function Home() {
             <div className={cn(
               "px-3 py-2 sm:px-4 sm:py-3 rounded-xl border transition-all duration-500",
               displayedGame.isGameOver 
-                ? "bg-primary/20 border-primary/50 shadow-xl" 
+                ? "bg-primary/30 border-primary shadow-[0_0_40px_rgba(255,191,0,0.3)] animate-in zoom-in duration-700" 
                 : "bg-secondary/40 border-white/5"
             )}>
               {displayedGame.isGameOver ? (
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-2 sm:gap-3">
-                    <Trophy className="w-3.5 h-3.5 sm:w-4 h-4 text-primary animate-bounce" />
-                    <h2 className="text-[10px] sm:text-xs font-black text-foreground uppercase italic leading-tight">{getLocalizedStatus(displayedGame.status)}</h2>
+                    {displayedGame.status.toLowerCase().includes('checkmate') ? (
+                       <PartyPopper className="w-6 h-6 text-primary animate-bounce" />
+                    ) : (
+                       <Trophy className="w-5 h-5 text-primary animate-bounce" />
+                    )}
+                    <h2 className="text-sm sm:text-base font-black text-foreground uppercase italic leading-tight tracking-tight">{getLocalizedStatus(displayedGame.status)}</h2>
                   </div>
                   {!isReviewMode && (
-                    <Button size="sm" onClick={initiateBriefing} className="h-7 bg-primary text-white font-black px-3 sm:px-4 text-[8px] sm:text-[9px]">
-                      <RotateCcw className="w-3 h-3 sm:mr-1" />
+                    <Button size="sm" onClick={initiateBriefing} className="h-8 bg-primary text-primary-foreground font-black px-4 sm:px-6 text-[10px] sm:text-xs rounded-full shadow-lg shadow-primary/20 hover:scale-105 transition-transform">
+                      <RotateCcw className="w-4 h-4 sm:mr-2" />
                       <span className="hidden sm:inline">{t.replay}</span>
                     </Button>
                   )}

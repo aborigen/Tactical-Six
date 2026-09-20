@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { ChessGame, BOARD_SIZE, Position, Move } from '@/lib/chess-logic';
 import Piece, { PiecePartStyle } from './Piece';
 import { cn } from '@/lib/utils';
+import { Trophy, Star } from 'lucide-react';
 
 interface BoardProps {
   game: ChessGame;
@@ -30,6 +31,20 @@ const Board: React.FC<BoardProps> = ({
   const checkSquare = useMemo(() => {
     if (game.isGameOver) return null;
     if (game.isInCheck(game.turn)) {
+      for (let row = 0; row < BOARD_SIZE; row++) {
+        for (let col = 0; col < BOARD_SIZE; col++) {
+          const piece = game.board[row][col];
+          if (piece && piece.type === 'k' && piece.color === game.turn) {
+            return { row, col };
+          }
+        }
+      }
+    }
+    return null;
+  }, [game]);
+
+  const checkmateSquare = useMemo(() => {
+    if (game.isGameOver && game.status.toLowerCase().includes('checkmate')) {
       for (let row = 0; row < BOARD_SIZE; row++) {
         for (let col = 0; col < BOARD_SIZE; col++) {
           const piece = game.board[row][col];
@@ -147,6 +162,7 @@ const Board: React.FC<BoardProps> = ({
             const isLastMoveFrom = lastMove?.from.row === row && lastMove?.from.col === col;
             const isLastMoveTo = lastMove?.to.row === row && lastMove?.to.col === col;
             const isCheck = checkSquare?.row === row && checkSquare?.col === col;
+            const isCheckmate = checkmateSquare?.row === row && checkmateSquare?.col === col;
 
             return (
               <div
@@ -160,7 +176,8 @@ const Board: React.FC<BoardProps> = ({
                   isSelected && "square-highlight",
                   isHint && "square-hint animate-pulse-glow",
                   isCheck && "square-check",
-                  (isLastMoveFrom || isLastMoveTo) && !isSelected && !isHint && !isCheck && "bg-primary/10"
+                  isCheckmate && "square-checkmate",
+                  (isLastMoveFrom || isLastMoveTo) && !isSelected && !isHint && !isCheck && !isCheckmate && "bg-primary/10"
                 )}
               >
                 {col === 0 && (
@@ -186,6 +203,12 @@ const Board: React.FC<BoardProps> = ({
                   </div>
                 )}
 
+                {isCheckmate && (
+                  <div className="absolute inset-0 flex items-center justify-center z-40">
+                    <Star className="w-8 h-8 text-primary fill-primary animate-spin" />
+                  </div>
+                )}
+
                 {piece && (
                   <div 
                     draggable={!game.isGameOver && piece.color === game.turn}
@@ -194,8 +217,8 @@ const Board: React.FC<BoardProps> = ({
                       "w-full h-full p-0 transition-all duration-300 flex items-center justify-center",
                       !game.isGameOver && piece.color === game.turn ? "cursor-grab active:cursor-grabbing" : "cursor-default",
                       isSelected ? "scale-105 drop-shadow-2xl z-20" : "scale-100 drop-shadow-lg",
-                      isCheck ? "animate-check-piece z-30" : "",
-                      game.isGameOver ? "grayscale-[0.3]" : ""
+                      isCheck || isCheckmate ? "animate-check-piece z-30" : "",
+                      game.isGameOver && !isCheckmate ? "grayscale-[0.3]" : ""
                     )}
                   >
                     <Piece 
@@ -226,7 +249,16 @@ const Board: React.FC<BoardProps> = ({
         )}
       </div>
 
-      {lastMove && (
+      {game.isGameOver && game.status.toLowerCase().includes('checkmate') && (
+        <div className="absolute inset-0 z-50 pointer-events-none flex flex-col items-center justify-center bg-primary/10 backdrop-blur-[2px] animate-in fade-in zoom-in duration-500">
+           <Trophy className="w-32 h-32 text-primary drop-shadow-[0_0_30px_rgba(255,191,0,0.8)] animate-bounce mb-4" />
+           <div className="bg-primary text-primary-foreground px-8 py-3 rounded-full font-black text-2xl uppercase tracking-[0.2em] shadow-[0_0_50px_rgba(255,191,0,0.5)] border-4 border-white/20">
+             Victory!
+           </div>
+        </div>
+      )}
+
+      {lastMove && !game.isGameOver && (
         <svg className="absolute inset-0 pointer-events-none z-30 w-full h-full overflow-visible drop-shadow-[0_0_8px_rgba(46,117,184,0.4)]">
           <defs>
             <marker

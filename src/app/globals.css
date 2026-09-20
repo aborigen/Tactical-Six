@@ -126,6 +126,22 @@
   box-shadow: inset 0 0 35px hsla(var(--destructive), 0.5), 0 0 20px hsla(var(--destructive), 0.3);
 }
 
+.square-checkmate {
+  @apply bg-primary/40 ring-8 ring-primary/60 ring-inset z-30;
+  animation: checkmate-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes checkmate-pulse {
+  0%, 100% { 
+    box-shadow: inset 0 0 50px hsla(var(--primary), 0.6), 0 0 30px hsla(var(--primary), 0.4);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: inset 0 0 80px hsla(var(--primary), 0.8), 0 0 50px hsla(var(--primary), 0.6);
+    transform: scale(1.05);
+  }
+}
+
 .animate-pulse-glow {
   animation: pulse-glow 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
