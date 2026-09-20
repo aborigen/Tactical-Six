@@ -5,7 +5,8 @@ Tactical Six is a sophisticated 6x6 chess variant designed for fast-paced, high-
 ## 🚀 Key Features
 
 - **6x6 Matrix Combat**: A condensed arena that forces tactical engagement and rewards precise positioning.
-- **Modular Skin System**: Mix and match Head, Body, and Base modules to create unique piece avatars across Vanguard, Cyber, Classical, and Soft sets.
+- **Victory Protocol**: Celebratory checkmate animations and overlays.
+- **Modular Skin System**: Mix and match Head, Body, and Base modules to create unique piece avatars.
 - **Kid-Friendly Vision**: Choose between Sunny, Galaxy, and Cookie color palettes designed for maximum clarity and appeal.
 - **Advanced Tactical Engine**: Powered by a refactored Minimax algorithm with Alpha-Beta pruning. Includes 5 difficulty levels.
 - **Synthesized Tactical Audio**: Real-time auditory feedback synthesized via Web Audio API.
@@ -19,4 +20,4 @@ The AI in Tactical Six is a deterministic search engine implemented in TypeScrip
 3. **Move Ordering**: Evaluates captures and promotions first to trigger faster pruning.
 
 ---
-*Tactical Operational Manual v1.9.0*
+*Tactical Operational Manual v1.10.0*
