@@ -5,18 +5,18 @@ import { ChessGame, Move } from '@/lib/chess-logic';
 import Board from '@/components/chess/Board';
 import { PiecePartStyle } from '@/components/chess/Piece';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter
+  Dialog, DialogContent, DialogTitle
 } from "@/components/ui/dialog";
 import { Label } from '@/components/ui/label';
 import { 
   RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, 
-  Trash2, Copy, Check, ChevronLeft, ChevronLast, ChevronFirst,
-  PlayCircle, Zap, Settings, X, Target, Swords, Activity, Star, Shield, PartyPopper
+  Check, Copy, ChevronLeft, ChevronLast, ChevronFirst,
+  PlayCircle, Zap, X, Target, Swords, Activity, Star, Shield, PartyPopper
 } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';

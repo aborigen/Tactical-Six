@@ -1,14 +1,8 @@
-/**
- * @fileOverview This component renders chess pieces using a modular skin system.
- * Pieces consist of three distinct parts: Head, Body, and Base, allowing for custom combinations.
- * Vector assets are loaded from external local SVG files.
- */
-
 import React from 'react';
 import { PieceType, PlayerColor } from '@/lib/chess-logic';
 import { CompositePieceHead, CompositePieceBody, CompositePieceBase } from './pieces/CompositePieceParts';
 
-export type PiecePartStyle = 'vanguard' | 'cyber' | 'classical' | 'soft' | 'doodle';
+export type PiecePartStyle = 'vanguard' | 'simple' | 'classical' | 'soft' | 'doodle';
 
 interface PieceProps {
   type: PieceType;
