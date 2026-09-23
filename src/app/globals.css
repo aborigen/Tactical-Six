@@ -4,82 +4,82 @@
 
 @layer base {
   :root {
-    /* Playroom Theme (Light) - Warm and Sunny */
-    --background: 48 100% 97%;
-    --foreground: 210 40% 15%;
+    /* Refined Sunny Theme (Light) - Soft Buttery Tones */
+    --background: 48 30% 96%;
+    --foreground: 210 20% 20%;
     --card: 0 0% 100%;
-    --card-foreground: 210 40% 15%;
+    --card-foreground: 210 20% 20%;
     --popover: 0 0% 100%;
-    --popover-foreground: 210 40% 15%;
-    --primary: 45 100% 50%; /* Sunny Yellow */
+    --popover-foreground: 210 20% 20%;
+    --primary: 45 60% 50%; /* Soft Amber */
     --primary-foreground: 45 10% 10%;
-    --secondary: 48 100% 92%;
-    --secondary-foreground: 45 80% 20%;
-    --muted: 210 20% 96%;
-    --muted-foreground: 210 10% 40%;
-    --accent: 199 89% 50%; /* Sky Blue */
+    --secondary: 48 20% 92%;
+    --secondary-foreground: 45 40% 25%;
+    --muted: 210 10% 94%;
+    --muted-foreground: 210 10% 45%;
+    --accent: 200 45% 55%; /* Softer Sky Blue */
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
+    --destructive: 0 60% 55%;
     --destructive-foreground: 0 0% 98%;
-    --border: 48 30% 85%;
-    --input: 48 30% 85%;
-    --ring: 45 100% 50%;
+    --border: 48 20% 88%;
+    --input: 48 20% 88%;
+    --ring: 45 60% 50%;
     --radius: 1.5rem;
 
-    --square-light: 48 100% 94%;
-    --square-dark: 48 70% 86%;
+    --square-light: 48 30% 94%;
+    --square-dark: 48 25% 86%;
   }
 
   .dark {
-    /* Galaxy Theme (Dark) - Deep Cosmic Tones */
-    --background: 260 45% 8%;
-    --foreground: 260 20% 98%;
-    --card: 260 40% 12%;
-    --card-foreground: 260 20% 98%;
-    --popover: 260 45% 8%;
-    --popover-foreground: 260 20% 98%;
-    --primary: 280 90% 70%; /* Cosmic Purple */
+    /* Refined Galaxy Theme (Dark) - Muted Cosmic Tones */
+    --background: 260 20% 10%;
+    --foreground: 260 10% 92%;
+    --card: 260 20% 14%;
+    --card-foreground: 260 10% 92%;
+    --popover: 260 20% 10%;
+    --popover-foreground: 260 10% 92%;
+    --primary: 280 45% 65%; /* Soft Nebula Purple */
     --primary-foreground: 0 0% 100%;
-    --secondary: 260 30% 18%;
-    --secondary-foreground: 260 20% 98%;
-    --muted: 260 30% 15%;
-    --muted-foreground: 260 20% 70%;
-    --accent: 180 100% 50%; /* Neon Teal */
-    --accent-foreground: 260 45% 10%;
-    --destructive: 340 85% 60%;
+    --secondary: 260 15% 18%;
+    --secondary-foreground: 260 10% 90%;
+    --muted: 260 15% 15%;
+    --muted-foreground: 260 10% 65%;
+    --accent: 180 40% 55%; /* Muted Cyan-Teal */
+    --accent-foreground: 260 20% 10%;
+    --destructive: 340 60% 55%;
     --destructive-foreground: 0 0% 98%;
-    --border: 260 30% 20%;
-    --input: 260 30% 20%;
-    --ring: 280 90% 70%;
+    --border: 260 15% 22%;
+    --input: 260 15% 22%;
+    --ring: 280 45% 65%;
 
-    --square-light: 260 30% 22%;
-    --square-dark: 260 35% 16%;
+    --square-light: 260 15% 20%;
+    --square-dark: 260 20% 15%;
   }
 
   .brown {
-    /* Cookie Theme (Brown) - Warm Caramel Tones */
-    --background: 35 60% 95%;
-    --foreground: 25 50% 15%;
+    /* Refined Cookie Theme (Brown) - Warm Earthy Tones */
+    --background: 35 25% 94%;
+    --foreground: 25 30% 20%;
     --card: 0 0% 100%;
-    --card-foreground: 25 50% 15%;
+    --card-foreground: 25 30% 20%;
     --popover: 0 0% 100%;
-    --popover-foreground: 25 50% 15%;
-    --primary: 32 80% 45%; /* Caramel */
+    --popover-foreground: 25 30% 20%;
+    --primary: 32 45% 45%; /* Muted Terracotta */
     --primary-foreground: 0 0% 100%;
-    --secondary: 35 50% 90%;
-    --secondary-foreground: 25 60% 20%;
-    --muted: 32 20% 90%;
-    --muted-foreground: 32 20% 45%;
-    --accent: 18 90% 55%; /* Orange Zest */
+    --secondary: 35 20% 90%;
+    --secondary-foreground: 25 30% 25%;
+    --muted: 32 15% 90%;
+    --muted-foreground: 32 15% 45%;
+    --accent: 25 40% 55%; /* Soft Clay */
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 80% 50%;
+    --destructive: 0 55% 50%;
     --destructive-foreground: 0 0% 98%;
-    --border: 35 30% 82%;
-    --input: 35 30% 82%;
-    --ring: 32 80% 45%;
+    --border: 35 20% 84%;
+    --input: 35 20% 84%;
+    --ring: 32 45% 45%;
 
-    --square-light: 35 60% 90%;
-    --square-dark: 32 50% 80%;
+    --square-light: 35 30% 90%;
+    --square-dark: 32 25% 82%;
   }
 }
 
@@ -90,8 +90,8 @@
   body {
     @apply bg-background text-foreground antialiased selection:bg-accent selection:text-accent-foreground transition-colors duration-500;
     background-image: 
-      radial-gradient(circle at top right, hsla(var(--primary), 0.15) 0%, transparent 45%),
-      radial-gradient(circle at bottom left, hsla(var(--accent), 0.1) 0%, transparent 45%);
+      radial-gradient(circle at top right, hsla(var(--primary), 0.1) 0%, transparent 45%),
+      radial-gradient(circle at bottom left, hsla(var(--accent), 0.08) 0%, transparent 45%);
   }
 }
 
@@ -112,66 +112,55 @@
 }
 
 .square-highlight {
-  @apply bg-primary/40 ring-8 ring-primary/20 ring-inset z-10;
-  box-shadow: inset 0 0 30px hsla(var(--primary), 0.3);
+  @apply bg-primary/30 ring-4 ring-primary/20 ring-inset z-10;
+  box-shadow: inset 0 0 20px hsla(var(--primary), 0.2);
 }
 
 .square-hint {
-  @apply bg-accent/30 ring-8 ring-accent/30 ring-inset z-20;
-  box-shadow: inset 0 0 35px hsla(var(--accent), 0.4), 0 0 20px hsla(var(--accent), 0.2);
+  @apply bg-accent/25 ring-4 ring-accent/20 ring-inset z-20;
+  box-shadow: inset 0 0 25px hsla(var(--accent), 0.3), 0 0 15px hsla(var(--accent), 0.1);
 }
 
 .square-check {
-  @apply bg-destructive/30 ring-8 ring-destructive/40 ring-inset z-20;
-  box-shadow: inset 0 0 35px hsla(var(--destructive), 0.5), 0 0 20px hsla(var(--destructive), 0.3);
+  @apply bg-destructive/25 ring-4 ring-destructive/30 ring-inset z-20;
+  box-shadow: inset 0 0 25px hsla(var(--destructive), 0.4), 0 0 15px hsla(var(--destructive), 0.2);
 }
 
 .square-checkmate {
-  @apply bg-primary/40 ring-8 ring-primary/60 ring-inset z-30;
-  animation: checkmate-pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes checkmate-pulse {
-  0%, 100% { 
-    box-shadow: inset 0 0 50px hsla(var(--primary), 0.6), 0 0 30px hsla(var(--primary), 0.4);
-    transform: scale(1);
-  }
-  50% { 
-    box-shadow: inset 0 0 80px hsla(var(--primary), 0.8), 0 0 50px hsla(var(--primary), 0.6);
-    transform: scale(1.05);
-  }
+  @apply bg-primary/35 ring-4 ring-primary/50 ring-inset z-30;
+  animation: checkmate-pulse 1.8s ease-in-out infinite;
 }
 
 .animate-pulse-glow {
-  animation: pulse-glow 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: pulse-glow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 @keyframes pulse-glow {
   0%, 100% { 
     opacity: 1; 
-    filter: brightness(1) drop-shadow(0 0 10px hsla(var(--accent), 0.6));
+    filter: brightness(1) drop-shadow(0 0 8px hsla(var(--accent), 0.4));
   }
   50% { 
     opacity: 0.9; 
-    filter: brightness(1.1) drop-shadow(0 0 25px hsla(var(--accent), 0.8));
+    filter: brightness(1.05) drop-shadow(0 0 18px hsla(var(--accent), 0.6));
   }
 }
 
 @keyframes pulse-check {
   0%, 100% {
     transform: scale(1);
-    filter: drop-shadow(0 0 8px hsla(var(--destructive), 0.6));
+    filter: drop-shadow(0 0 6px hsla(var(--destructive), 0.5));
   }
   50% {
-    transform: scale(1.06);
-    filter: drop-shadow(0 0 22px hsla(var(--destructive), 0.95));
+    transform: scale(1.04);
+    filter: drop-shadow(0 0 16px hsla(var(--destructive), 0.8));
   }
 }
 
 .animate-check-piece {
-  animation: pulse-check 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: pulse-check 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 .piece-shadow {
-  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.25));
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
 }
