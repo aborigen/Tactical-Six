@@ -88,12 +88,51 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
 
   if (style === 'cyber') {
     switch (type) {
-      case 'p': return (<g><circle cx="22.5" cy="13" r="4" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><rect x="21" y="11.5" width="3" height="3" fill={strokeColor} /></g>);
-      case 'r': return (<g><rect x="15" y="10" width="15" height="6" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><line x1="20" y1="10" x2="20" y2="16" stroke={strokeColor} strokeWidth="1.5" /><line x1="25" y1="10" x2="25" y2="16" stroke={strokeColor} strokeWidth="1.5" /></g>);
-      case 'n': return (<g><polygon points="16,16 22.5,9 29,16" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><line x1="22.5" y1="9" x2="22.5" y2="16" stroke={strokeColor} strokeWidth="1.5" /></g>);
-      case 'b': return (<g><polygon points="22.5,8 17,16 28,16" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><circle cx="22.5" cy="12" r="2" fill="none" stroke={strokeColor} strokeWidth="1.5" /></g>);
-      case 'q': return (<g><circle cx="22.5" cy="13" r="5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><path d="M15 8l4 5M30 8l-4 5M22.5 6v4" stroke={strokeColor} strokeWidth="2" /></g>);
-      case 'k': return (<g><rect x="16" y="11" width="13" height="5" rx="1" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><path d="M22.5 6v5M20 8.5h5" stroke={strokeColor} strokeWidth="2" /></g>);
+      case 'p':
+        return (
+          <g>
+            <path d="M18,15.5 h9" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
+            <circle cx="22.5" cy="10.5" r="5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
+          </g>
+        );
+      case 'r':
+        return (
+          <g>
+            <path d="M17,15.5 h11" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
+            <path d="M19,15.5 L17.5,8.5 L20.5,8.5 L20.5,11.5 L22,11.5 L22,8.5 L23,8.5 L23,11.5 L24.5,11.5 L24.5,8.5 L27.5,8.5 L26,15.5 Z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />
+          </g>
+        );
+      case 'n':
+        return (
+          <g>
+            <path d="M17,15.5 h11" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
+            <path d="M19,15.5 C19,9.5 23,8.5 24.5,9 C26,11.5 26,14 25,15.5 Z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />
+            <path d="M22,9 C23,5.5 26.5,5.5 26.5,9.5" fill="none" stroke={strokeColor} strokeWidth="2.5" />
+          </g>
+        );
+      case 'b':
+        return (
+          <g>
+            <path d="M17,15.5 h11" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
+            <path d="M22.5,5.5 C26.5,10.5 26.5,15.5 22.5,15.5 C18.5,15.5 18.5,10.5 22.5,5.5 Z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />
+          </g>
+        );
+      case 'q':
+        return (
+          <g>
+            <path d="M15,15.5 h15" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
+            <path d="M16.5,15.5 C16.5,9.5 28.5,9.5 28.5,15.5 Z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />
+            <circle cx="22.5" cy="8.5" r="2" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
+          </g>
+        );
+      case 'k':
+        return (
+          <g>
+            <path d="M15,15.5 h15" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
+            <path d="M16.5,15.5 C16.5,9.5 28.5,9.5 28.5,15.5 Z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />
+            <path d="M22.5,4 v6 M19.5,7 h6" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
+          </g>
+        );
     }
   }
 
@@ -129,7 +168,7 @@ export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strok
   }
 
   if (style === 'vanguard') return (<polygon points="17,32 20,17 25,17 28,32" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
-  if (style === 'cyber') return (<g><rect x="19" y="16" width="7" height="15" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><line x1="16" y1="23" x2="29" y2="23" stroke={strokeColor} strokeWidth="1.5" /></g>);
+  if (style === 'cyber') return (<polygon points="20.5,15.5 24.5,15.5 33,36 12,36" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />);
   if (style === 'classical') return (<path d="M19 17c1 4 1 11 0 14h7c-1-3-1-10 0-14H19z" fill={fillColor} stroke={strokeColor} strokeWidth="2" />);
   return (<ellipse cx="22.5" cy="24" rx="6.5" ry="8" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
 };
@@ -148,7 +187,7 @@ export const CompositePieceBase: React.FC<PartProps> = ({ type, fillColor, strok
   }
 
   if (style === 'vanguard') return (<g><path d="M11 38h23v-4H11v4z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><line x1="15" y1="34" x2="30" y2="34" stroke={strokeColor} strokeWidth="2" /></g>);
-  if (style === 'cyber') return (<g><rect x="10" y="33" width="25" height="6" rx="1" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><circle cx="14" cy="36" r="1" fill={strokeColor} /><circle cx="31" cy="36" r="1" fill={strokeColor} /></g>);
+  if (style === 'cyber') return (<rect x="10" y="35.5" width="25" height="3" rx="0.5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />);
   if (style === 'classical') return (<g><path d="M11 37h23v-3H11v3z" fill={fillColor} stroke={strokeColor} strokeWidth="2" /><path d="M13 34h19v-2H13v2z" fill={fillColor} stroke={strokeColor} strokeWidth="1.5" /></g>);
   return (<rect x="10" y="32" width="25" height="7" rx="3.5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
 };
