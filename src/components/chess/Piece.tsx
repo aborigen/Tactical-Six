@@ -8,7 +8,7 @@ import React from 'react';
 import { PieceType, PlayerColor } from '@/lib/chess-logic';
 import { CompositePieceHead, CompositePieceBody, CompositePieceBase } from './pieces/CompositePieceParts';
 
-export type PiecePartStyle = 'vanguard' | 'cyber' | 'classical' | 'soft';
+export type PiecePartStyle = 'vanguard' | 'cyber' | 'classical' | 'soft' | 'doodle';
 
 interface PieceProps {
   type: PieceType;

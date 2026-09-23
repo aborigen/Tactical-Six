@@ -28,6 +28,7 @@ export const translations = {
     piece_set_cyber: "Cyber",
     piece_set_classical: "Classical",
     piece_set_soft: "Soft",
+    piece_set_doodle: "Doodle",
     settings_sound_on: "Enabled",
     settings_sound_off: "Muted",
     history_title: "Tactical Log",
@@ -77,15 +78,12 @@ export const translations = {
     status_checkmate_black: "Victory! Black wins.",
     status_draw: "Draw! It's a tie.",
     status_draw_material: "Draw! No more pieces left.",
-    // Engine Explanations
     engine_eval_template: "The Brain (Power {depth}) suggests this move. Evaluation: {score}. It looks for safe ways to protect your King and capture pieces!",
-    // Mission Briefing
     briefing_title: "Ready for Battle?",
     briefing_subtitle: "Choose your game settings",
     briefing_engage: "START GAME",
     briefing_mode_label: "Game Mode",
     briefing_difficulty_label: "Engine Skill",
-    // Rules
     rules_title: "How to Play",
     rules_subtitle: "Simple 6x6 Chess Rules",
     rules_pawn_title: "Pawn (Scout)",
@@ -106,7 +104,6 @@ export const translations = {
     rules_checkmate_desc: "The enemy King is trapped and cannot escape. You win!",
     rules_stalemate_title: "Stalemate (Tie)",
     rules_stalemate_desc: "If a player has no moves but is not in check, it's a tie.",
-    // Onboarding
     ob_next: "Next",
     ob_prev: "Back",
     ob_finish: "Let's Go!",
@@ -120,7 +117,6 @@ export const translations = {
     ob_step3_desc: "Click the Lightbulb to get a smart suggestion from our computer brain.",
     ob_step4_title: "Your Game, Your Way",
     ob_step4_desc: "Change pieces and colors in Settings to make the game look however you want!",
-    // Score
     score_label: "Score",
     score_reset: "Reset Stats",
     score_white: "White",
@@ -156,6 +152,7 @@ export const translations = {
     piece_set_cyber: "Кибер",
     piece_set_classical: "Классика",
     piece_set_soft: "Мягкий",
+    piece_set_doodle: "Дудл",
     settings_sound_on: "Вкл",
     settings_sound_off: "Выкл",
     history_title: "История ходов",
@@ -205,15 +202,12 @@ export const translations = {
     status_checkmate_black: "Победа! Черные выиграли.",
     status_draw: "Ничья! Победила дружба.",
     status_draw_material: "Ничья! Фигуры закончились.",
-    // Engine Explanations
     engine_eval_template: "Движок (Сила {depth}) советует этот ход. Оценка: {score}. Он старается защитить вашего Короля и забрать фигуры противника!",
-    // Mission Briefing
     briefing_title: "Готовы к игре?",
     briefing_subtitle: "Настройте правила боя",
     briefing_engage: "НАЧАТЬ ИГРУ",
     briefing_mode_label: "Режим игры",
     briefing_difficulty_label: "Сложность ИИ",
-    // Rules
     rules_title: "Как играть",
     rules_subtitle: "Простые правила шахмат 6x6",
     rules_pawn_title: "Пешка (Разведчик)",
@@ -234,7 +228,6 @@ export const translations = {
     rules_checkmate_desc: "Вражеский Король в ловушке. Вы победили!",
     rules_stalemate_title: "Пат (Ничья)",
     rules_stalemate_desc: "Если ходить некуда, но шаха нет — это ничья.",
-    // Onboarding
     ob_next: "Далее",
     ob_prev: "Назад",
     ob_finish: "В бой!",
@@ -248,7 +241,6 @@ export const translations = {
     ob_step3_desc: "Нажмите на лампочку, чтобы получить совет от нашего компьютерного мозга.",
     ob_step4_title: "Твой стиль",
     ob_step4_desc: "Меняй фигуры и цвета в настройках, чтобы игра выглядела как тебе нравится!",
-    // Score
     score_label: "Счет",
     score_reset: "Сбросить статистику",
     score_white: "Белые",
