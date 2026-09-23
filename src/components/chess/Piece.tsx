@@ -23,11 +23,11 @@ const Piece: React.FC<PieceProps> = ({
 }) => {
   const isWhite = color === 'white';
   
-  // Tactical colors mapping
   const fillColor = isWhite ? '#FFFFFF' : 'hsl(var(--accent))';
   const strokeColor = isWhite ? 'hsl(var(--primary))' : 'hsl(var(--background))';
   
   const props = { type, fillColor, strokeColor };
+  const isSimplePawn = type === 'p' && headStyle === 'simple';
 
   return (
     <svg 
@@ -35,14 +35,11 @@ const Piece: React.FC<PieceProps> = ({
       className={`w-full h-full piece-shadow transition-transform duration-300 ${className || ''}`} 
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* Stabilizer Base Module */}
-      <CompositePieceBase {...props} style={baseStyle} />
-      
-      {/* Core Body Module */}
-      <CompositePieceBody {...props} style={bodyStyle} />
-      
-      {/* High-Command Head Module */}
-      <CompositePieceHead {...props} style={headStyle} />
+      <g transform={isSimplePawn ? "translate(22.5, 38) scale(0.75) translate(-22.5, -38)" : undefined}>
+        <CompositePieceBase {...props} style={baseStyle} />
+        <CompositePieceBody {...props} style={bodyStyle} />
+        <CompositePieceHead {...props} style={headStyle} />
+      </g>
     </svg>
   );
 };
