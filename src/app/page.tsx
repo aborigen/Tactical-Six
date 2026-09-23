@@ -58,9 +58,9 @@ export default function Home() {
   const [game, setGame] = useState(new ChessGame());
   const [gameMode, setGameMode] = useState<GameMode>('pve'); 
   const [difficulty, setDifficulty] = useState<Difficulty>('specialist');
-  const [headSkin, setHeadSkin] = useState<PiecePartStyle>('vanguard');
-  const [bodySkin, setBodySkin] = useState<PiecePartStyle>('vanguard');
-  const [baseSkin, setBaseSkin] = useState<PiecePartStyle>('vanguard');
+  const [headSkin, setHeadSkin] = useState<PiecePartStyle>('simple');
+  const [bodySkin, setBodySkin] = useState<PiecePartStyle>('simple');
+  const [baseSkin, setBaseSkin] = useState<PiecePartStyle>('simple');
   const [theme, setTheme] = useState<ThemeMode>('dark');
   const [hintMove, setHintMove] = useState<Move | null>(null);
   const [isSuggesting, setIsSuggesting] = useState(false);
