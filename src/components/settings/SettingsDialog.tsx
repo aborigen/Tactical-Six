@@ -103,9 +103,6 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
           <TabsTrigger value="school" className="flex-1 min-w-[60px] data-[state=active]:bg-blue-600 data-[state=active]:text-white font-bold rounded-lg py-1 px-1.5 text-[7px] uppercase">
             School
           </TabsTrigger>
-          <TabsTrigger value="vanguard" className="flex-1 min-w-[60px] data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg py-1 px-1.5 text-[7px] uppercase">
-            Vanguard
-          </TabsTrigger>
           <TabsTrigger value="classical" className="flex-1 min-w-[60px] data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg py-1 px-1.5 text-[7px] uppercase">
             Classic
           </TabsTrigger>

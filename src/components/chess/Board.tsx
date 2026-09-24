@@ -19,9 +19,9 @@ const Board: React.FC<BoardProps> = ({
   game, 
   onMove, 
   hintMove, 
-  headSkin = 'vanguard',
-  bodySkin = 'vanguard',
-  baseSkin = 'vanguard'
+  headSkin = 'simple',
+  bodySkin = 'simple',
+  baseSkin = 'simple'
 }) => {
   const [selectedSquare, setSelectedSquare] = useState<Position | null>(null);
   const [legalMovesFromSelected, setLegalMovesFromSelected] = useState<Position[]>([]);

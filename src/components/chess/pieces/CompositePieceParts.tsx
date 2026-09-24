@@ -146,17 +146,6 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
     }
   }
 
-  if (style === 'vanguard') {
-    switch (type) {
-      case 'p': return (<g><path d="M22.5 12l-5 5h10z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><circle cx="22.5" cy="14" r="1.5" fill={strokeColor} /></g>);
-      case 'r': return (<path d="M14 11h3v3h3v-3h3v3h3v-3h3v5H14z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
-      case 'n': return (<g><path d="M15 12l6-4 5 3-2 5h-9z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><polygon points="22,9 24,11 20,11" fill={strokeColor} /></g>);
-      case 'b': return (<g><path d="M22.5 7l5 7h-10z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><line x1="22.5" y1="7" x2="22.5" y2="11" stroke={strokeColor} strokeWidth="2" /></g>);
-      case 'q': return (<g><path d="M22.5 6l3 6h5l-4 3 2 5-4-3-4 3 2-5-4-3h5z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><circle cx="22.5" cy="12" r="1.5" fill={strokeColor} /></g>);
-      case 'k': return (<g><path d="M17 10h11v5H17z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><path d="M22.5 6v4M20.5 8h4" stroke={strokeColor} strokeWidth="2" /></g>);
-    }
-  }
-
   if (style === 'simple') {
     switch (type) {
       case 'p':
@@ -308,7 +297,6 @@ export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strok
     );
   }
 
-  if (style === 'vanguard') return (<polygon points="17,32 20,17 25,17 28,32" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
   if (style === 'simple') return (<polygon points="20.5,15.5 24.5,15.5 33,36 12,36" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />);
   if (style === 'classical') return (<path d="M19 17c1 4 1 11 0 14h7c-1-3-1-10 0-14H19z" fill={fillColor} stroke={strokeColor} strokeWidth="2" />);
   return (<ellipse cx="22.5" cy="24" rx="6.5" ry="8" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
@@ -333,7 +321,6 @@ export const CompositePieceBase: React.FC<PartProps> = ({ type, fillColor, strok
     );
   }
 
-  if (style === 'vanguard') return (<g><path d="M11 38h23v-4H11v4z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><line x1="15" y1="34" x2="30" y2="34" stroke={strokeColor} strokeWidth="2" /></g>);
   if (style === 'simple') return (<rect x="10" y="35.5" width="25" height="3" rx="0.5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />);
   if (style === 'classical') return (<g><path d="M11 37h23v-3H11v3z" fill={fillColor} stroke={strokeColor} strokeWidth="2" /><path d="M13 34h19v-2H13v2z" fill={fillColor} stroke={strokeColor} strokeWidth="1.5" /></g>);
   return (<rect x="10" y="32" width="25" height="7" rx="3.5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);

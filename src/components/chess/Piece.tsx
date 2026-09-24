@@ -2,7 +2,7 @@ import React from 'react';
 import { PieceType, PlayerColor } from '@/lib/chess-logic';
 import { CompositePieceHead, CompositePieceBody, CompositePieceBase } from './pieces/CompositePieceParts';
 
-export type PiecePartStyle = 'vanguard' | 'simple' | 'classical' | 'soft' | 'doodle' | 'school';
+export type PiecePartStyle = 'simple' | 'classical' | 'soft' | 'doodle' | 'school';
 
 interface PieceProps {
   type: PieceType;
@@ -16,9 +16,9 @@ interface PieceProps {
 const Piece: React.FC<PieceProps> = ({ 
   type, 
   color, 
-  headStyle = 'vanguard', 
-  bodyStyle = 'vanguard', 
-  baseStyle = 'vanguard',
+  headStyle = 'simple', 
+  bodyStyle = 'simple', 
+  baseStyle = 'simple',
   className 
 }) => {
   const isWhite = color === 'white';
