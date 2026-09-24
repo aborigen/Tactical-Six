@@ -96,20 +96,23 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
         onValueChange={(v) => onChange(v as PiecePartStyle)}
         className="w-full bg-secondary/40 border border-border p-1 rounded-xl"
       >
-        <TabsList className="grid grid-cols-5 bg-transparent gap-1 h-8">
-          <TabsTrigger value="vanguard" className="data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg px-0.5 text-[7px] uppercase">
-            Vanguard
-          </TabsTrigger>
-          <TabsTrigger value="simple" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-bold rounded-lg px-0.5 text-[7px] uppercase">
+        <TabsList className="flex flex-wrap gap-1 bg-transparent h-auto p-1">
+          <TabsTrigger value="simple" className="flex-1 min-w-[60px] data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-bold rounded-lg py-1 px-1.5 text-[7px] uppercase">
             Simple
           </TabsTrigger>
-          <TabsTrigger value="classical" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-0.5 text-[7px] uppercase">
+          <TabsTrigger value="school" className="flex-1 min-w-[60px] data-[state=active]:bg-blue-600 data-[state=active]:text-white font-bold rounded-lg py-1 px-1.5 text-[7px] uppercase">
+            School
+          </TabsTrigger>
+          <TabsTrigger value="vanguard" className="flex-1 min-w-[60px] data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg py-1 px-1.5 text-[7px] uppercase">
+            Vanguard
+          </TabsTrigger>
+          <TabsTrigger value="classical" className="flex-1 min-w-[60px] data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg py-1 px-1.5 text-[7px] uppercase">
             Classic
           </TabsTrigger>
-          <TabsTrigger value="soft" className="data-[state=active]:bg-pink-500 data-[state=active]:text-white font-bold rounded-lg px-0.5 text-[7px] uppercase">
+          <TabsTrigger value="soft" className="flex-1 min-w-[60px] data-[state=active]:bg-pink-500 data-[state=active]:text-white font-bold rounded-lg py-1 px-1.5 text-[7px] uppercase">
             Soft
           </TabsTrigger>
-          <TabsTrigger value="doodle" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white font-bold rounded-lg px-0.5 text-[7px] uppercase">
+          <TabsTrigger value="doodle" className="flex-1 min-w-[60px] data-[state=active]:bg-orange-500 data-[state=active]:text-white font-bold rounded-lg py-1 px-1.5 text-[7px] uppercase">
             Doodle
           </TabsTrigger>
         </TabsList>
@@ -130,7 +133,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
           <span className="hidden sm:inline">{t.settings_btn}</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[420px] bg-card/95 backdrop-blur-xl border-border/50 shadow-2xl p-0 overflow-hidden ring-1 ring-white/10">
+      <DialogContent className="sm:max-w-[440px] bg-card/95 backdrop-blur-xl border-border/50 shadow-2xl p-0 overflow-hidden ring-1 ring-white/10">
         <div className="h-20 sm:h-24 w-full bg-gradient-to-br from-accent/20 to-accent/5 flex items-center px-6 sm:px-8">
           <div className="flex items-center gap-3 sm:gap-4">
             <div className="bg-accent p-2 sm:p-2.5 rounded-xl shadow-lg shadow-accent/20">
