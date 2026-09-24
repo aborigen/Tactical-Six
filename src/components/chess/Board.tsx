@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -168,7 +169,10 @@ const Board: React.FC<BoardProps> = ({
   return (
     <div 
       onContextMenu={preventContextMenu}
-      className="relative aspect-square w-full portrait:w-full max-w-[550px] mx-auto select-none rounded-xl sm:rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-4 sm:border-[12px] border-card/80 bg-card ring-1 ring-white/10 group touch-none"
+      className={cn(
+        "relative aspect-square select-none rounded-xl sm:rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-4 sm:border-[12px] border-card/80 bg-card ring-1 ring-white/10 group touch-none mx-auto transition-all duration-300",
+        "h-full w-auto portrait:h-auto portrait:w-full max-h-full max-w-full"
+      )}
     >
       <div className="chess-board-grid w-full h-full">
         {game.board.map((rowArr, row) =>

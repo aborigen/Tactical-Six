@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
@@ -453,7 +454,7 @@ export default function Home() {
         <DialogContent className="w-[95vw] sm:max-w-[550px] bg-card/95 backdrop-blur-xl border-border/50 shadow-2xl p-0 overflow-hidden ring-1 ring-white/10 max-h-[90vh] flex flex-col">
           <div className="h-20 sm:h-28 w-full shrink-0 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center px-6 sm:px-8">
             <div className="flex items-center gap-3 sm:gap-4">
-              <div className="bg-primary p-2 sm:p-2.5 rounded-xl shadow-lg shadow-primary/20">
+              <div className="bg-primary p-2.5 rounded-xl shadow-lg shadow-primary/20">
                 <Target className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div>
@@ -666,8 +667,8 @@ export default function Home() {
           </Card>
         </div>
 
-        <div className="flex-1 flex flex-col items-center justify-center p-1 sm:p-2 lg:col-span-6 lg:p-0 min-h-0 landscape:flex-[2]">
-          <div className="relative flex-1 w-full max-w-[550px] flex items-center justify-center min-h-0">
+        <div className="flex-1 flex flex-col items-center justify-center p-1 sm:p-2 lg:col-span-6 lg:p-0 min-h-0 landscape:flex-[2] landscape:p-2 landscape:justify-center">
+          <div className="relative flex-1 w-full max-w-[550px] flex items-center justify-center min-h-0 landscape:h-full">
             <Board 
               game={displayedGame} 
               onMove={handleMove} 
@@ -687,7 +688,7 @@ export default function Home() {
             )}
           </div>
 
-          <div className="w-full max-w-[550px] mt-1 shrink-0">
+          <div className="w-full max-w-[550px] mt-1 shrink-0 landscape:mt-0.5">
             <div className={cn(
               "px-3 py-1.5 sm:px-4 sm:py-3 rounded-xl border transition-all duration-500",
               displayedGame.isGameOver 
