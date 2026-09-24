@@ -739,8 +739,8 @@ export default function Home() {
           </Card>
         </div>
 
-        <div className="lg:hidden shrink-0 h-[60px] sm:h-[100px] landscape:h-full landscape:w-[280px] px-2 pb-2 sm:pb-4 landscape:p-4 landscape:border-l landscape:border-white/5">
-          <div className="h-full bg-card/50 rounded-lg p-1 sm:p-2 border border-white/5 overflow-hidden">
+        <div className="hidden landscape:flex lg:hidden shrink-0 h-[60px] sm:h-[100px] landscape:h-full landscape:w-[280px] px-2 pb-2 sm:pb-4 landscape:p-4 landscape:border-l landscape:border-white/5">
+          <div className="h-full w-full bg-card/50 rounded-lg p-1 sm:p-2 border border-white/5 overflow-hidden flex flex-col">
             {EnginePanel}
           </div>
         </div>
