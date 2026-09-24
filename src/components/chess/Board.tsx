@@ -14,6 +14,7 @@ interface BoardProps {
   bodySkin?: PiecePartStyle;
   baseSkin?: PiecePartStyle;
   onPieceSelect?: (type: PieceType, color: PlayerColor) => void;
+  inspectMode?: boolean;
 }
 
 const Board: React.FC<BoardProps> = ({ 
@@ -23,7 +24,8 @@ const Board: React.FC<BoardProps> = ({
   headSkin = 'simple',
   bodySkin = 'simple',
   baseSkin = 'simple',
-  onPieceSelect
+  onPieceSelect,
+  inspectMode = false
 }) => {
   const [selectedSquare, setSelectedSquare] = useState<Position | null>(null);
   const [legalMovesFromSelected, setLegalMovesFromSelected] = useState<Position[]>([]);
@@ -72,11 +74,20 @@ const Board: React.FC<BoardProps> = ({
 
   const handleSquareClick = (row: number, col: number) => {
     const piece = game.board[row][col];
-    if (piece) {
-      onPieceSelect?.(piece.type, piece.color);
+    
+    if (inspectMode) {
+      if (piece) {
+        onPieceSelect?.(piece.type, piece.color);
+      }
+      return;
     }
 
-    if (game.isGameOver) return;
+    if (game.isGameOver) {
+      if (piece) {
+        onPieceSelect?.(piece.type, piece.color);
+      }
+      return;
+    }
 
     if (selectedSquare) {
       const isLegal = legalMovesFromSelected.some(m => m.row === row && m.col === col);
@@ -98,13 +109,12 @@ const Board: React.FC<BoardProps> = ({
   };
 
   const handleDragStart = (e: React.DragEvent, row: number, col: number) => {
-    if (game.isGameOver) {
+    if (game.isGameOver || inspectMode) {
       e.preventDefault();
       return;
     }
     const piece = game.board[row][col];
     if (piece && piece.color === game.turn) {
-      onPieceSelect?.(piece.type, piece.color);
       setSelectedSquare({ row, col });
       e.dataTransfer.setData("text/plain", JSON.stringify({ row, col }));
       e.dataTransfer.effectAllowed = "move";
@@ -115,11 +125,13 @@ const Board: React.FC<BoardProps> = ({
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
+    if (inspectMode) return;
     e.dataTransfer.dropEffect = "move";
   };
 
   const handleDrop = (e: React.DragEvent, row: number, col: number) => {
     e.preventDefault();
+    if (inspectMode) return;
     const data = e.dataTransfer.getData("text/plain");
     try {
       const fromPos = JSON.parse(data) as Position;
@@ -179,11 +191,12 @@ const Board: React.FC<BoardProps> = ({
                 className={cn(
                   "relative transition-all duration-300 overflow-hidden",
                   isDark ? "square-dark" : "square-light",
-                  isSelected && "square-highlight",
+                  isSelected && !inspectMode && "square-highlight",
                   isHint && "square-hint animate-pulse-glow",
                   isCheck && "square-check",
                   isCheckmate && "square-checkmate",
-                  (isLastMoveFrom || isLastMoveTo) && !isSelected && !isHint && !isCheck && !isCheckmate && "bg-primary/10"
+                  (isLastMoveFrom || isLastMoveTo) && !isSelected && !isHint && !isCheck && !isCheckmate && "bg-primary/10",
+                  inspectMode && piece && "hover:bg-accent/10 cursor-help"
                 )}
               >
                 {col === 0 && (
@@ -217,12 +230,12 @@ const Board: React.FC<BoardProps> = ({
 
                 {piece && (
                   <div 
-                    draggable={!game.isGameOver && piece.color === game.turn}
+                    draggable={!game.isGameOver && !inspectMode && piece.color === game.turn}
                     onDragStart={(e) => handleDragStart(e, row, col)}
                     className={cn(
                       "w-full h-full p-0.5 transition-all duration-300 flex items-center justify-center",
-                      !game.isGameOver && piece.color === game.turn ? "cursor-grab active:cursor-grabbing" : "cursor-default",
-                      isSelected ? "scale-105 drop-shadow-2xl z-20" : "scale-100 drop-shadow-lg",
+                      inspectMode ? "cursor-help" : (!game.isGameOver && piece.color === game.turn ? "cursor-grab active:cursor-grabbing" : "cursor-default"),
+                      isSelected && !inspectMode ? "scale-105 drop-shadow-2xl z-20" : "scale-100 drop-shadow-lg",
                       isCheck || isCheckmate ? "animate-check-piece z-30" : "",
                       game.isGameOver && !isCheckmate ? "grayscale-[0.3]" : ""
                     )}
@@ -237,7 +250,7 @@ const Board: React.FC<BoardProps> = ({
                   </div>
                 )}
 
-                {isLegalDest && (
+                {isLegalDest && !inspectMode && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <div className={cn(
                       "rounded-full transition-all duration-500",

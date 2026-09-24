@@ -3,7 +3,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { ChessGame, Move, PieceType, PlayerColor } from '@/lib/chess-logic';
 import Board from '@/components/chess/Board';
-import { PiecePartStyle } from '@/components/chess/Piece';
+import Piece, { PiecePartStyle } from '@/components/chess/Piece';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -16,7 +16,7 @@ import { Label } from '@/components/ui/label';
 import { 
   RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, 
   Check, Copy, ChevronLeft, ChevronLast, ChevronFirst,
-  PlayCircle, Zap, X, Target, Swords, Activity, Star, PartyPopper
+  PlayCircle, Zap, X, Target, Swords, Activity, Star, PartyPopper, Info
 } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
@@ -75,6 +75,7 @@ export default function Home() {
   const [viewIndex, setViewIndex] = useState<number>(-1); 
   const [isLogOpen, setIsLogOpen] = useState(false);
   const [isBriefingOpen, setIsBriefingOpen] = useState(false);
+  const [isInspectMode, setIsInspectMode] = useState(false);
   const [selectedPieceInfo, setSelectedPieceInfo] = useState<{ type: PieceType; color: PlayerColor } | null>(null);
   const { toast } = useToast();
 
@@ -262,11 +263,6 @@ export default function Home() {
     setSelectedPieceInfo({ type, color });
   }, []);
 
-  const initiateBriefing = () => {
-    if (isAdPlaying) return;
-    setIsBriefingOpen(true);
-  };
-
   const startNewMission = () => {
     setIsBriefingOpen(false);
     
@@ -281,6 +277,7 @@ export default function Home() {
     setGameCounted(false);
     setViewIndex(-1);
     setSelectedPieceInfo(null);
+    setIsInspectMode(false);
     localStorage.removeItem(HISTORY_STORAGE_KEY);
     toast({
       title: t.toast_reset_title,
@@ -521,6 +518,46 @@ export default function Home() {
           </ScrollArea>
         </DialogContent>
       </Dialog>
+
+      <Dialog open={!!selectedPieceInfo} onOpenChange={(open) => { if(!open) setSelectedPieceInfo(null); }}>
+        <DialogContent className="w-[85vw] max-w-[340px] bg-card/95 backdrop-blur-xl border-border/50 shadow-2xl p-6 rounded-2xl flex flex-col items-center text-center gap-4">
+          {selectedPieceInfo && (
+            <>
+              <div className="w-28 h-28 bg-secondary/40 rounded-2xl p-4 border border-white/10 flex items-center justify-center shadow-inner animate-in zoom-in-95 duration-300">
+                <Piece 
+                  type={selectedPieceInfo.type} 
+                  color={selectedPieceInfo.color} 
+                  headStyle={headSkin} 
+                  bodyStyle={bodySkin} 
+                  baseStyle={baseSkin} 
+                />
+              </div>
+              <div className="space-y-1">
+                <Badge variant="outline" className={cn(
+                  "text-[8px] font-black tracking-widest uppercase px-2.5 py-0.5 border-white/10",
+                  selectedPieceInfo.color === 'white' ? "bg-foreground text-background" : "bg-accent/20 text-accent"
+                )}>
+                  {selectedPieceInfo.color === 'white' ? t.score_white : t.score_black}
+                </Badge>
+                <DialogTitle className="text-lg font-black tracking-tight text-foreground uppercase">
+                  {getPieceName(selectedPieceInfo.type)}
+                </DialogTitle>
+                <p className="text-[11px] text-muted-foreground font-medium px-2 leading-normal">
+                  {selectedPieceInfo.type === 'p' && t.rules_pawn_desc}
+                  {selectedPieceInfo.type === 'r' && t.rules_rook_desc}
+                  {selectedPieceInfo.type === 'n' && t.rules_knight_desc}
+                  {selectedPieceInfo.type === 'b' && t.rules_bishop_desc}
+                  {selectedPieceInfo.type === 'q' && t.rules_queen_desc}
+                  {selectedPieceInfo.type === 'k' && t.rules_king_desc}
+                </p>
+              </div>
+              <Button size="sm" className="w-full h-9 bg-primary hover:bg-primary/90 text-white font-black text-xs uppercase rounded-xl tracking-wider" onClick={() => setSelectedPieceInfo(null)}>
+                Dismiss
+              </Button>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
       
       <header className="px-4 py-1.5 sm:py-3 flex items-center justify-between shrink-0 border-b border-white/5 bg-secondary/10 backdrop-blur-xl z-40">
         <div className="flex items-center gap-3">
@@ -571,7 +608,7 @@ export default function Home() {
               theme={theme}
               setTheme={setTheme}
             />
-            <Button variant="secondary" size="icon" onClick={initiateBriefing} className="h-7 w-7 sm:h-8 sm:w-8 bg-secondary/50">
+            <Button variant="secondary" size="icon" onClick={() => setIsBriefingOpen(true)} className="h-7 w-7 sm:h-8 sm:w-8 bg-secondary/50">
               <RotateCcw className="w-3 h-3" />
             </Button>
           </div>
@@ -639,6 +676,7 @@ export default function Home() {
               bodySkin={bodySkin} 
               baseSkin={baseSkin} 
               onPieceSelect={handlePieceSelect}
+              inspectMode={isInspectMode}
             />
             {(isReviewMode || isAdPlaying || isBriefingOpen) && (
               <div className="absolute inset-0 bg-background/20 backdrop-blur-[1px] pointer-events-none z-10 rounded-2xl flex items-center justify-center">
@@ -667,7 +705,7 @@ export default function Home() {
                     <h2 className="text-xs sm:text-base font-black text-foreground uppercase italic leading-tight tracking-tight">{getLocalizedStatus(displayedGame.status)}</h2>
                   </div>
                   {!isReviewMode && (
-                    <Button size="sm" onClick={initiateBriefing} className="h-7 sm:h-8 bg-primary text-primary-foreground font-black px-3 sm:px-6 text-[9px] sm:text-xs rounded-full shadow-lg hover:scale-105 transition-transform">
+                    <Button size="sm" onClick={() => setIsBriefingOpen(true)} className="h-7 sm:h-8 bg-primary text-primary-foreground font-black px-3 sm:px-6 text-[9px] sm:text-xs rounded-full shadow-lg hover:scale-105 transition-transform">
                       <RotateCcw className="w-3.5 h-3.5 sm:mr-2" />
                       <span className="hidden sm:inline">{t.replay}</span>
                     </Button>
@@ -685,27 +723,30 @@ export default function Home() {
                         }
                       </span>
                     </div>
-                    <Button 
-                      size="sm" 
-                      variant="ghost" 
-                      onClick={getAiHint} 
-                      disabled={game.isGameOver || isSuggesting || isReviewMode || isAdPlaying}
-                      className="h-5 w-5 sm:h-7 sm:w-7 p-0"
-                    >
-                      <Lightbulb className={cn("w-3.5 h-3.5 sm:w-4 h-4", isSuggesting ? "animate-spin text-accent" : "text-muted-foreground")} />
-                    </Button>
-                  </div>
-                  
-                  {selectedPieceInfo && (
-                    <div className="text-[8px] sm:text-[10px] font-black tracking-wide uppercase px-2 py-0.5 rounded bg-accent/10 border border-accent/20 text-accent flex items-center justify-between animate-in slide-in-from-top-1 duration-200">
-                      <span>
-                        {selectedPieceInfo.color === 'white' ? t.score_white : t.score_black}: {getPieceName(selectedPieceInfo.type)}
-                      </span>
-                      <Button variant="ghost" className="h-3 w-3 p-0 hover:bg-transparent text-accent/60 hover:text-accent" onClick={() => setSelectedPieceInfo(null)}>
-                        <X className="w-2 h-2" />
+                    <div className="flex items-center gap-1.5">
+                      <Button
+                        size="sm"
+                        variant={isInspectMode ? "default" : "outline"}
+                        onClick={() => setIsInspectMode(!isInspectMode)}
+                        className={cn(
+                          "h-6 text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-2 rounded-lg",
+                          isInspectMode ? "bg-accent text-accent-foreground animate-pulse border-accent" : "border-white/10 text-muted-foreground bg-transparent"
+                        )}
+                      >
+                        <Info className="w-3 h-3 sm:mr-1" />
+                        <span className="hidden sm:inline">{isInspectMode ? t.inspect_active_btn : t.inspect_inactive_btn}</span>
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        variant="ghost" 
+                        onClick={getAiHint} 
+                        disabled={game.isGameOver || isSuggesting || isReviewMode || isAdPlaying}
+                        className="h-5 w-5 sm:h-7 sm:w-7 p-0"
+                      >
+                        <Lightbulb className={cn("w-3.5 h-3.5 sm:w-4 h-4", isSuggesting ? "animate-spin text-accent" : "text-muted-foreground")} />
                       </Button>
                     </div>
-                  )}
+                  </div>
                 </div>
               )}
             </div>
@@ -739,7 +780,7 @@ export default function Home() {
           </Card>
         </div>
 
-        <div className="hidden landscape:flex lg:hidden shrink-0 h-[60px] sm:h-[100px] landscape:h-full landscape:w-[280px] px-2 pb-2 sm:pb-4 landscape:p-4 landscape:border-l landscape:border-white/5">
+        <div className="hidden portrait:hidden landscape:flex lg:hidden shrink-0 h-[60px] sm:h-[100px] landscape:h-full landscape:w-[280px] px-2 pb-2 sm:pb-4 landscape:p-4 landscape:border-l landscape:border-white/5">
           <div className="h-full w-full bg-card/50 rounded-lg p-1 sm:p-2 border border-white/5 overflow-hidden flex flex-col">
             {EnginePanel}
           </div>
@@ -780,6 +821,7 @@ export default function Home() {
                         bodySkin={bodySkin} 
                         baseSkin={baseSkin} 
                         onPieceSelect={handlePieceSelect}
+                        inspectMode={true}
                     />
                  </div>
                  <div className="absolute top-4 right-4 z-40">

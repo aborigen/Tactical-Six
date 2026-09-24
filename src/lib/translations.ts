@@ -123,7 +123,9 @@ export const translations = {
     score_black: "Black",
     score_draw: "Draws",
     score_tactical: "COMMANDER EXP",
-    toast_score_reset: "Stats have been cleared."
+    toast_score_reset: "Stats have been cleared.",
+    inspect_active_btn: "Info: ON",
+    inspect_inactive_btn: "Inspect Pieces"
   },
   ru: {
     title: "TACTICAL SIX",
@@ -247,6 +249,8 @@ export const translations = {
     score_black: "Черные",
     score_draw: "Ничьи",
     score_tactical: "ОПЫТ КОМАНДИРА",
-    toast_score_reset: "Статистика очищена."
+    toast_score_reset: "Статистика очищена.",
+    inspect_active_btn: "Инфо: ВКЛ",
+    inspect_inactive_btn: "Инфо о фигурах"
   }
 };
