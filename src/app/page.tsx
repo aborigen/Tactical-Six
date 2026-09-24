@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import { ChessGame, Move } from '@/lib/chess-logic';
+import { ChessGame, Move, PieceType, PlayerColor } from '@/lib/chess-logic';
 import Board from '@/components/chess/Board';
 import { PiecePartStyle } from '@/components/chess/Piece';
 import { Button } from '@/components/ui/button';
@@ -75,6 +75,7 @@ export default function Home() {
   const [viewIndex, setViewIndex] = useState<number>(-1); 
   const [isLogOpen, setIsLogOpen] = useState(false);
   const [isBriefingOpen, setIsBriefingOpen] = useState(false);
+  const [selectedPieceInfo, setSelectedPieceInfo] = useState<{ type: PieceType; color: PlayerColor } | null>(null);
   const { toast } = useToast();
 
   const t = translations[lang];
@@ -245,6 +246,22 @@ export default function Home() {
     return `${base}${isCheck ? ` ${t.status_check}` : ''}`;
   }, [t]);
 
+  const getPieceName = useCallback((type: PieceType) => {
+    switch (type) {
+      case 'p': return t.rules_pawn_title;
+      case 'r': return t.rules_rook_title;
+      case 'n': return t.rules_knight_title;
+      case 'b': return t.rules_bishop_title;
+      case 'q': return t.rules_queen_title;
+      case 'k': return t.rules_king_title;
+      default: return '';
+    }
+  }, [t]);
+
+  const handlePieceSelect = useCallback((type: PieceType, color: PlayerColor) => {
+    setSelectedPieceInfo({ type, color });
+  }, []);
+
   const initiateBriefing = () => {
     if (isAdPlaying) return;
     setIsBriefingOpen(true);
@@ -263,6 +280,7 @@ export default function Home() {
     setExplanation(null);
     setGameCounted(false);
     setViewIndex(-1);
+    setSelectedPieceInfo(null);
     localStorage.removeItem(HISTORY_STORAGE_KEY);
     toast({
       title: t.toast_reset_title,
@@ -620,6 +638,7 @@ export default function Home() {
               headSkin={headSkin} 
               bodySkin={bodySkin} 
               baseSkin={baseSkin} 
+              onPieceSelect={handlePieceSelect}
             />
             {(isReviewMode || isAdPlaying || isBriefingOpen) && (
               <div className="absolute inset-0 bg-background/20 backdrop-blur-[1px] pointer-events-none z-10 rounded-2xl flex items-center justify-center">
@@ -655,25 +674,38 @@ export default function Home() {
                   )}
                 </div>
               ) : (
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className={cn("w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-primary", !isReviewMode && "animate-ping")} />
-                    <span className="text-[10px] sm:text-[11px] font-bold text-foreground/90 italic tracking-tight uppercase leading-none">
-                      {isSuggesting && gameMode === 'pve' && displayedGame.turn === 'black' && !isReviewMode
-                        ? t.engine_calculating
-                        : getLocalizedStatus(displayedGame.status)
-                      }
-                    </span>
+                <div className="flex flex-col gap-1.5 sm:gap-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className={cn("w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-primary", !isReviewMode && "animate-ping")} />
+                      <span className="text-[10px] sm:text-[11px] font-bold text-foreground/90 italic tracking-tight uppercase leading-none">
+                        {isSuggesting && gameMode === 'pve' && displayedGame.turn === 'black' && !isReviewMode
+                          ? t.engine_calculating
+                          : getLocalizedStatus(displayedGame.status)
+                        }
+                      </span>
+                    </div>
+                    <Button 
+                      size="sm" 
+                      variant="ghost" 
+                      onClick={getAiHint} 
+                      disabled={game.isGameOver || isSuggesting || isReviewMode || isAdPlaying}
+                      className="h-6 w-6 sm:h-7 sm:w-7 p-0"
+                    >
+                      <Lightbulb className={cn("w-3.5 h-3.5 sm:w-4 h-4", isSuggesting ? "animate-spin text-accent" : "text-muted-foreground")} />
+                    </Button>
                   </div>
-                  <Button 
-                    size="sm" 
-                    variant="ghost" 
-                    onClick={getAiHint} 
-                    disabled={game.isGameOver || isSuggesting || isReviewMode || isAdPlaying}
-                    className="h-6 w-6 sm:h-7 sm:w-7 p-0"
-                  >
-                    <Lightbulb className={cn("w-3.5 h-3.5 sm:w-4 h-4", isSuggesting ? "animate-spin text-accent" : "text-muted-foreground")} />
-                  </Button>
+                  
+                  {selectedPieceInfo && (
+                    <div className="text-[9px] sm:text-[10px] font-black tracking-wide uppercase px-2 py-1 rounded bg-accent/10 border border-accent/20 text-accent flex items-center justify-between animate-in slide-in-from-top-1 duration-200">
+                      <span>
+                        {selectedPieceInfo.color === 'white' ? t.score_white : t.score_black}: {getPieceName(selectedPieceInfo.type)}
+                      </span>
+                      <Button variant="ghost" className="h-3 w-3 p-0 hover:bg-transparent text-accent/60 hover:text-accent" onClick={() => setSelectedPieceInfo(null)}>
+                        <X className="w-2.5 h-2.5" />
+                      </Button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -748,6 +780,7 @@ export default function Home() {
                         headSkin={headSkin} 
                         bodySkin={bodySkin} 
                         baseSkin={baseSkin} 
+                        onPieceSelect={handlePieceSelect}
                     />
                  </div>
                  <div className="absolute top-4 right-4 z-40">

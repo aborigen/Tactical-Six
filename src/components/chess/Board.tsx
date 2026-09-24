@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { ChessGame, BOARD_SIZE, Position, Move } from '@/lib/chess-logic';
+import { ChessGame, BOARD_SIZE, Position, Move, PieceType, PlayerColor } from '@/lib/chess-logic';
 import Piece, { PiecePartStyle } from './Piece';
 import { cn } from '@/lib/utils';
 import { Trophy, Star } from 'lucide-react';
@@ -13,6 +13,7 @@ interface BoardProps {
   headSkin?: PiecePartStyle;
   bodySkin?: PiecePartStyle;
   baseSkin?: PiecePartStyle;
+  onPieceSelect?: (type: PieceType, color: PlayerColor) => void;
 }
 
 const Board: React.FC<BoardProps> = ({ 
@@ -21,7 +22,8 @@ const Board: React.FC<BoardProps> = ({
   hintMove, 
   headSkin = 'simple',
   bodySkin = 'simple',
-  baseSkin = 'simple'
+  baseSkin = 'simple',
+  onPieceSelect
 }) => {
   const [selectedSquare, setSelectedSquare] = useState<Position | null>(null);
   const [legalMovesFromSelected, setLegalMovesFromSelected] = useState<Position[]>([]);
@@ -69,6 +71,11 @@ const Board: React.FC<BoardProps> = ({
   }, [selectedSquare, game]);
 
   const handleSquareClick = (row: number, col: number) => {
+    const piece = game.board[row][col];
+    if (piece) {
+      onPieceSelect?.(piece.type, piece.color);
+    }
+
     if (game.isGameOver) return;
 
     if (selectedSquare) {
@@ -77,7 +84,6 @@ const Board: React.FC<BoardProps> = ({
         onMove({ from: selectedSquare, to: { row, col } });
         setSelectedSquare(null);
       } else {
-        const piece = game.board[row][col];
         if (piece && piece.color === game.turn) {
           setSelectedSquare({ row, col });
         } else {
@@ -85,7 +91,6 @@ const Board: React.FC<BoardProps> = ({
         }
       }
     } else {
-      const piece = game.board[row][col];
       if (piece && piece.color === game.turn) {
         setSelectedSquare({ row, col });
       }
@@ -99,6 +104,7 @@ const Board: React.FC<BoardProps> = ({
     }
     const piece = game.board[row][col];
     if (piece && piece.color === game.turn) {
+      onPieceSelect?.(piece.type, piece.color);
       setSelectedSquare({ row, col });
       e.dataTransfer.setData("text/plain", JSON.stringify({ row, col }));
       e.dataTransfer.effectAllowed = "move";
