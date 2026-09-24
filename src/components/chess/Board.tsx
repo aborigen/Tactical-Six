@@ -150,7 +150,7 @@ const Board: React.FC<BoardProps> = ({
   return (
     <div 
       onContextMenu={preventContextMenu}
-      className="relative aspect-square w-full max-w-[550px] max-h-full mx-auto select-none rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-[12px] border-card/80 bg-card ring-1 ring-white/10 group touch-none"
+      className="relative aspect-square w-full portrait:w-auto portrait:h-full portrait:max-h-[48svh] max-w-[550px] sm:max-h-full mx-auto select-none rounded-xl sm:rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-8 sm:border-[12px] border-card/80 bg-card ring-1 ring-white/10 group touch-none"
     >
       <div className="chess-board-grid w-full h-full">
         {game.board.map((rowArr, row) =>
