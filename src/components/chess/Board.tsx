@@ -156,7 +156,7 @@ const Board: React.FC<BoardProps> = ({
   return (
     <div 
       onContextMenu={preventContextMenu}
-      className="relative aspect-square w-full portrait:w-auto portrait:h-full portrait:max-h-[48svh] max-w-[550px] sm:max-h-full mx-auto select-none rounded-xl sm:rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-8 sm:border-[12px] border-card/80 bg-card ring-1 ring-white/10 group touch-none"
+      className="relative aspect-square w-full portrait:w-auto portrait:h-full portrait:max-h-[52svh] max-w-[550px] sm:max-h-full mx-auto select-none rounded-xl sm:rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-4 sm:border-[12px] border-card/80 bg-card ring-1 ring-white/10 group touch-none"
     >
       <div className="chess-board-grid w-full h-full">
         {game.board.map((rowArr, row) =>
@@ -188,7 +188,7 @@ const Board: React.FC<BoardProps> = ({
               >
                 {col === 0 && (
                   <span className={cn(
-                    "absolute top-1 left-1.5 text-[10px] font-black opacity-20 transition-opacity group-hover:opacity-40",
+                    "absolute top-0.5 left-1 text-[8px] font-black opacity-30 transition-opacity group-hover:opacity-50",
                     isDark ? "text-slate-400" : "text-slate-600"
                   )}>
                     {BOARD_SIZE - row}
@@ -196,7 +196,7 @@ const Board: React.FC<BoardProps> = ({
                 )}
                 {row === BOARD_SIZE - 1 && (
                   <span className={cn(
-                    "absolute bottom-1 right-1.5 text-[10px] font-black opacity-20 transition-opacity group-hover:opacity-40",
+                    "absolute bottom-0.5 right-1 text-[8px] font-black opacity-30 transition-opacity group-hover:opacity-50",
                     isDark ? "text-slate-400" : "text-slate-600"
                   )}>
                     {String.fromCharCode(97 + col).toUpperCase()}
@@ -204,14 +204,14 @@ const Board: React.FC<BoardProps> = ({
                 )}
 
                 {isCheck && (
-                  <div className="absolute top-1 right-1 bg-destructive text-destructive-foreground text-[9px] font-black rounded-full w-4 h-4 flex items-center justify-center animate-bounce shadow-lg border border-white/20 z-40">
+                  <div className="absolute top-0.5 right-0.5 bg-destructive text-destructive-foreground text-[8px] font-black rounded-full w-3.5 h-3.5 flex items-center justify-center animate-bounce shadow-lg border border-white/20 z-40">
                     !
                   </div>
                 )}
 
                 {isCheckmate && (
                   <div className="absolute inset-0 flex items-center justify-center z-40">
-                    <Star className="w-8 h-8 text-primary fill-primary animate-spin" />
+                    <Star className="w-6 h-6 text-primary fill-primary animate-spin" />
                   </div>
                 )}
 
@@ -220,7 +220,7 @@ const Board: React.FC<BoardProps> = ({
                     draggable={!game.isGameOver && piece.color === game.turn}
                     onDragStart={(e) => handleDragStart(e, row, col)}
                     className={cn(
-                      "w-full h-full p-0 transition-all duration-300 flex items-center justify-center",
+                      "w-full h-full p-0.5 transition-all duration-300 flex items-center justify-center",
                       !game.isGameOver && piece.color === game.turn ? "cursor-grab active:cursor-grabbing" : "cursor-default",
                       isSelected ? "scale-105 drop-shadow-2xl z-20" : "scale-100 drop-shadow-lg",
                       isCheck || isCheckmate ? "animate-check-piece z-30" : "",
@@ -242,8 +242,8 @@ const Board: React.FC<BoardProps> = ({
                     <div className={cn(
                       "rounded-full transition-all duration-500",
                       piece 
-                        ? "w-[95%] h-[95%] border-[3px] border-accent/40 animate-pulse scale-100" 
-                        : "w-3 h-3 bg-accent/40 shadow-[0_0_10px_rgba(96,222,222,0.4)]"
+                        ? "w-[92%] h-[92%] border-[2px] border-accent/40 animate-pulse scale-100" 
+                        : "w-2.5 h-2.5 bg-accent/40 shadow-[0_0_8px_rgba(96,222,222,0.4)]"
                     )} />
                   </div>
                 )}
@@ -257,8 +257,8 @@ const Board: React.FC<BoardProps> = ({
 
       {game.isGameOver && game.status.toLowerCase().includes('checkmate') && (
         <div className="absolute inset-0 z-50 pointer-events-none flex flex-col items-center justify-center bg-primary/10 backdrop-blur-[2px] animate-in fade-in zoom-in duration-500">
-           <Trophy className="w-32 h-32 text-primary drop-shadow-[0_0_30px_rgba(255,191,0,0.8)] animate-bounce mb-4" />
-           <div className="bg-primary text-primary-foreground px-8 py-3 rounded-full font-black text-2xl uppercase tracking-[0.2em] shadow-[0_0_50px_rgba(255,191,0,0.5)] border-4 border-white/20">
+           <Trophy className="w-20 h-20 text-primary drop-shadow-[0_0_30px_rgba(255,191,0,0.8)] animate-bounce mb-2" />
+           <div className="bg-primary text-primary-foreground px-6 py-2 rounded-full font-black text-lg uppercase tracking-[0.2em] shadow-[0_0_50px_rgba(255,191,0,0.5)] border-2 border-white/20">
              Victory!
            </div>
         </div>
@@ -269,14 +269,14 @@ const Board: React.FC<BoardProps> = ({
           <defs>
             <marker
               id="arrowhead"
-              markerWidth="10"
-              markerHeight="7"
-              refX="9"
-              refY="3.5"
+              markerWidth="8"
+              markerHeight="6"
+              refX="7"
+              refY="3"
               orient="auto"
             >
               <polygon 
-                points="0 0, 10 3.5, 0 7" 
+                points="0 0, 8 3, 0 6" 
                 fill="hsl(var(--primary))" 
                 className="opacity-70"
               />
@@ -288,7 +288,7 @@ const Board: React.FC<BoardProps> = ({
             x2={`${getSquareCenter(lastMove.to).x}%`}
             y2={`${getSquareCenter(lastMove.to).y}%`}
             stroke="hsl(var(--primary))"
-            strokeWidth="3"
+            strokeWidth="2.5"
             strokeLinecap="round"
             markerEnd="url(#arrowhead)"
             className="opacity-40 animate-in fade-in duration-500"

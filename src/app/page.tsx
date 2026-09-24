@@ -16,7 +16,7 @@ import { Label } from '@/components/ui/label';
 import { 
   RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, 
   Check, Copy, ChevronLeft, ChevronLast, ChevronFirst,
-  PlayCircle, Zap, X, Target, Swords, Activity, Star, Shield, PartyPopper
+  PlayCircle, Zap, X, Target, Swords, Activity, Star, PartyPopper
 } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
@@ -522,10 +522,10 @@ export default function Home() {
         </DialogContent>
       </Dialog>
       
-      <header className="px-4 py-2 sm:py-3 flex items-center justify-between shrink-0 border-b border-white/5 bg-secondary/10 backdrop-blur-xl z-40">
+      <header className="px-4 py-1.5 sm:py-3 flex items-center justify-between shrink-0 border-b border-white/5 bg-secondary/10 backdrop-blur-xl z-40">
         <div className="flex items-center gap-3">
           <div className="bg-primary p-1.5 rounded-xl shadow-2xl shadow-primary/30 ring-1 ring-white/20 sm:p-2 transition-transform hover:scale-105 duration-300">
-            <svg viewBox="0 0 24 24" className="w-5 h-5 sm:w-6 sm:h-6 fill-none stroke-white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg viewBox="0 0 24 24" className="w-4 h-4 sm:w-6 sm:h-6 fill-none stroke-white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
               <circle cx="12" cy="11" r="3" className="fill-white/20" />
               <path d="M12 8v6" />
@@ -551,10 +551,10 @@ export default function Home() {
             <span className="text-[10px] font-black text-accent uppercase tracking-tighter">{scores.tacticalPoints} EXP</span>
           </div>
 
-          <div className="flex items-center gap-1">
-            <Button variant="outline" size="sm" onClick={() => setIsLogOpen(true)} className="border-primary/20 bg-primary/5 hover:bg-primary/10 font-bold text-primary h-8 px-2 sm:px-3">
-              <History className="w-4 h-4" />
-              <span className="hidden sm:inline ml-2">{t.history_btn}</span>
+          <div className="flex items-center gap-0.5 sm:gap-1">
+            <Button variant="outline" size="sm" onClick={() => setIsLogOpen(true)} className="border-primary/20 bg-primary/5 hover:bg-primary/10 font-bold text-primary h-7 sm:h-8 px-1.5 sm:px-3 text-[10px]">
+              <History className="w-3.5 h-3.5 sm:mr-2" />
+              <span className="hidden sm:inline">{t.history_btn}</span>
             </Button>
             <RulesHelp lang={lang} />
             <SettingsDialog 
@@ -571,14 +571,14 @@ export default function Home() {
               theme={theme}
               setTheme={setTheme}
             />
-            <Button variant="secondary" size="icon" onClick={initiateBriefing} className="h-8 w-8 bg-secondary/50">
-              <RotateCcw className="w-3.5 h-3.5" />
+            <Button variant="secondary" size="icon" onClick={initiateBriefing} className="h-7 w-7 sm:h-8 sm:w-8 bg-secondary/50">
+              <RotateCcw className="w-3 h-3" />
             </Button>
           </div>
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col landscape:flex-row lg:grid lg:grid-cols-12 lg:gap-8 lg:p-6 overflow-hidden">
+      <main className="flex-1 flex flex-col landscape:flex-row lg:grid lg:grid-cols-12 lg:gap-8 lg:p-4 overflow-hidden">
         
         <div className="hidden lg:col-span-3 lg:flex flex-col gap-6 overflow-hidden">
            <Card className="flex-1 bg-card border-border shadow-2xl overflow-hidden flex flex-col">
@@ -629,7 +629,7 @@ export default function Home() {
           </Card>
         </div>
 
-        <div className="flex-1 flex flex-col items-center justify-center p-2 lg:col-span-6 lg:p-0 min-h-0 landscape:flex-[2]">
+        <div className="flex-1 flex flex-col items-center justify-center p-1 sm:p-2 lg:col-span-6 lg:p-0 min-h-0 landscape:flex-[2]">
           <div className="relative flex-1 w-full max-w-[550px] flex items-center justify-center min-h-0">
             <Board 
               game={displayedGame} 
@@ -649,36 +649,36 @@ export default function Home() {
             )}
           </div>
 
-          <div className="w-full max-w-[550px] mt-1.5 sm:mt-2 shrink-0">
+          <div className="w-full max-w-[550px] mt-1 shrink-0">
             <div className={cn(
-              "px-3 py-2 sm:px-4 sm:py-3 rounded-xl border transition-all duration-500",
+              "px-3 py-1.5 sm:px-4 sm:py-3 rounded-xl border transition-all duration-500",
               displayedGame.isGameOver 
                 ? "bg-primary/30 border-primary shadow-[0_0_40px_rgba(255,191,0,0.3)] animate-in zoom-in duration-700" 
                 : "bg-secondary/40 border-white/5"
             )}>
               {displayedGame.isGameOver ? (
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-2 sm:gap-3">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5 sm:gap-3">
                     {displayedGame.status.toLowerCase().includes('checkmate') ? (
-                       <PartyPopper className="w-6 h-6 text-primary animate-bounce" />
+                       <PartyPopper className="w-5 h-5 text-primary animate-bounce" />
                     ) : (
-                       <Trophy className="w-5 h-5 text-primary animate-bounce" />
+                       <Trophy className="w-4 h-4 text-primary animate-bounce" />
                     )}
-                    <h2 className="text-sm sm:text-base font-black text-foreground uppercase italic leading-tight tracking-tight">{getLocalizedStatus(displayedGame.status)}</h2>
+                    <h2 className="text-xs sm:text-base font-black text-foreground uppercase italic leading-tight tracking-tight">{getLocalizedStatus(displayedGame.status)}</h2>
                   </div>
                   {!isReviewMode && (
-                    <Button size="sm" onClick={initiateBriefing} className="h-8 bg-primary text-primary-foreground font-black px-4 sm:px-6 text-[10px] sm:text-xs rounded-full shadow-lg shadow-primary/20 hover:scale-105 transition-transform">
-                      <RotateCcw className="w-4 h-4 sm:mr-2" />
+                    <Button size="sm" onClick={initiateBriefing} className="h-7 sm:h-8 bg-primary text-primary-foreground font-black px-3 sm:px-6 text-[9px] sm:text-xs rounded-full shadow-lg hover:scale-105 transition-transform">
+                      <RotateCcw className="w-3.5 h-3.5 sm:mr-2" />
                       <span className="hidden sm:inline">{t.replay}</span>
                     </Button>
                   )}
                 </div>
               ) : (
-                <div className="flex flex-col gap-1.5 sm:gap-2">
+                <div className="flex flex-col gap-1 sm:gap-2">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5">
                       <div className={cn("w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-primary", !isReviewMode && "animate-ping")} />
-                      <span className="text-[10px] sm:text-[11px] font-bold text-foreground/90 italic tracking-tight uppercase leading-none">
+                      <span className="text-[9px] sm:text-[11px] font-bold text-foreground/90 italic tracking-tight uppercase leading-none">
                         {isSuggesting && gameMode === 'pve' && displayedGame.turn === 'black' && !isReviewMode
                           ? t.engine_calculating
                           : getLocalizedStatus(displayedGame.status)
@@ -690,19 +690,19 @@ export default function Home() {
                       variant="ghost" 
                       onClick={getAiHint} 
                       disabled={game.isGameOver || isSuggesting || isReviewMode || isAdPlaying}
-                      className="h-6 w-6 sm:h-7 sm:w-7 p-0"
+                      className="h-5 w-5 sm:h-7 sm:w-7 p-0"
                     >
                       <Lightbulb className={cn("w-3.5 h-3.5 sm:w-4 h-4", isSuggesting ? "animate-spin text-accent" : "text-muted-foreground")} />
                     </Button>
                   </div>
                   
                   {selectedPieceInfo && (
-                    <div className="text-[9px] sm:text-[10px] font-black tracking-wide uppercase px-2 py-1 rounded bg-accent/10 border border-accent/20 text-accent flex items-center justify-between animate-in slide-in-from-top-1 duration-200">
+                    <div className="text-[8px] sm:text-[10px] font-black tracking-wide uppercase px-2 py-0.5 rounded bg-accent/10 border border-accent/20 text-accent flex items-center justify-between animate-in slide-in-from-top-1 duration-200">
                       <span>
                         {selectedPieceInfo.color === 'white' ? t.score_white : t.score_black}: {getPieceName(selectedPieceInfo.type)}
                       </span>
                       <Button variant="ghost" className="h-3 w-3 p-0 hover:bg-transparent text-accent/60 hover:text-accent" onClick={() => setSelectedPieceInfo(null)}>
-                        <X className="w-2.5 h-2.5" />
+                        <X className="w-2 h-2" />
                       </Button>
                     </div>
                   )}
@@ -770,7 +770,6 @@ export default function Home() {
           </header>
 
           <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-6 p-4 sm:p-6 overflow-hidden">
-            {/* Playback Matrix */}
             <div className="flex flex-col items-center justify-center space-y-4 sm:space-y-6 min-h-0">
               <div className="relative w-full max-w-[480px] aspect-square flex items-center justify-center min-h-0 group">
                  <div className="w-full h-full shadow-[0_0_80px_rgba(0,0,0,0.5)] rounded-2xl overflow-hidden ring-1 ring-white/10">
@@ -790,7 +789,6 @@ export default function Home() {
                  </div>
               </div>
 
-              {/* Navigation HUD */}
               <div className="w-full max-w-[480px] grid grid-cols-5 gap-1.5 sm:gap-2 p-1.5 sm:p-2 bg-secondary/30 rounded-2xl border border-white/5 backdrop-blur-md shrink-0">
                 <Button variant="ghost" size="icon" className="h-10 sm:h-12 w-full hover:bg-white/5" onClick={() => setStep(0)} disabled={viewIndex === 0 || game.history.length === 0}>
                   <ChevronFirst className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -810,7 +808,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Manoeuvre Registry */}
             <Card className="flex flex-col bg-card/30 border-white/5 overflow-hidden backdrop-blur-md min-h-0">
               <ScrollArea className="flex-1 p-3 sm:p-6">
                 {game.history.length === 0 ? (

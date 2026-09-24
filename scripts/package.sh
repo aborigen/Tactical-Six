@@ -36,7 +36,7 @@ echo "[3/3] Compressing artifacts into $ZIP_NAME..."
 if command -v zip >/dev/null 2>&1; then
     # We enter the out directory to ensure the zip doesn't have a top-level 'out' folder
     cd out
-    zip -r ../$ZIP_NAME . > /dev/null
+    zip -r ../archive/$ZIP_NAME . > /dev/null
     cd ..
     echo "--- PROTOCOL COMPLETE ---"
     echo "Release Archive Created: $ZIP_NAME"
