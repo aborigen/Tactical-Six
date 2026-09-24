@@ -715,122 +715,134 @@ export default function Home() {
       </main>
 
       <Dialog open={isLogOpen} onOpenChange={setIsLogOpen}>
-        <DialogContent className="max-w-none w-full h-full p-0 bg-background/95 backdrop-blur-2xl border-none z-50">
-          <div className="flex flex-col h-full">
-            <header className="px-6 py-4 flex items-center justify-between border-b border-white/10 shrink-0">
-              <div className="flex items-center gap-3">
-                <div className="bg-primary/20 p-2 rounded-lg border border-primary/30">
-                  <History className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <h2 className="text-lg font-black text-foreground uppercase tracking-tighter">{t.history_title}</h2>
-                  <p className="text-[9px] font-black text-primary uppercase tracking-[0.2em]">{t.history_btn} Protocol active</p>
-                </div>
+        <DialogContent className="max-w-none w-full h-svh p-0 bg-background/95 backdrop-blur-2xl border-none z-50 overflow-hidden flex flex-col">
+          <header className="px-6 py-4 flex items-center justify-between border-b border-white/10 shrink-0 bg-secondary/20">
+            <div className="flex items-center gap-3">
+              <div className="bg-primary/20 p-2 rounded-lg border border-primary/30">
+                <History className="w-5 h-5 text-primary" />
               </div>
-              <div className="flex items-center gap-4">
-                 <Button variant="outline" size="sm" onClick={copyHistory} className="h-9 gap-2 font-black uppercase text-[10px] border-border bg-secondary/20">
-                  {hasCopied ? <Check className="w-4 h-4 text-accent" /> : <Copy className="w-4 h-4" />}
-                  <span className="hidden sm:inline">{hasCopied ? "COPIED" : "COPY LOG"}</span>
+              <div>
+                <h2 className="text-lg font-black text-foreground uppercase tracking-tighter">{t.history_title}</h2>
+                <p className="text-[9px] font-black text-primary uppercase tracking-[0.2em]">{t.history_btn} Protocol active</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 sm:gap-4">
+               <Button variant="outline" size="sm" onClick={copyHistory} className="h-9 gap-2 font-black uppercase text-[10px] border-border bg-secondary/20">
+                {hasCopied ? <Check className="w-4 h-4 text-accent" /> : <Copy className="w-4 h-4" />}
+                <span className="hidden sm:inline">{hasCopied ? "COPIED" : "COPY LOG"}</span>
+              </Button>
+              <Button variant="ghost" size="icon" onClick={() => setIsLogOpen(false)} className="h-10 w-10 hover:bg-white/5">
+                <X className="w-6 h-6" />
+              </Button>
+            </div>
+          </header>
+
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-6 p-4 sm:p-6 overflow-hidden">
+            {/* Playback Matrix */}
+            <div className="flex flex-col items-center justify-center space-y-4 sm:space-y-6 min-h-0">
+              <div className="relative w-full max-w-[480px] aspect-square flex items-center justify-center min-h-0 group">
+                 <div className="w-full h-full shadow-[0_0_80px_rgba(0,0,0,0.5)] rounded-2xl overflow-hidden ring-1 ring-white/10">
+                    <Board 
+                        game={displayedGame} 
+                        onMove={() => {}} 
+                        headSkin={headSkin} 
+                        bodySkin={bodySkin} 
+                        baseSkin={baseSkin} 
+                    />
+                 </div>
+                 <div className="absolute top-4 right-4 z-40">
+                    <Badge variant="outline" className="bg-primary text-white font-black tracking-widest px-4 py-1.5 text-[10px] border-white/20 shadow-2xl backdrop-blur-md">
+                      {viewIndex === -1 ? `DEPLOYED / MOVE ${game.history.length}` : `ARCHIVE / MOVE ${viewIndex + 1}`}
+                    </Badge>
+                 </div>
+              </div>
+
+              {/* Navigation HUD */}
+              <div className="w-full max-w-[480px] grid grid-cols-5 gap-1.5 sm:gap-2 p-1.5 sm:p-2 bg-secondary/30 rounded-2xl border border-white/5 backdrop-blur-md shrink-0">
+                <Button variant="ghost" size="icon" className="h-10 sm:h-12 w-full hover:bg-white/5" onClick={() => setStep(0)} disabled={viewIndex === 0 || game.history.length === 0}>
+                  <ChevronFirst className="w-4 h-4 sm:w-5 sm:h-5" />
                 </Button>
-                <Button variant="ghost" size="icon" onClick={() => setIsLogOpen(false)} className="h-10 w-10">
-                  <X className="w-6 h-6" />
+                <Button variant="ghost" size="icon" className="h-10 sm:h-12 w-full hover:bg-white/5" onClick={() => setStep(Math.max(0, (viewIndex === -1 ? game.history.length - 1 : viewIndex) - 1))} disabled={viewIndex === 0 || game.history.length === 0}>
+                  <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                </Button>
+                <Button variant={viewIndex === -1 ? "default" : "secondary"} size="icon" className="h-10 sm:h-12 w-full font-black shadow-xl" onClick={setLive}>
+                  <PlayCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+                </Button>
+                <Button variant="ghost" size="icon" className="h-10 sm:h-12 w-full hover:bg-white/5" onClick={() => setStep(Math.min(game.history.length - 1, (viewIndex === -1 ? game.history.length - 1 : viewIndex) + 1))} disabled={viewIndex === -1 || viewIndex === game.history.length - 1 || game.history.length === 0}>
+                  <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                </Button>
+                <Button variant="ghost" size="icon" className="h-10 sm:h-12 w-full hover:bg-white/5" onClick={() => setStep(game.history.length - 1)} disabled={viewIndex === game.history.length - 1 || game.history.length === 0}>
+                  <ChevronLast className="w-4 h-4 sm:w-5 sm:h-5" />
                 </Button>
               </div>
-            </header>
+            </div>
 
-            <div className="flex-1 overflow-hidden flex flex-col lg:grid lg:grid-cols-2 gap-8 p-6">
-              <div className="flex flex-col items-center justify-center space-y-6">
-                <div className="relative w-full max-w-[500px] aspect-square">
-                   <Board 
-                      game={displayedGame} 
-                      onMove={() => {}} 
-                      headSkin={headSkin} 
-                      bodySkin={bodySkin} 
-                      baseSkin={baseSkin} 
-                   />
-                   <div className="absolute top-4 right-4 z-40">
-                      <Badge variant="outline" className="bg-primary text-white font-black tracking-widest px-4 py-1.5 text-[10px] border-white/20 shadow-2xl">
-                        {viewIndex === -1 ? `MOVE ${game.history.length}` : `MOVE ${viewIndex + 1}`}
-                      </Badge>
-                   </div>
-                </div>
-
-                <div className="w-full max-w-[500px] grid grid-cols-5 gap-2 p-2 bg-secondary/30 rounded-2xl border border-border">
-                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-foreground/5" onClick={() => setStep(0)} disabled={viewIndex === 0 || game.history.length === 0}>
-                    <ChevronFirst className="w-5 h-5" />
-                  </Button>
-                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-foreground/5" onClick={() => setStep(Math.max(0, (viewIndex === -1 ? game.history.length - 1 : viewIndex) - 1))} disabled={viewIndex === 0 || game.history.length === 0}>
-                    <ChevronLeft className="w-5 h-5" />
-                  </Button>
-                  <Button variant={viewIndex === -1 ? "default" : "secondary"} size="icon" className="h-12 w-full font-black" onClick={setLive}>
-                    <PlayCircle className="w-5 h-5" />
-                  </Button>
-                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-foreground/5" onClick={() => setStep(Math.min(game.history.length - 1, (viewIndex === -1 ? game.history.length - 1 : viewIndex) + 1))} disabled={viewIndex === -1 || viewIndex === game.history.length - 1 || game.history.length === 0}>
-                    <ChevronRight className="w-5 h-5" />
-                  </Button>
-                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-foreground/5" onClick={() => setStep(game.history.length - 1)} disabled={viewIndex === game.history.length - 1 || game.history.length === 0}>
-                    <ChevronLast className="w-5 h-5" />
-                  </Button>
-                </div>
-              </div>
-
-              <Card className="flex flex-col bg-card/50 border-border overflow-hidden">
-                <ScrollArea className="flex-1 p-6">
-                  {game.history.length === 0 ? (
-                    <div className="h-full flex flex-col items-center justify-center py-20 text-center space-y-4">
-                      <History className="w-16 h-16 text-muted-foreground/20" />
-                      <div className="space-y-1">
-                        <h3 className="text-sm font-black text-foreground uppercase">{t.history_empty_title}</h3>
-                        <p className="text-[10px] text-muted-foreground uppercase tracking-widest">{t.history_empty_desc}</p>
-                      </div>
+            {/* Manoeuvre Registry */}
+            <Card className="flex flex-col bg-card/30 border-white/5 overflow-hidden backdrop-blur-md min-h-0">
+              <ScrollArea className="flex-1 p-3 sm:p-6">
+                {game.history.length === 0 ? (
+                  <div className="h-full flex flex-col items-center justify-center py-20 text-center space-y-4">
+                    <History className="w-16 h-16 text-muted-foreground/10" />
+                    <div className="space-y-1">
+                      <h3 className="text-xs font-black text-foreground/50 uppercase tracking-widest">{t.history_empty_title}</h3>
+                      <p className="text-[10px] text-muted-foreground/40 uppercase tracking-[0.2em]">{t.history_empty_desc}</p>
                     </div>
-                  ) : (
-                    <div className="grid grid-cols-1 gap-2">
-                      {Array.from({ length: Math.ceil(game.history.length / 2) }).map((_, i) => (
-                        <div key={i} className="grid grid-cols-12 gap-3 items-center">
-                          <div className="col-span-1 text-center">
-                            <span className="text-[10px] font-black text-muted-foreground font-mono">{i + 1}.</span>
-                          </div>
-                          <div className="col-span-11 grid grid-cols-2 gap-3">
-                            <div 
-                              onClick={() => setStep(i * 2)} 
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-2 pb-6">
+                    {Array.from({ length: Math.ceil(game.history.length / 2) }).map((_, i) => (
+                      <div key={i} className="flex gap-2 sm:gap-4 items-center group/row">
+                        <div className="w-6 sm:w-8 shrink-0 flex items-center justify-center">
+                          <span className="text-[10px] font-black text-muted-foreground font-mono opacity-50">{i + 1}.</span>
+                        </div>
+                        <div className="flex-1 grid grid-cols-2 gap-2 sm:gap-4">
+                          <Button 
+                            variant="ghost" 
+                            onClick={() => setStep(i * 2)} 
+                            className={cn(
+                              "relative flex justify-between items-center px-3 sm:px-5 h-10 sm:h-14 rounded-xl border text-[11px] sm:text-xs font-mono transition-all duration-300", 
+                              viewIndex === i * 2 
+                                ? "bg-primary border-primary text-white shadow-[0_0_20px_rgba(var(--primary),0.3)] scale-[1.02] z-10" 
+                                : "bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/10"
+                            )}
+                          >
+                            <span className={cn("text-[8px] sm:text-[9px] font-black uppercase tracking-widest", viewIndex === i * 2 ? "text-white/60" : "text-muted-foreground/60")}>White</span>
+                            <span className="font-bold">{ChessGame.toAlgebraic(game.history[i * 2])}</span>
+                          </Button>
+                          {game.history[i * 2 + 1] && (
+                            <Button 
+                              variant="ghost" 
+                              onClick={() => setStep(i * 2 + 1)} 
                               className={cn(
-                                "flex justify-between items-center px-4 py-3 rounded-xl border text-xs font-mono cursive-pointer transition-all", 
-                                viewIndex === i * 2 ? "bg-primary border-primary shadow-[0_0_15px_rgba(46,117,184,0.4)] text-white" : "bg-secondary/20 border-border hover:bg-secondary/40"
+                                "relative flex justify-between items-center px-3 sm:px-5 h-10 sm:h-14 rounded-xl border text-[11px] sm:text-xs font-mono transition-all duration-300", 
+                                viewIndex === i * 2 + 1 
+                                  ? "bg-accent border-accent text-white shadow-[0_0_20px_rgba(var(--accent),0.3)] scale-[1.02] z-10" 
+                                  : "bg-accent/5 border-accent/10 hover:bg-accent/15 hover:border-accent/20"
                               )}
                             >
-                              <span className={cn("text-[9px] font-black uppercase", viewIndex === i * 2 ? "text-white/60" : "text-muted-foreground/60")}>White</span>
-                              <span className="font-bold">{ChessGame.toAlgebraic(game.history[i * 2])}</span>
-                            </div>
-                            {game.history[i * 2 + 1] && (
-                              <div 
-                                onClick={() => setStep(i * 2 + 1)} 
-                                className={cn(
-                                  "flex justify-between items-center px-4 py-3 rounded-xl border text-xs font-mono cursive-pointer transition-all", 
-                                  viewIndex === i * 2 + 1 ? "bg-accent border-accent shadow-[0_0_15px_rgba(96,222,222,0.4)] text-white" : "bg-accent/5 border-accent/10 hover:bg-accent/10"
-                                )}
-                              >
-                                <span className={cn("text-[9px] font-black uppercase", viewIndex === i * 2 + 1 ? "text-white/60" : "text-accent/60")}>Black</span>
-                                <span className={cn("font-bold", viewIndex === i * 2 + 1 ? "text-white" : "text-accent")}>{ChessGame.toAlgebraic(game.history[i * 2 + 1])}</span>
-                              </div>
-                            )}
-                          </div>
+                              <span className={cn("text-[8px] sm:text-[9px] font-black uppercase tracking-widest", viewIndex === i * 2 + 1 ? "text-white/60" : "text-accent/60")}>Black</span>
+                              <span className={cn("font-bold", viewIndex === i * 2 + 1 ? "text-white" : "text-accent")}>{ChessGame.toAlgebraic(game.history[i * 2 + 1])}</span>
+                            </Button>
+                          )}
                         </div>
-                      ))}
-                    </div>
-                  )}
-                </ScrollArea>
-                <div className="p-4 border-t border-border bg-secondary/10 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <History className="w-3 h-3 text-muted-foreground" />
-                    <span className="text-[9px] font-black text-muted-foreground uppercase">{game.history.length} Manoeuvres Recorded</span>
+                      </div>
+                    ))}
                   </div>
-                  <Button onClick={() => setIsLogOpen(false)} variant="secondary" className="h-8 font-black text-[9px] uppercase px-6">
-                    {t.history_playback_back}
-                  </Button>
+                )}
+              </ScrollArea>
+              
+              <footer className="p-4 border-t border-white/5 bg-secondary/20 flex items-center justify-between backdrop-blur-xl shrink-0">
+                <div className="flex items-center gap-3">
+                  <div className="hidden sm:flex items-center gap-2">
+                    <Activity className="w-3 h-3 text-muted-foreground/40" />
+                    <span className="text-[9px] font-black text-muted-foreground/60 uppercase tracking-widest">{game.history.length} Manoeuvres Recorded</span>
+                  </div>
                 </div>
-              </Card>
-            </div>
+                <Button onClick={() => setIsLogOpen(false)} variant="secondary" className="h-9 font-black text-[10px] uppercase px-8 shadow-sm">
+                  {t.history_playback_back}
+                </Button>
+              </footer>
+            </Card>
           </div>
         </DialogContent>
       </Dialog>
