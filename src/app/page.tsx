@@ -410,16 +410,12 @@ export default function Home() {
         ) : (
           <>
             {!explanation && !isSuggesting && (
-              <div className="flex flex-col items-center justify-center h-full text-center space-y-2 sm:space-y-4">
-                <Lightbulb className="w-5 h-5 sm:w-8 sm:h-8 text-accent/40" />
-                <div className="space-y-0.5">
-                  <p className="text-[8px] sm:text-[9px] font-black text-muted-foreground uppercase tracking-widest">{t.engine_awaiting}</p>
-                  <p className="text-[7px] sm:text-[8px] text-muted-foreground/60 uppercase tracking-tight">{(t as any)[`diff_${difficulty}`]} Depth</p>
-                </div>
-                <Button variant="outline" size="sm" onClick={getAiHint} className="h-6 sm:h-7 px-2 text-[8px] sm:text-[9px] border-accent/30">
-                  <Zap className="w-3 h-3 sm:mr-1" />
-                  <span className="hidden sm:inline">{t.engine_initiate}</span>
+              <div className="flex flex-col items-center justify-center h-full text-center space-y-2">
+                <Button variant="outline" size="sm" onClick={getAiHint} className="h-7 px-3 text-[9px] sm:text-[10px] border-accent/30 bg-accent/5 hover:bg-accent/10">
+                  <Zap className="w-3.5 h-3.5 mr-1 text-accent animate-pulse" />
+                  <span>{t.engine_initiate}</span>
                 </Button>
+                <span className="text-[7px] sm:text-[8px] text-muted-foreground/50 uppercase tracking-[0.15em] mt-1">{(t as any)[`diff_${difficulty}`]} Depth Matrix Active</span>
               </div>
             )}
             {isSuggesting && (
@@ -589,7 +585,7 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-0.5 sm:gap-1">
-            <Button variant="outline" size="sm" onClick={() => setIsLogOpen(true)} className="border-primary/20 bg-primary/5 hover:bg-primary/10 font-bold text-primary h-7 sm:h-8 px-1.5 sm:px-3 text-[10px]">
+            <Button variant="outline" size="sm" onClick={() => setIsLogOpen(true)} className="border-primary/20 bg-primary/5 hover:bg-primary/10 font-bold text-primary h-8 px-1.5 sm:px-3 text-[10px]">
               <History className="w-3.5 h-3.5 sm:mr-2" />
               <span className="hidden sm:inline">{t.history_btn}</span>
             </Button>
@@ -608,7 +604,7 @@ export default function Home() {
               theme={theme}
               setTheme={setTheme}
             />
-            <Button variant="secondary" size="icon" onClick={() => setIsBriefingOpen(true)} className="h-7 w-7 sm:h-8 sm:w-8 bg-secondary/50">
+            <Button variant="secondary" size="icon" onClick={() => setIsBriefingOpen(true)} className="h-8 w-8 bg-secondary/50">
               <RotateCcw className="w-3 h-3" />
             </Button>
           </div>
@@ -690,7 +686,7 @@ export default function Home() {
           <div className="w-full max-w-[550px] mt-1 shrink-0 landscape:mt-0.5">
             <div className={cn(
               "px-3 py-1.5 sm:px-4 sm:py-3 rounded-xl border transition-all duration-500",
-              disabledGame => displayedGame.isGameOver 
+              displayedGame.isGameOver 
                 ? "bg-primary/30 border-primary shadow-[0_0_40px_rgba(255,191,0,0.3)] animate-in zoom-in duration-700" 
                 : "bg-secondary/40 border-white/5"
             )}>
