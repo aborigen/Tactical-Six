@@ -161,7 +161,7 @@
 
 .tactical-arrow-line {
   stroke-dasharray: 8 4;
-  animation: tactical-flow 1.2s linear infinite;
+  animation: tactical-flow 1.2s linear 3 forwards;
 }
 
 @keyframes tactical-flow {
