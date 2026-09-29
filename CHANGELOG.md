@@ -2,6 +2,17 @@
 
 All notable tactical upgrades to the 6x6 combat matrix are documented here.
 
+## [1.12.0] - Responsive Optimization, Inspect Mode & Refined Telemetry
+### Added
+- **Inspect Mode Modals**: Re-engineered piece identification into a premium inspector modal dialog featuring live 3-part composite module assemblies and tactical parameters.
+- **King Skin Live Previewer**: Integrated a real-time reactive model preview directly within the Tactical Visuals section of the Command Settings HUD.
+
+### Refactored & Improved
+- **iPhone 8 Viewport Optimization**: Bound the portrait matrix configuration to fully reactive horizontal limits (`w-full`) to completely prevent edge cutoffs on legacy screens.
+- **Landscape Vector Heights**: Stabilized vertical bounds in widescreen mode to solve the board clipping issues on shorter desktop browser segments.
+- **Adaptive UI Trimming**: Modified contextual layout pipelines to automatically hide the ambient Engine Panel in portrait layouts, maximizing grid interaction bounds.
+- **Animation Loop Limiters**: Hardcoded the arrival pulse ripples and tactical vector streaming flows to terminate exactly after 3 cycles for balanced, non-fatiguing feedback.
+
 ## [1.11.0] - Simple Set Default, High School Characters & Tactical Vision Comfort
 ### Added
 - **Simple Piece Set**: Introduced a custom minimalistic geometric set with highly distinct rank identifiers and compact trapezoidal bodies. Set as the application's default visual skin configuration.
