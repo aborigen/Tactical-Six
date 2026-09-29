@@ -20,4 +20,4 @@ The AI in Tactical Six is a deterministic search engine implemented in TypeScrip
 3. **Move Ordering**: Evaluates captures and promotions first to trigger faster pruning.
 
 ---
-*Tactical Operational Manual v1.10.0*
+*Tactical Operational Manual v1.13.0*

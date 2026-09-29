@@ -2,6 +2,18 @@
 
 This document tracks the iterative deployment of the 6x6 tactical arena and its internal search engine.
 
+## [1.13.0] - Educational Engine Heuristics & Novice Assistance
+**Release Date: 2024-07-05**
+### Added
+- **Novice Strategy Logs**: Injected dynamic tactical tips into the Smart Engine analysis readout targeting entry-level strategic concepts.
+- **Piece Wisdom Matrix**: Created localized rulesets and insights for Pawn formations, Knight forks, Bishop diagonals, Rook artillery positioning, Queen conservation, and King fallback boundaries.
+
+## [1.12.0] - Responsive Optimization, Inspect Mode & Refined Telemetry
+**Release Date: 2024-07-02**
+### Added
+- **Inspect Mode Modals**: Re-engineered piece identification into a premium inspector modal dialog featuring live 3-part composite module assemblies and tactical parameters.
+- **King Skin Live Previewer**: Integrated a real-time reactive model preview directly within the Tactical Visuals section of the Command Settings HUD.
+
 ## [1.10.0] - Refined Combat Feedback & Victory Protocol
 **Release Date: 2024-06-28**
 ### Visuals & UX
