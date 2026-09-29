@@ -17,7 +17,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { translations, Language } from '@/lib/translations';
 import { Settings, Globe, Volume2, VolumeX, ShieldCheck, Palette, Sun, Moon, Coffee, Eye, Cpu, Zap, Layout } from 'lucide-react';
-import { PiecePartStyle } from '@/components/chess/Piece';
+import Piece, { PiecePartStyle } from '@/components/chess/Piece';
 
 interface SettingsDialogProps {
   lang: Language;
@@ -203,6 +203,21 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
                   SKIN_COMPOSITE
                 </Badge>
               </div>
+
+              <div className="flex flex-col items-center justify-center p-4 bg-secondary/20 border border-border rounded-xl gap-2 shadow-inner">
+                <div className="w-20 h-20 bg-card rounded-lg border border-border/50 p-2 flex items-center justify-center shadow-md">
+                  <Piece 
+                    type="k" 
+                    color="white" 
+                    headStyle={headSkin} 
+                    bodyStyle={bodySkin} 
+                    baseStyle={baseSkin} 
+                  />
+                </div>
+                <span className="text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground">
+                  {t.rules_king_title} Preview
+                </span>
+              </div>
               
               <div className="space-y-4">
                 <SkinSelector label={t.settings_skin_head} value={headSkin} onChange={setHeadSkin} icon={Zap} />
@@ -254,7 +269,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
 
             <div className="pt-4 border-t border-border">
               <div className="flex items-center gap-3 p-3 sm:p-4 bg-secondary/10 rounded-xl border border-border">
-                <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground shrink-0" />
+                <ShieldCheck className="w-4 h-4 sm:w-5 h-5 text-muted-foreground shrink-0" />
                 <div>
                   <p className="text-[9px] sm:text-[10px] font-bold text-muted-foreground leading-tight uppercase tracking-wide">
                     System integrity confirmed. 
