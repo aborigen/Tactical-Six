@@ -2,6 +2,11 @@
 
 All notable tactical upgrades to the 6x6 combat matrix are documented here.
 
+## [1.13.0] - Educational Engine Heuristics & Novice Assistance
+### Added
+- **Novice Strategy Logs**: Injected dynamic tactical tips into the Smart Engine analysis readout targeting entry-level strategic concepts.
+- **Piece Wisdom Matrix**: Created localized rulesets and insights for Pawn formations, Knight forks, Bishop diagonals, Rook artillery positioning, Queen conservation, and King fallback boundaries.
+
 ## [1.12.0] - Responsive Optimization, Inspect Mode & Refined Telemetry
 ### Added
 - **Inspect Mode Modals**: Re-engineered piece identification into a premium inspector modal dialog featuring live 3-part composite module assemblies and tactical parameters.
