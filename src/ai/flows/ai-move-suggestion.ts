@@ -60,11 +60,25 @@ export async function aiMoveSuggestion(input: AIMoveSuggestionInput): Promise<AI
   const algebraic = ChessGame.toAlgebraic(result.move);
   const t = translations[lang];
   
-  // Localized explanation string
+  // Inspect specific properties of the moving piece for educational novice tips
+  const movingPiece = game.board[result.move.from.row][result.move.from.col];
+  const targetPiece = game.board[result.move.to.row][result.move.to.col];
+
   const score = (result.score / 100).toFixed(2);
-  const explanation = t.engine_eval_template
+  let explanation = t.engine_eval_template
     .replace('{depth}', searchDepth.toString())
     .replace('{score}', score);
+
+  if (movingPiece) {
+    const adviceKey = `engine_advice_${movingPiece.type}`;
+    if ((t as any)[adviceKey]) {
+      explanation += `\n\n💡 ${(t as any)[adviceKey]}`;
+    }
+  }
+
+  if (targetPiece) {
+    explanation += `\n\n🎯 ${t.engine_capture_bonus}`;
+  }
 
   return {
     suggestedMove: algebraic,

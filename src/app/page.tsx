@@ -428,7 +428,9 @@ export default function Home() {
               <ScrollArea className="h-full">
                 <div className="space-y-2 sm:space-y-4">
                   <Badge className="bg-accent/20 text-accent font-black tracking-widest px-2 py-0.5 text-[7px] sm:text-[8px] border border-accent/30">{t.engine_eval}</Badge>
-                  <p className="text-[9px] sm:text-[10px] text-foreground/90 leading-tight sm:leading-relaxed font-medium italic border-l border-accent/30 pl-2 sm:pl-3">"{explanation}"</p>
+                  <p className="text-[9px] sm:text-[10px] text-foreground/90 leading-tight sm:leading-relaxed font-medium italic border-l border-accent/30 pl-2 sm:pl-3 whitespace-pre-line">
+                    {explanation}
+                  </p>
                 </div>
               </ScrollArea>
             )}
