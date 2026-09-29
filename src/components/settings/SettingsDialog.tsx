@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -131,7 +132,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[440px] bg-card/95 backdrop-blur-xl border-border/50 shadow-2xl p-0 overflow-hidden ring-1 ring-white/10">
-        <div className="h-20 sm:h-24 w-full bg-gradient-to-br from-accent/20 to-accent/5 flex items-center px-6 sm:px-8">
+        <DialogHeader className="h-20 sm:h-24 w-full bg-gradient-to-br from-accent/20 to-accent/5 flex flex-row items-center px-6 sm:px-8 text-left space-y-0">
           <div className="flex items-center gap-3 sm:gap-4">
             <div className="bg-accent p-2 sm:p-2.5 rounded-xl shadow-lg shadow-accent/20">
               <Settings className="w-5 h-5 sm:w-6 sm:h-6 text-accent-foreground" />
@@ -140,12 +141,12 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
               <DialogTitle className="text-lg sm:text-xl font-black tracking-tight text-foreground uppercase">
                 {t.settings_title}
               </DialogTitle>
-              <p className="text-[9px] sm:text-[10px] font-black text-accent uppercase tracking-[0.2em] opacity-80">
+              <DialogDescription className="text-[9px] sm:text-[10px] font-black text-accent uppercase tracking-[0.2em] opacity-80">
                 {t.settings_subtitle}
-              </p>
+              </DialogDescription>
             </div>
           </div>
-        </div>
+        </DialogHeader>
 
         <ScrollArea className="max-h-[75vh]">
           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8">

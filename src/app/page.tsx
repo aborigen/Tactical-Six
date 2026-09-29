@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
-  Dialog, DialogContent, DialogTitle
+  Dialog, DialogContent, DialogTitle, DialogHeader, DialogDescription
 } from "@/components/ui/dialog";
 import { Label } from '@/components/ui/label';
 import { 
@@ -449,7 +449,7 @@ export default function Home() {
       
       <Dialog open={isBriefingOpen} onOpenChange={setIsBriefingOpen}>
         <DialogContent className="w-[95vw] sm:max-w-[550px] bg-card/95 backdrop-blur-xl border-border/50 shadow-2xl p-0 overflow-hidden ring-1 ring-white/10 max-h-[90vh] flex flex-col">
-          <div className="h-20 sm:h-28 w-full shrink-0 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center px-6 sm:px-8">
+          <DialogHeader className="h-20 sm:h-28 w-full shrink-0 bg-gradient-to-br from-primary/20 to-primary/5 flex flex-row items-center px-6 sm:px-8 text-left space-y-0">
             <div className="flex items-center gap-3 sm:gap-4">
               <div className="bg-primary p-2.5 rounded-xl shadow-lg shadow-primary/20">
                 <Target className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
@@ -458,12 +458,12 @@ export default function Home() {
                 <DialogTitle className="text-lg sm:text-xl font-black tracking-tight text-white uppercase">
                   {t.briefing_title}
                 </DialogTitle>
-                <p className="text-[9px] sm:text-[10px] font-black text-primary uppercase tracking-[0.2em] opacity-80">
+                <DialogDescription className="text-[9px] sm:text-[10px] font-black text-primary uppercase tracking-[0.2em] opacity-80">
                   {t.briefing_subtitle}
-                </p>
+                </DialogDescription>
               </div>
             </div>
-          </div>
+          </DialogHeader>
 
           <ScrollArea className="flex-1 overflow-y-auto">
             <div className="p-6 sm:p-8 space-y-6 sm:space-y-8">
@@ -530,9 +530,9 @@ export default function Home() {
                   baseStyle={baseSkin} 
                 />
               </div>
-              <div className="space-y-1">
+              <DialogHeader className="space-y-1 items-center">
                 <Badge variant="outline" className={cn(
-                  "text-[8px] font-black tracking-widest uppercase px-2.5 py-0.5 border-white/10",
+                  "text-[8px] font-black tracking-widest uppercase px-2.5 py-0.5 border-white/10 mb-1",
                   selectedPieceInfo.color === 'white' ? "bg-foreground text-background" : "bg-accent/20 text-accent"
                 )}>
                   {selectedPieceInfo.color === 'white' ? t.score_white : t.score_black}
@@ -540,15 +540,15 @@ export default function Home() {
                 <DialogTitle className="text-lg font-black tracking-tight text-foreground uppercase">
                   {getPieceName(selectedPieceInfo.type)}
                 </DialogTitle>
-                <p className="text-[11px] text-muted-foreground font-medium px-2 leading-normal">
+                <DialogDescription className="text-[11px] text-muted-foreground font-medium px-2 leading-normal">
                   {selectedPieceInfo.type === 'p' && t.rules_pawn_desc}
                   {selectedPieceInfo.type === 'r' && t.rules_rook_desc}
                   {selectedPieceInfo.type === 'n' && t.rules_knight_desc}
                   {selectedPieceInfo.type === 'b' && t.rules_bishop_desc}
                   {selectedPieceInfo.type === 'q' && t.rules_queen_desc}
                   {selectedPieceInfo.type === 'k' && t.rules_king_desc}
-                </p>
-              </div>
+                </DialogDescription>
+              </DialogHeader>
               <Button size="sm" className="w-full h-9 bg-primary hover:bg-primary/90 text-white font-black text-xs uppercase rounded-xl tracking-wider" onClick={() => setSelectedPieceInfo(null)}>
                 Dismiss
               </Button>
@@ -570,7 +570,7 @@ export default function Home() {
         </div>
 
         <div className="flex items-center gap-1 sm:gap-2">
-          <div className="flex items-center gap-1 sm:gap-1.5 bg-secondary/40 border border-white/5 p-0.5 sm:p-1 rounded-lg">
+          <div className="flex items-center gap-1.5 sm:gap-1.5 bg-secondary/40 border border-white/5 p-0.5 sm:p-1 rounded-lg">
             <div className="px-1 flex flex-col items-center">
               <span className="text-[6px] sm:text-[7px] font-black text-muted-foreground leading-none uppercase">W</span>
               <span className="text-[9px] sm:text-[10px] font-black text-foreground">{scores.white}</span>
@@ -781,14 +781,14 @@ export default function Home() {
 
       <Dialog open={isLogOpen} onOpenChange={setIsLogOpen}>
         <DialogContent className="max-w-none w-full h-svh p-0 bg-background/95 backdrop-blur-2xl border-none z-50 overflow-hidden flex flex-col">
-          <header className="px-6 py-4 flex items-center justify-between border-b border-white/10 shrink-0 bg-secondary/20">
+          <DialogHeader className="px-6 py-4 flex flex-row items-center justify-between border-b border-white/10 shrink-0 bg-secondary/20 text-left space-y-0">
             <div className="flex items-center gap-3">
               <div className="bg-primary/20 p-2 rounded-lg border border-primary/30">
                 <History className="w-5 h-5 text-primary" />
               </div>
               <div>
-                <h2 className="text-lg font-black text-foreground uppercase tracking-tighter">{t.history_title}</h2>
-                <p className="text-[9px] font-black text-primary uppercase tracking-[0.2em]">{t.history_btn} Protocol active</p>
+                <DialogTitle className="text-lg font-black text-foreground uppercase tracking-tighter">{t.history_title}</DialogTitle>
+                <DialogDescription className="text-[9px] font-black text-primary uppercase tracking-[0.2em]">{t.history_btn} Protocol active</DialogDescription>
               </div>
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
@@ -800,7 +800,7 @@ export default function Home() {
                 <X className="w-6 h-6" />
               </Button>
             </div>
-          </header>
+          </DialogHeader>
 
           <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-6 p-4 sm:p-6 overflow-hidden">
             <div className="flex flex-col items-center justify-center space-y-4 sm:space-y-6 min-h-0">

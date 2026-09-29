@@ -41,7 +41,7 @@ const RulesHelp: React.FC<RulesHelpProps> = ({ lang }) => {
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[550px] bg-card/95 backdrop-blur-xl border-border/50 shadow-2xl p-0 overflow-hidden ring-1 ring-white/10">
-        <div className="h-24 w-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center px-8">
+        <DialogHeader className="h-24 w-full bg-gradient-to-br from-primary/20 to-primary/5 flex flex-row items-center px-8 text-left space-y-0">
           <div className="flex items-center gap-4">
             <div className="bg-primary p-2.5 rounded-xl shadow-lg shadow-primary/20">
               <BookOpen className="w-6 h-6 text-white" />
@@ -50,12 +50,12 @@ const RulesHelp: React.FC<RulesHelpProps> = ({ lang }) => {
               <DialogTitle className="text-xl font-black tracking-tight text-white uppercase">
                 {t.rules_title}
               </DialogTitle>
-              <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em] opacity-80">
+              <DialogDescription className="text-[10px] font-black text-primary uppercase tracking-[0.2em] opacity-80">
                 {t.rules_subtitle}
-              </p>
+              </DialogDescription>
             </div>
           </div>
-        </div>
+        </DialogHeader>
 
         <ScrollArea className="max-h-[70vh] p-8">
           <div className="space-y-8">
