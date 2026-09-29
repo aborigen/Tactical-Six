@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -232,12 +231,16 @@ const Board: React.FC<BoardProps> = ({
                   </div>
                 )}
 
+                {isLastMoveTo && !game.isGameOver && (
+                  <div className="landing-pulse-aura" />
+                )}
+
                 {piece && (
                   <div 
                     draggable={!game.isGameOver && !inspectMode && piece.color === game.turn}
                     onDragStart={(e) => handleDragStart(e, row, col)}
                     className={cn(
-                      "w-full h-full p-0.5 transition-all duration-300 flex items-center justify-center",
+                      "w-full h-full p-0.5 flex items-center justify-center piece-interactive-lift",
                       inspectMode ? "cursor-help" : (!game.isGameOver && piece.color === game.turn ? "cursor-grab active:cursor-grabbing" : "cursor-default"),
                       isSelected && !inspectMode ? "scale-105 drop-shadow-2xl z-20" : "scale-100 drop-shadow-lg",
                       isCheck || isCheckmate ? "animate-check-piece z-30" : "",
@@ -308,7 +311,7 @@ const Board: React.FC<BoardProps> = ({
             strokeWidth="2.5"
             strokeLinecap="round"
             markerEnd="url(#arrowhead)"
-            className="opacity-40 animate-in fade-in duration-500"
+            className="opacity-60 tactical-arrow-line animate-in fade-in duration-500"
           />
         </svg>
       )}
