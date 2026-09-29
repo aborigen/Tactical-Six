@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
@@ -668,7 +667,7 @@ export default function Home() {
         </div>
 
         <div className="flex-1 flex flex-col items-center justify-center p-1 sm:p-2 lg:col-span-6 lg:p-0 min-h-0 landscape:flex-[2] landscape:p-2 landscape:justify-center">
-          <div className="relative flex-1 w-full max-w-[550px] flex items-center justify-center min-h-0 landscape:h-full">
+          <div className="relative flex-1 w-full max-w-[550px] flex items-center justify-center min-h-0 landscape:max-h-[calc(100svh-120px)]">
             <Board 
               game={displayedGame} 
               onMove={handleMove} 
@@ -691,7 +690,7 @@ export default function Home() {
           <div className="w-full max-w-[550px] mt-1 shrink-0 landscape:mt-0.5">
             <div className={cn(
               "px-3 py-1.5 sm:px-4 sm:py-3 rounded-xl border transition-all duration-500",
-              displayedGame.isGameOver 
+              disabledGame => displayedGame.isGameOver 
                 ? "bg-primary/30 border-primary shadow-[0_0_40px_rgba(255,191,0,0.3)] animate-in zoom-in duration-700" 
                 : "bg-secondary/40 border-white/5"
             )}>
