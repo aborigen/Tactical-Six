@@ -702,7 +702,7 @@ export default function Home() {
                   </div>
                   {!isReviewMode && (
                     <Button size="sm" onClick={() => setIsBriefingOpen(true)} className="h-7 sm:h-8 bg-primary text-primary-foreground font-black px-3 sm:px-6 text-[9px] sm:text-xs rounded-full shadow-lg hover:scale-105 transition-transform">
-                      <RotateCcw className="w-3.5 h-3.5 sm:mr-2" />
+                      <RotateCcw className="w-3.5 h-3.5 mr-2" />
                       <span className="hidden sm:inline">{t.replay}</span>
                     </Button>
                   )}
@@ -774,12 +774,6 @@ export default function Home() {
               </div>
             </div>
           </Card>
-        </div>
-
-        <div className="hidden portrait:hidden landscape:flex lg:hidden shrink-0 h-[60px] sm:h-[100px] landscape:h-full landscape:w-[280px] px-2 pb-2 sm:pb-4 landscape:p-4 landscape:border-l landscape:border-white/5">
-          <div className="h-full w-full bg-card/50 rounded-lg p-1 sm:p-2 border border-white/5 overflow-hidden flex flex-col">
-            {EnginePanel}
-          </div>
         </div>
       </main>
 
