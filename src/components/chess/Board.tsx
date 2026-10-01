@@ -1,10 +1,13 @@
+
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { ChessGame, BOARD_SIZE, Position, Move, PieceType, PlayerColor } from '@/lib/chess-logic';
 import Piece, { PiecePartStyle } from './Piece';
 import { cn } from '@/lib/utils';
-import { Trophy, Star } from 'lucide-react';
+import { Trophy, Star, History } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { translations, Language } from '@/lib/translations';
 
 interface BoardProps {
   game: ChessGame;
@@ -16,22 +19,27 @@ interface BoardProps {
   onPieceSelect?: (type: PieceType, color: PlayerColor) => void;
   inspectMode?: boolean;
   showVictory?: boolean;
+  onReview?: () => void;
+  lang?: Language;
 }
 
 const Board: React.FC<BoardProps> = ({ 
   game, 
   onMove, 
   hintMove, 
-  headSkin = 'simple',
-  bodySkin = 'simple',
-  baseSkin = 'simple',
+  headSkin = 'geometric',
+  bodySkin = 'geometric',
+  baseSkin = 'geometric',
   onPieceSelect,
   inspectMode = false,
-  showVictory = false
+  showVictory = false,
+  onReview,
+  lang = 'en'
 }) => {
   const [selectedSquare, setSelectedSquare] = useState<Position | null>(null);
   const [legalMovesFromSelected, setLegalMovesFromSelected] = useState<Position[]>([]);
 
+  const t = translations[lang];
   const lastMove = game.history.length > 0 ? game.history[game.history.length - 1] : null;
 
   const checkSquare = useMemo(() => {
@@ -139,7 +147,7 @@ const Board: React.FC<BoardProps> = ({
       const fromPos = JSON.parse(data) as Position;
       if (fromPos) {
         const isLegal = game.getLegalMoves(game.turn).some(m => 
-          m.from.row === fromPos.row && m.from.col === fromPos.col &&
+          m.from.row === fromPos.row && fromPos.col === col &&
           m.to.row === row && m.to.col === col
         );
         if (isLegal) {
@@ -278,16 +286,24 @@ const Board: React.FC<BoardProps> = ({
       </div>
 
       {showVictory && game.status.toLowerCase().includes('checkmate') && (
-        <div className="absolute inset-0 z-50 pointer-events-none flex flex-col items-center justify-center bg-black/40 backdrop-blur-md animate-in fade-in duration-700">
+        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/40 backdrop-blur-md animate-in fade-in duration-700">
            <div className="flex flex-col items-center scale-up-center animate-in zoom-in-95 duration-500">
               <div className="relative mb-6">
-                <Trophy className="w-24 h-24 text-primary drop-shadow-[0_0_40px_rgba(255,191,0,0.9)] animate-bounce" />
+                <Trophy className="w-20 h-20 sm:w-24 sm:h-24 text-primary drop-shadow-[0_0_40px_rgba(255,191,0,0.9)] animate-bounce" />
                 <Star className="absolute -top-2 -right-2 w-8 h-8 text-white fill-white animate-pulse" />
                 <Star className="absolute -bottom-2 -left-2 w-6 h-6 text-white fill-white animate-pulse delay-150" />
               </div>
-              <div className="bg-primary text-primary-foreground px-8 py-3 rounded-full font-black text-2xl uppercase tracking-[0.25em] shadow-[0_0_60px_rgba(255,191,0,0.6)] border-2 border-white/30 transform -rotate-1">
+              <div className="bg-primary text-primary-foreground px-8 py-3 rounded-full font-black text-xl sm:text-2xl uppercase tracking-[0.25em] shadow-[0_0_60px_rgba(255,191,0,0.6)] border-2 border-white/30 transform -rotate-1 mb-8">
                 Victory!
               </div>
+              
+              <Button 
+                onClick={onReview}
+                className="bg-white text-black hover:bg-white/90 font-black uppercase text-[10px] sm:text-xs tracking-widest px-6 py-2 rounded-full shadow-2xl transition-transform hover:scale-105 active:scale-95 flex items-center gap-2"
+              >
+                <History className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                {t.review_game}
+              </Button>
            </div>
         </div>
       )}

@@ -683,6 +683,8 @@ export default function Home() {
               onPieceSelect={handlePieceSelect}
               inspectMode={isInspectMode}
               showVictory={delayedGameOver}
+              onReview={() => setIsLogOpen(true)}
+              lang={lang}
             />
             {(isReviewMode || isAdPlaying || isBriefingOpen) && (
               <div className="absolute inset-0 bg-background/20 backdrop-blur-[1px] pointer-events-none z-10 rounded-2xl flex items-center justify-center">
@@ -822,6 +824,7 @@ export default function Home() {
                         baseSkin={baseSkin} 
                         onPieceSelect={handlePieceSelect}
                         inspectMode={true}
+                        lang={lang}
                     />
                     <div className="absolute top-4 right-4 z-40 flex flex-col items-end gap-2">
                       <Badge variant="outline" className="bg-background/80 backdrop-blur-md text-foreground font-black tracking-widest px-4 py-1.5 text-[10px] border-white/10 shadow-xl">
