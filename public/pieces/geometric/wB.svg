@@ -1,1 +1,12 @@
-<svg viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg"><g fill="#FFFFFF" stroke="#b38f00" stroke-width="2.5"><polygon points="9,40 36,40 30,30 15,30" stroke-linejoin="round" /><rect x="14" y="28" width="17" height="2.5" /><path d="M22.5 7c-6 10-6 21 0 21s6-11 0-21z" stroke-linejoin="round" /></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="102.25" height="203.699" viewBox="0, 0, 102.25, 203.699">
+  <g id="Figures" transform="translate(-304.204, -551.224)">
+    <g id="wBishop">
+      <path d="M345.158,640.465 L363.93,639.99 L400.296,740.391 L310.361,740.734 L345.158,640.465 z" fill="#E3AB4B"/>
+      <path d="M304.204,746.203 L406.454,746.203 L406.454,754.922 L304.204,754.922 L304.204,746.203 z" fill="#E3AB4B"/>
+      <path d="M318.207,625.987 L392.451,625.987 L392.451,636.291 L318.207,636.291 L318.207,625.987 z" fill="#E3AB4B"/>
+      <path d="M354.312,551.224 L374.618,579.531 C375.783,580.696 374.913,579.775 376.833,582.619 L377.364,583.36 L377.333,583.36 C380.108,587.361 380.906,592.258 381.146,597 C381.146,611.82 369.132,623.833 354.312,623.833 C339.493,623.833 327.479,611.82 327.479,597 C327.6,592.262 328.598,587.348 331.292,583.36 L331.26,583.36 L331.792,582.619 C333.712,579.775 332.842,580.696 334.007,579.531 L354.312,551.224 z" fill="#E3AB4B"/>
+    </g>
+  </g>
+</svg>

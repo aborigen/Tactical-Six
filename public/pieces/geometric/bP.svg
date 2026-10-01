@@ -1,1 +1,12 @@
-<svg viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg"><g fill="#60b3b3" stroke="#1a1a2e" stroke-width="2.5"><polygon points="9,40 36,40 30,30 15,30" stroke-linejoin="round" /><rect x="14" y="28" width="17" height="2.5" /><circle cx="22.5" cy="20" r="9" /></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="102.25" height="185.325" viewBox="0, 0, 102.25, 185.325">
+  <g id="Figures" transform="translate(-660.204, -217.597)">
+    <g id="bPawn">
+      <path d="M701.158,288.465 L719.93,287.99 L756.296,388.391 L666.361,388.734 L701.158,288.465 z" fill="#515151"/>
+      <path d="M660.204,394.203 L762.454,394.203 L762.454,402.922 L660.204,402.922 L660.204,394.203 z" fill="#515151"/>
+      <path d="M674.207,273.521 L748.451,273.521 L748.451,283.825 L674.207,283.825 L674.207,273.521 z" fill="#515151"/>
+      <path d="M709.75,269.097 C695.529,269.097 684,257.568 684,243.347 C684,229.126 695.529,217.597 709.75,217.597 C723.971,217.597 735.5,229.126 735.5,243.347 C735.5,257.568 723.971,269.097 709.75,269.097 z" fill="#515151"/>
+    </g>
+  </g>
+</svg>

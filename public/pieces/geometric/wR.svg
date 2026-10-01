@@ -1,1 +1,12 @@
-<svg viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg"><g fill="#FFFFFF" stroke="#b38f00" stroke-width="2.5"><polygon points="9,40 36,40 30,30 15,30" stroke-linejoin="round" /><rect x="14" y="28" width="17" height="2.5" /><path d="M14 28V10h3v4h5v-4h5v4h4v14H14z" stroke-linejoin="round" /></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="102.25" height="199.56" viewBox="0, 0, 102.25, 199.56">
+  <g id="Figures" transform="translate(-542.237, -554.362)">
+    <g id="wRook">
+      <path d="M585.882,638.482 L599.349,638.271 L638.33,738.761 L548.395,739.104 L585.882,638.482 z" fill="#E3AB4B"/>
+      <path d="M556.24,624.842 L630.484,624.842 L630.484,635.147 L556.24,635.147 L556.24,624.842 z" fill="#E3AB4B"/>
+      <path d="M542.237,745.203 L644.487,745.203 L644.487,753.922 L542.237,753.922 L542.237,745.203 z" fill="#E3AB4B"/>
+      <path d="M554.985,555.603 L570.946,555.603 L573.279,570.856 L585.421,570.479 L585.421,554.362 L600.168,554.744 L600.413,572.178 L613.035,572.242 L613.458,554.866 L631.739,554.614 L621.009,621.433 L564.1,621.349 L554.985,555.603 z" fill="#E3AB4B"/>
+    </g>
+  </g>
+</svg>
