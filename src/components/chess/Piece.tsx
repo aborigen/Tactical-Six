@@ -30,7 +30,7 @@ const Piece: React.FC<PieceProps> = ({
   return (
     <div className={cn(
       "w-full h-full piece-shadow transition-transform duration-300 flex items-center justify-center",
-      type === 'p' && set === 'geometric' && "scale-[0.85] origin-bottom",
+      type === 'p' && (set === 'geometric' || set === 'slimes') && "scale-[0.85] origin-bottom",
       className
     )}>
       <Image 
