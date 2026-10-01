@@ -21,6 +21,76 @@ const DoodleFace = ({ strokeColor }: { strokeColor: string }) => (
  * High-Command Head Modules
  */
 export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strokeColor, style }) => {
+  if (style === 'soft') {
+    const EyePair = ({ cy = 22, r = 4 }: { cy?: number; r?: number }) => (
+      <g>
+        <circle cx="17.5" cy={cy} r={r} fill="white" stroke={strokeColor} strokeWidth="1.2" />
+        <circle cx="17.5" cy={cy} r={r * 0.4} fill={strokeColor} />
+        <circle cx="27.5" cy={cy} r={r} fill="white" stroke={strokeColor} strokeWidth="1.2" />
+        <circle cx="27.5" cy={cy} r={r * 0.4} fill={strokeColor} />
+      </g>
+    );
+
+    const Tentacles = () => (
+      <g fill={fillColor} stroke={strokeColor} strokeWidth="2">
+        <path d="M12 22 C8 20, 6 25, 10 28" strokeLinecap="round" />
+        <path d="M33 22 C37 20, 39 25, 35 28" strokeLinecap="round" />
+      </g>
+    );
+
+    switch (type) {
+      case 'p':
+        return (
+          <g>
+            <path d="M15 28 C15 15, 30 15, 30 28" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
+            <EyePair cy={22} r={3} />
+          </g>
+        );
+      case 'r':
+        return (
+          <g>
+            <path d="M13 28 V12 H32 V28" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
+            <path d="M13 12 L16 8 H29 L32 12" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
+            <EyePair cy={20} r={3.5} />
+            <circle cx="22.5" cy="16" r="1.5" fill={strokeColor} />
+          </g>
+        );
+      case 'n':
+        return (
+          <g>
+            <path d="M14 28 C14 10, 32 10, 32 28" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
+            <path d="M31 15 C36 12, 38 18, 33 22" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
+            <EyePair cy={21} r={3.5} />
+          </g>
+        );
+      case 'b':
+        return (
+          <g>
+            <path d="M22.5 8 C15 18, 15 28, 22.5 28 C30 28, 30 18, 22.5 8 Z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
+            <EyePair cy={18} r={3.5} />
+          </g>
+        );
+      case 'q':
+        return (
+          <g>
+            <path d="M13 28 C13 10, 32 10, 32 28" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
+            <Tentacles />
+            <path d="M22.5 6 A4 4 0 0 1 22.5 14" fill="none" stroke={strokeColor} strokeWidth="2" />
+            <EyePair cy={20} r={4.5} />
+          </g>
+        );
+      case 'k':
+        return (
+          <g>
+            <path d="M12 28 C12 8, 33 8, 33 28" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
+            <Tentacles />
+            <path d="M18 8 L22.5 4 L27 8" fill="none" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
+            <EyePair cy={18} r={5} />
+          </g>
+        );
+    }
+  }
+
   if (style === 'geometric') {
     switch (type) {
       case 'p':
@@ -40,7 +110,6 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
       case 'n':
         return (
           <g>
-            {/* Solid profile piece on the left (Horse Mane/Muzzle) */}
             <path 
               d="M26 28 L14 28 C14 28, 14 10, 26 10 L26 28 Z" 
               fill={fillColor} 
@@ -48,7 +117,6 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
               strokeWidth="2.5" 
               strokeLinejoin="round" 
             />
-            {/* Architectural arc on the right (Exactly per reference) */}
             <path 
               d="M26 5 A 11 11 0 0 1 26 27" 
               fill="none" 
@@ -56,7 +124,6 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
               strokeWidth="3.5" 
               strokeLinecap="butt" 
             />
-            {/* Top horizontal cap detail */}
             <path 
               d="M22 5.5 H28" 
               stroke={strokeColor} 
@@ -105,7 +172,7 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
   if (style === 'school') {
     const HeadContent = () => {
       switch (type) {
-        case 'p': // Pawn: Kid with brown hair bun
+        case 'p': 
           return (
             <g>
               <circle cx="22.5" cy="16" r="6.5" fill="#fcd34d" stroke={strokeColor} strokeWidth="2.5" />
@@ -116,7 +183,7 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
               <path d="M21 18.5c.5.5 1.5.5 2 0" stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" fill="none" />
             </g>
           );
-        case 'r': // Rook: Stacked books (Yellow, Green, Red)
+        case 'r': 
           return (
             <g>
               <rect x="15" y="14" width="15" height="3.5" rx="1" fill="#ef4444" stroke={strokeColor} strokeWidth="2" />
@@ -124,7 +191,7 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
               <rect x="15.5" y="7" width="14" height="3.5" rx="1" fill="#f59e0b" stroke={strokeColor} strokeWidth="2" />
             </g>
           );
-        case 'n': // Knight: Backward baseball cap student
+        case 'n': 
           return (
             <g>
               <path d="M14 16.5c0-5 4-8.5 8.5-8.5s8.5 3.5 8.5 8.5" fill="#ef4444" stroke={strokeColor} strokeWidth="2.5" />
@@ -132,7 +199,7 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
               <circle cx="24.5" cy="7.5" r="1.5" fill="#ffffff" stroke={strokeColor} strokeWidth="1.5" />
             </g>
           );
-        case 'b': // Bishop: Striped winter beanie hat
+        case 'b': 
           return (
             <g>
               <path d="M15 17c0-5 3.5-8 7.5-8s7.5 3 7.5 8Z" fill="#eab308" stroke={strokeColor} strokeWidth="2.5" />
@@ -140,7 +207,7 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
               <circle cx="22.5" cy="7" r="2.5" fill="#ef4444" stroke={strokeColor} strokeWidth="2" />
             </g>
           );
-        case 'q': // Queen: Schoolgirl with side ponytail
+        case 'q': 
           return (
             <g>
               <circle cx="22.5" cy="16" r="6.5" fill="#fde047" stroke={strokeColor} strokeWidth="2.5" />
@@ -151,7 +218,7 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
               <path d="M21 19c.5.5 1.5.5 2 0" stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" fill="none" />
             </g>
           );
-        case 'k': // King: Student with red headphones
+        case 'k': 
           return (
             <g>
               <circle cx="22.5" cy="16" r="6.5" fill="#fed7aa" stroke={strokeColor} strokeWidth="2.5" />
@@ -264,23 +331,6 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
         );
     }
   }
-
-  if (style === 'soft') {
-    switch (type) {
-      case 'p':
-        return (<circle cx="22.5" cy="13.5" r="5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
-      case 'r':
-        return (<rect x="14" y="9" width="17" height="7" rx="3" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
-      case 'n':
-        return (<g><ellipse cx="22.5" cy="13" rx="6" ry="4.5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><circle cx="18" cy="10" r="2" fill={fillColor} stroke={strokeColor} strokeWidth="2" /><circle cx="24" cy="13" r="1" fill={strokeColor} /></g>);
-      case 'b':
-        return (<g><path d="M22.5 8a5 5 0 0 1 5 5c0 2.5-2 4.5-5 4.5s-5-2-5-4.5a5 5 0 0 1 5-5z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><circle cx="22.5" cy="7.5" r="1.5" fill={strokeColor} /></g>);
-      case 'q':
-        return (<g><path d="M22.5 8c3 0 5.5 2 5.5 4.5S25.5 17 22.5 17s-5.5-2-5.5-4.5S19.5 8 22.5 8z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><circle cx="22.5" cy="6.5" r="2" fill={strokeColor} /><circle cx="15.5" cy="10" r="1.5" fill={strokeColor} /><circle cx="29.5" cy="10" r="1.5" fill={strokeColor} /></g>);
-      case 'k':
-        return (<g><rect x="15" y="10" width="15" height="7" rx="3.5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><circle cx="22.5" cy="6.5" r="2" fill={fillColor} stroke={strokeColor} strokeWidth="2" /></g>);
-    }
-  }
   return null;
 };
 
@@ -288,6 +338,18 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
  * Core Body Modules
  */
 export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strokeColor, style }) => {
+  if (style === 'soft') {
+    const mainWidth = type === 'p' ? 12 : 18;
+    return (
+      <path 
+        d={`M${22.5-mainWidth} 34 Q22.5 30, ${22.5+mainWidth} 34 L${22.5+mainWidth} 28 Q22.5 24, ${22.5-mainWidth} 28 Z`} 
+        fill={fillColor} 
+        stroke={strokeColor} 
+        strokeWidth="2.5" 
+      />
+    );
+  }
+
   if (style === 'geometric') {
     return (
       <rect x="14" y="28" width="17" height="2.5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
@@ -297,17 +359,17 @@ export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strok
   if (style === 'school') {
     const BodyContent = () => {
       switch (type) {
-        case 'p': // Pawn: Blue hoodie, backpack strap, book
+        case 'p': 
           return (
             <g>
               <path d="M14 34v-8c0-2.5 2-4.5 4.5-4.5h8c2.5 0 4.5 2 4.5 4.5v8Z" fill="#2563eb" stroke={strokeColor} strokeWidth="2.5" />
-              <path d="M12 25h3v7h-3Z" fill="#dc2626" stroke={strokeColor} strokeWidth="1.5" /> {/* backpack */}
-              <rect x="25" y="26" width="6" height="7" rx="1" fill="#fbbf24" stroke={strokeColor} strokeWidth="1.5" /> {/* book */}
+              <path d="M12 25h3v7h-3Z" fill="#dc2626" stroke={strokeColor} strokeWidth="1.5" />
+              <rect x="25" y="26" width="6" height="7" rx="1" fill="#fbbf24" stroke={strokeColor} strokeWidth="1.5" />
               <line x1="20" y1="21.5" x2="20" y2="25" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
               <line x1="25" y1="21.5" x2="25" y2="25" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
             </g>
           );
-        case 'r': // Rook: School Locker Box Body with face
+        case 'r': 
           return (
             <g>
               <rect x="12" y="17.5" width="21" height="17" rx="1.5" fill="#3b82f6" stroke={strokeColor} strokeWidth="2.5" />
@@ -317,7 +379,7 @@ export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strok
               <rect x="33" y="21" width="2" height="6" fill="#ef4444" stroke={strokeColor} strokeWidth="1" />
             </g>
           );
-        case 'n': // Knight: Round chubby character body
+        case 'n': 
           return (
             <g>
               <circle cx="22.5" cy="23.5" r="8.5" fill="#d97706" stroke={strokeColor} strokeWidth="2.5" />
@@ -326,7 +388,7 @@ export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strok
               <path d="M16 26.5c1 2 4 3 6.5 1" stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" fill="none" />
             </g>
           );
-        case 'b': // Bishop: Green sweatshirt with white stripes, water bottle
+        case 'b': 
           return (
             <g>
               <path d="M15 34v-8c0-3 3-5 7.5-5s7.5 2 7.5 5v8Z" fill="#15803d" stroke={strokeColor} strokeWidth="2.5" />
@@ -335,7 +397,7 @@ export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strok
               <rect x="29.5" y="26" width="4.5" height="8" rx="1" fill="#60a5fa" stroke={strokeColor} strokeWidth="1.5" />
             </g>
           );
-        case 'q': // Queen: Red jacket body, holding smartphone
+        case 'q': 
           return (
             <g>
               <path d="M15 34v-7c0-3.5 3-5 7.5-5s7.5 1.5 7.5 5v7Z" fill="#dc2626" stroke={strokeColor} strokeWidth="2.5" />
@@ -344,7 +406,7 @@ export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strok
               <rect x="28" y="25" width="4.5" height="8" rx="1" fill="#3b82f6" stroke={strokeColor} strokeWidth="1.5" />
             </g>
           );
-        case 'k': // King: Blue letterman jacket with "K", holding skateboard
+        case 'k': 
           return (
             <g>
               <path d="M15 34v-7c0-3.5 3-5 7.5-5s7.5 1.5 7.5 5v7Z" fill="#1d4ed8" stroke={strokeColor} strokeWidth="2.5" />
@@ -376,9 +438,6 @@ export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strok
     );
   }
 
-  if (style === 'soft') {
-    return (<ellipse cx="22.5" cy="24" rx="6.5" ry="8" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
-  }
   return null;
 };
 
@@ -386,6 +445,15 @@ export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strok
  * Stabilizer Base Modules
  */
 export const CompositePieceBase: React.FC<PartProps> = ({ type, fillColor, strokeColor, style }) => {
+  if (style === 'soft') {
+    return (
+      <g>
+        <ellipse cx="22.5" cy="38" rx="15" ry="4" fill="black" opacity="0.2" />
+        <path d="M10 34 C10 38, 35 38, 35 34 Q22.5 40, 10 34 Z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
+      </g>
+    );
+  }
+
   if (style === 'geometric') {
     return (
       <polygon 
@@ -419,8 +487,5 @@ export const CompositePieceBase: React.FC<PartProps> = ({ type, fillColor, strok
     );
   }
 
-  if (style === 'soft') {
-    return (<rect x="10" y="32" width="25" height="7" rx="3.5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
-  }
   return null;
 };
