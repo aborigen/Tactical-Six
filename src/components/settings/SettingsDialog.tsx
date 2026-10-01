@@ -98,17 +98,20 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
         className="w-full bg-secondary/40 border border-border p-1 rounded-xl"
       >
         <TabsList className="flex flex-wrap gap-1 bg-transparent h-auto p-1">
+          <TabsTrigger value="geometric" className="flex-1 min-w-[60px] data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg py-1 px-1.5 text-[7px] uppercase">
+            {t.piece_set_geometric}
+          </TabsTrigger>
           <TabsTrigger value="simple" className="flex-1 min-w-[60px] data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-bold rounded-lg py-1 px-1.5 text-[7px] uppercase">
-            Simple
+            {t.piece_set_simple}
           </TabsTrigger>
           <TabsTrigger value="school" className="flex-1 min-w-[60px] data-[state=active]:bg-blue-600 data-[state=active]:text-white font-bold rounded-lg py-1 px-1.5 text-[7px] uppercase">
-            School
+            {t.piece_set_school}
           </TabsTrigger>
           <TabsTrigger value="soft" className="flex-1 min-w-[60px] data-[state=active]:bg-pink-500 data-[state=active]:text-white font-bold rounded-lg py-1 px-1.5 text-[7px] uppercase">
-            Soft
+            {t.piece_set_soft}
           </TabsTrigger>
           <TabsTrigger value="doodle" className="flex-1 min-w-[60px] data-[state=active]:bg-orange-500 data-[state=active]:text-white font-bold rounded-lg py-1 px-1.5 text-[7px] uppercase">
-            Doodle
+            {t.piece_set_doodle}
           </TabsTrigger>
         </TabsList>
       </Tabs>

@@ -59,9 +59,9 @@ export default function Home() {
   const [game, setGame] = useState(new ChessGame());
   const [gameMode, setGameMode] = useState<GameMode>('pve'); 
   const [difficulty, setDifficulty] = useState<Difficulty>('specialist');
-  const [headSkin, setHeadSkin] = useState<PiecePartStyle>('simple');
-  const [bodySkin, setBodySkin] = useState<PiecePartStyle>('simple');
-  const [baseSkin, setBaseSkin] = useState<PiecePartStyle>('simple');
+  const [headSkin, setHeadSkin] = useState<PiecePartStyle>('geometric');
+  const [bodySkin, setBodySkin] = useState<PiecePartStyle>('geometric');
+  const [baseSkin, setBaseSkin] = useState<PiecePartStyle>('geometric');
   const [theme, setTheme] = useState<ThemeMode>('dark');
   const [hintMove, setHintMove] = useState<Move | null>(null);
   const [isSuggesting, setIsSuggesting] = useState(false);
@@ -524,7 +524,7 @@ export default function Home() {
 
               <Button onClick={startNewMission} className="w-full h-10 sm:h-12 bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest shadow-xl shadow-primary/20 text-[10px] sm:text-xs">
                 {t.briefing_engage}
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
+                <ChevronRight className="w-4 h-4 sm:w-5 h-5 ml-2" />
               </Button>
             </div>
           </ScrollArea>
