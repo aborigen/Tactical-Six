@@ -150,60 +150,57 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
     switch (type) {
       case 'p':
         return (
-          <g transform="translate(22.5, 15.5) scale(1.4) translate(-22.5, -15.5)">
-            <path d="M18,15.5 h9" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
-            <circle cx="22.5" cy="10.5" r="5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
-          </g>
+          <circle cx="22.5" cy="20" r="7.5" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
         );
       case 'r':
         return (
-          <g transform="translate(22.5, 15.5) scale(1.4) translate(-22.5, -15.5)">
-            <path d="M17,15.5 h11" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
-            <path d="M19,15.5 L17.5,8.5 L20.5,8.5 L20.5,11.5 L22,11.5 L22,8.5 L23,8.5 L23,11.5 L24.5,11.5 L24.5,8.5 L27.5,8.5 L26,15.5 Z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />
+          <g>
+            <rect x="14" y="10" width="17" height="15" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
+            <path d="M14 10v-3h4v3 M22 10v-3h4v3 M28 10v-3h3v3" fill="none" stroke={strokeColor} strokeWidth="2" />
           </g>
         );
       case 'n':
         return (
-          <g transform="translate(22.5, 15.5) scale(1.4) translate(-22.5, -15.5)">
-            <path d="M17,15.5 h11" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
-            <path d="M19,15.5 C19,9.5 23,8.5 24.5,9 C26,11.5 26,14 25,15.5 Z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />
-            <path d="M22,9 C23,5.5 26.5,5.5 26.5,9.5" fill="none" stroke={strokeColor} strokeWidth="2.5" />
-          </g>
+          <path d="M18 28 C18 10, 32 10, 32 18 C32 24, 28 28, 18 28 Z" fill={fillColor} stroke={strokeColor} strokeWidth="2" strokeLinejoin="round" />
         );
       case 'b':
         return (
-          <g transform="translate(22.5, 15.5) scale(1.4) translate(-22.5, -15.5)">
-            <path d="M17,15.5 h11" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
-            <path d="M22.5,5.5 C26.5,10.5 26.5,15.5 22.5,15.5 C18.5,15.5 18.5,10.5 22.5,5.5 Z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />
-          </g>
+          <path d="M22.5 7 C16 18, 16 28, 22.5 28 C29 28, 29 18, 22.5 7 Z" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
         );
       case 'q':
         return (
-          <g transform="translate(22.5, 15.5) scale(1.4) translate(-22.5, -15.5)">
-            <path d="M15,15.5 h15" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
-            <path d="M16.5,15.5 C16.5,9.5 28.5,9.5 28.5,15.5 Z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />
-            <circle cx="22.5" cy="8.5" r="2" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
+          <g>
+            <circle cx="22.5" cy="18" r="8" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
+            <circle cx="22.5" cy="7" r="2" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
           </g>
         );
       case 'k':
         return (
-          <g transform="translate(22.5, 15.5) scale(1.4) translate(-22.5, -15.5)">
-            <path d="M15,15.5 h15" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
-            <path d="M16.5,15.5 C16.5,9.5 28.5,9.5 28.5,15.5 Z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />
-            <path d="M22.5,4 v6 M19.5,7 h6" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
+          <g>
+            <circle cx="22.5" cy="18" r="8" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
+            <path d="M22.5 4 v5 M20 6.5 h5" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" />
           </g>
         );
     }
   }
 
-  switch (type) {
-    case 'p': return (<circle cx="22.5" cy="13.5" r="5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
-    case 'r': return (<rect x="14" y="9" width="17" height="7" rx="3" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
-    case 'n': return (<g><ellipse cx="22.5" cy="13" rx="6" ry="4.5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><circle cx="18" cy="10" r="2" fill={fillColor} stroke={strokeColor} strokeWidth="2" /><circle cx="24" cy="13" r="1" fill={strokeColor} /></g>);
-    case 'b': return (<g><path d="M22.5 8a5 5 0 0 1 5 5c0 2.5-2 4.5-5 4.5s-5-2-5-4.5a5 5 0 0 1 5-5z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><circle cx="22.5" cy="7.5" r="1.5" fill={strokeColor} /></g>);
-    case 'q': return (<g><path d="M22.5 8c3 0 5.5 2 5.5 4.5S25.5 17 22.5 17s-5.5-2-5.5-4.5S19.5 8 22.5 8z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><circle cx="22.5" cy="6.5" r="2" fill={strokeColor} /><circle cx="15.5" cy="10" r="1.5" fill={strokeColor} /><circle cx="29.5" cy="10" r="1.5" fill={strokeColor} /></g>);
-    case 'k': return (<g><rect x="15" y="10" width="15" height="7" rx="3.5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><circle cx="22.5" cy="6.5" r="2" fill={fillColor} stroke={strokeColor} strokeWidth="2" /></g>);
+  if (style === 'soft') {
+    switch (type) {
+      case 'p':
+        return (<circle cx="22.5" cy="13.5" r="5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
+      case 'r':
+        return (<rect x="14" y="9" width="17" height="7" rx="3" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
+      case 'n':
+        return (<g><ellipse cx="22.5" cy="13" rx="6" ry="4.5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><circle cx="18" cy="10" r="2" fill={fillColor} stroke={strokeColor} strokeWidth="2" /><circle cx="24" cy="13" r="1" fill={strokeColor} /></g>);
+      case 'b':
+        return (<g><path d="M22.5 8a5 5 0 0 1 5 5c0 2.5-2 4.5-5 4.5s-5-2-5-4.5a5 5 0 0 1 5-5z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><circle cx="22.5" cy="7.5" r="1.5" fill={strokeColor} /></g>);
+      case 'q':
+        return (<g><path d="M22.5 8c3 0 5.5 2 5.5 4.5S25.5 17 22.5 17s-5.5-2-5.5-4.5S19.5 8 22.5 8z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><circle cx="22.5" cy="6.5" r="2" fill={strokeColor} /><circle cx="15.5" cy="10" r="1.5" fill={strokeColor} /><circle cx="29.5" cy="10" r="1.5" fill={strokeColor} /></g>);
+      case 'k':
+        return (<g><rect x="15" y="10" width="15" height="7" rx="3.5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" /><circle cx="22.5" cy="6.5" r="2" fill={fillColor} stroke={strokeColor} strokeWidth="2" /></g>);
+    }
   }
+  return null;
 };
 
 /**
@@ -286,8 +283,16 @@ export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strok
     );
   }
 
-  if (style === 'simple') return (<polygon points="20.5,15.5 24.5,15.5 33,36 12,36" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />);
-  return (<ellipse cx="22.5" cy="24" rx="6.5" ry="8" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
+  if (style === 'simple') {
+    return (
+      <rect x="12" y="28" width="21" height="2" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
+    );
+  }
+
+  if (style === 'soft') {
+    return (<ellipse cx="22.5" cy="24" rx="6.5" ry="8" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
+  }
+  return null;
 };
 
 /**
@@ -309,6 +314,14 @@ export const CompositePieceBase: React.FC<PartProps> = ({ type, fillColor, strok
     );
   }
 
-  if (style === 'simple') return (<rect x="10" y="35.5" width="25" height="3" rx="0.5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />);
-  return (<rect x="10" y="32" width="25" height="7" rx="3.5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
+  if (style === 'simple') {
+    return (
+      <polygon points="10,40 35,40 29,30 16,30" fill={fillColor} stroke={strokeColor} strokeWidth="2" strokeLinejoin="round" />
+    );
+  }
+
+  if (style === 'soft') {
+    return (<rect x="10" y="32" width="25" height="7" rx="3.5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
+  }
+  return null;
 };
