@@ -570,47 +570,40 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex items-center gap-1 sm:gap-2">
-          <div className="flex items-center gap-1.5 sm:gap-1.5 bg-secondary/40 border border-white/5 p-0.5 sm:p-1 rounded-lg">
-            <div className="px-1 flex flex-col items-center">
-              <span className="text-[6px] sm:text-[7px] font-black text-muted-foreground leading-none uppercase">W</span>
-              <span className="text-[9px] sm:text-[10px] font-black text-foreground">{scores.white}</span>
-            </div>
-            <div className="px-1 flex flex-col items-center border-l border-white/5">
-              <span className="text-[6px] sm:text-[7px] font-black text-accent/40 leading-none uppercase">B</span>
-              <span className="text-[9px] sm:text-[10px] font-black text-accent">{scores.black}</span>
-            </div>
+        <div className="flex items-center gap-1.5 bg-secondary/40 border border-white/5 p-0.5 sm:p-1 rounded-lg">
+          <div className="px-1 flex flex-col items-center">
+            <span className="text-[6px] sm:text-[7px] font-black text-muted-foreground leading-none uppercase">W</span>
+            <span className="text-[9px] sm:text-[10px] font-black text-foreground">{scores.white}</span>
           </div>
+          <div className="px-1 flex flex-col items-center border-l border-white/5">
+            <span className="text-[6px] sm:text-[7px] font-black text-accent/40 leading-none uppercase">B</span>
+            <span className="text-[9px] sm:text-[10px] font-black text-accent">{scores.black}</span>
+          </div>
+        </div>
 
-          <div className="hidden md:flex items-center gap-1.5 bg-accent/20 border border-accent/30 px-2 py-1 rounded-lg">
-            <Star className="w-3 h-3 text-accent fill-accent" />
-            <span className="text-[10px] font-black text-accent uppercase tracking-tighter">{scores.tacticalPoints} EXP</span>
-          </div>
-
-          <div className="flex items-center gap-0.5 sm:gap-1">
-            <Button variant="outline" size="sm" onClick={() => setIsLogOpen(true)} className="border-primary/20 bg-primary/5 hover:bg-primary/10 font-bold text-primary h-8 px-1.5 sm:px-3 text-[10px]">
-              <History className="w-3.5 h-3.5 sm:mr-2" />
-              <span className="hidden sm:inline">{t.history_btn}</span>
-            </Button>
-            <RulesHelp lang={lang} />
-            <SettingsDialog 
-              lang={lang} 
-              setLang={setLang} 
-              isMuted={isMuted} 
-              setIsMuted={setIsMuted} 
-              headSkin={headSkin}
-              setHeadSkin={setHeadSkin}
-              bodySkin={bodySkin}
-              setBodySkin={setBodySkin}
-              baseSkin={baseSkin}
-              setBaseSkin={setBaseSkin}
-              theme={theme}
-              setTheme={setTheme}
-            />
-            <Button variant="secondary" size="icon" onClick={() => setIsBriefingOpen(true)} className="h-8 w-8 bg-secondary/50">
-              <RotateCcw className="w-3 h-3" />
-            </Button>
-          </div>
+        <div className="flex items-center gap-0.5 sm:gap-1">
+          <Button variant="outline" size="sm" onClick={() => setIsLogOpen(true)} className="border-primary/20 bg-primary/5 hover:bg-primary/10 font-bold text-primary h-8 px-1.5 sm:px-3 text-[10px]">
+            <History className="w-3.5 h-3.5 sm:mr-2" />
+            <span className="hidden sm:inline">{t.history_btn}</span>
+          </Button>
+          <RulesHelp lang={lang} />
+          <SettingsDialog 
+            lang={lang} 
+            setLang={setLang} 
+            isMuted={isMuted} 
+            setIsMuted={setIsMuted} 
+            headSkin={headSkin}
+            setHeadSkin={setHeadSkin}
+            bodySkin={bodySkin}
+            setBodySkin={setBodySkin}
+            baseSkin={baseSkin}
+            setBaseSkin={setBaseSkin}
+            theme={theme}
+            setTheme={setTheme}
+          />
+          <Button variant="secondary" size="icon" onClick={() => setIsBriefingOpen(true)} className="h-8 w-8 bg-secondary/50">
+            <RotateCcw className="w-3 h-3" />
+          </Button>
         </div>
       </header>
 
@@ -803,9 +796,9 @@ export default function Home() {
             </div>
           </DialogHeader>
 
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-6 p-4 sm:p-6 overflow-hidden">
-            <div className="lg:col-span-7 flex flex-col items-center justify-center space-y-6 min-h-0">
-              <div className="relative w-full max-w-[500px] aspect-square flex items-center justify-center min-h-0">
+          <div className="flex-1 min-h-0 grid grid-cols-1 landscape:grid-cols-2 lg:grid-cols-12 gap-4 sm:gap-6 p-4 sm:p-6 overflow-hidden">
+            <div className="lg:col-span-7 landscape:col-span-1 flex flex-col items-center justify-center space-y-2 sm:space-y-6 min-h-0">
+              <div className="relative h-full aspect-square flex items-center justify-center min-h-0 max-w-full">
                  <div className="w-full h-full shadow-[0_40px_100px_rgba(0,0,0,0.6)] rounded-3xl overflow-hidden ring-1 ring-white/10 relative">
                     <Board 
                         game={displayedGame} 
@@ -827,7 +820,7 @@ export default function Home() {
                  </div>
               </div>
 
-              <div className="w-full max-w-[500px] space-y-4">
+              <div className="w-full max-w-[500px] space-y-2 sm:space-y-4 landscape:space-y-2">
                 <div className="px-2">
                   <div className="flex justify-between text-[8px] font-black text-muted-foreground uppercase tracking-widest mb-1.5">
                     <span>Tactical Progression</span>
@@ -842,27 +835,27 @@ export default function Home() {
                 </div>
                 
                 <div className="grid grid-cols-5 gap-2 p-2 bg-secondary/30 rounded-2xl border border-white/5 backdrop-blur-md shadow-inner">
-                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-white/5 transition-colors" onClick={() => setStep(0)} disabled={viewIndex === 0 || game.history.length === 0}>
+                  <Button variant="ghost" size="icon" className="h-10 sm:h-12 w-full hover:bg-white/5 transition-colors" onClick={() => setStep(0)} disabled={viewIndex === 0 || game.history.length === 0}>
                     <ChevronFirst className="w-5 h-5" />
                   </Button>
-                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-white/5 transition-colors" onClick={() => setStep(Math.max(0, (viewIndex === -1 ? game.history.length - 1 : viewIndex) - 1))} disabled={viewIndex === 0 || game.history.length === 0}>
+                  <Button variant="ghost" size="icon" className="h-10 sm:h-12 w-full hover:bg-white/5 transition-colors" onClick={() => setStep(Math.max(0, (viewIndex === -1 ? game.history.length - 1 : viewIndex) - 1))} disabled={viewIndex === 0 || game.history.length === 0}>
                     <ChevronLeft className="w-5 h-5" />
                   </Button>
-                  <Button variant={viewIndex === -1 ? "default" : "secondary"} size="icon" className={cn("h-12 w-full font-black shadow-xl transition-all", viewIndex === -1 && "bg-primary text-white scale-105")} onClick={setLive}>
+                  <Button variant={viewIndex === -1 ? "default" : "secondary"} size="icon" className={cn("h-10 sm:h-12 w-full font-black shadow-xl transition-all", viewIndex === -1 && "bg-primary text-white scale-105")} onClick={setLive}>
                     <PlayCircle className="w-5 h-5" />
                   </Button>
-                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-white/5 transition-colors" onClick={() => setStep(Math.min(game.history.length - 1, (viewIndex === -1 ? game.history.length - 1 : viewIndex) + 1))} disabled={viewIndex === -1 || viewIndex === game.history.length - 1 || game.history.length === 0}>
+                  <Button variant="ghost" size="icon" className="h-10 sm:h-12 w-full hover:bg-white/5 transition-colors" onClick={() => setStep(Math.min(game.history.length - 1, (viewIndex === -1 ? game.history.length - 1 : viewIndex) + 1))} disabled={viewIndex === -1 || viewIndex === game.history.length - 1 || game.history.length === 0}>
                     <ChevronRight className="w-5 h-5" />
                   </Button>
-                  <Button variant="ghost" size="icon" className="h-12 w-full hover:bg-white/5 transition-colors" onClick={() => setStep(game.history.length - 1)} disabled={viewIndex === game.history.length - 1 || game.history.length === 0}>
+                  <Button variant="ghost" size="icon" className="h-10 sm:h-12 w-full hover:bg-white/5 transition-colors" onClick={() => setStep(game.history.length - 1)} disabled={viewIndex === game.history.length - 1 || game.history.length === 0}>
                     <ChevronLast className="w-5 h-5" />
                   </Button>
                 </div>
               </div>
             </div>
 
-            <div className="lg:col-span-5 flex flex-col bg-card/20 border-l border-white/5 overflow-hidden min-h-0">
-              <div className="p-6 border-b border-white/5 bg-secondary/10 flex items-center justify-between">
+            <div className="lg:col-span-5 landscape:col-span-1 flex flex-col bg-card/20 border-l border-white/5 overflow-hidden min-h-0">
+              <div className="p-4 sm:p-6 border-b border-white/5 bg-secondary/10 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <BarChart3 className="w-4 h-4 text-muted-foreground" />
                   <span className="text-[10px] font-black text-foreground uppercase tracking-widest">Engagement Overview</span>
@@ -875,9 +868,9 @@ export default function Home() {
               <ScrollArea className="flex-1">
                 <div className="p-4 sm:p-6">
                   {game.history.length === 0 ? (
-                    <div className="h-full flex flex-col items-center justify-center py-24 text-center space-y-6">
-                      <div className="w-20 h-20 rounded-full bg-secondary/20 flex items-center justify-center border border-dashed border-white/10">
-                        <History className="w-8 h-8 text-muted-foreground/20" />
+                    <div className="h-full flex flex-col items-center justify-center py-12 sm:py-24 text-center space-y-6">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-secondary/20 flex items-center justify-center border border-dashed border-white/10">
+                        <History className="w-6 h-6 sm:w-8 sm:h-8 text-muted-foreground/20" />
                       </div>
                       <div className="space-y-1">
                         <h3 className="text-xs font-black text-foreground/50 uppercase tracking-widest">{t.history_empty_title}</h3>
@@ -897,7 +890,7 @@ export default function Home() {
                               variant="ghost" 
                               onClick={() => setStep(i * 2)} 
                               className={cn(
-                                "relative flex flex-col items-start justify-center px-4 h-16 rounded-xl border text-xs transition-all duration-300", 
+                                "relative flex flex-col items-start justify-center px-4 h-14 sm:h-16 rounded-xl border text-xs transition-all duration-300", 
                                 viewIndex === i * 2 
                                   ? "bg-primary/20 border-primary text-foreground ring-1 ring-primary/30 shadow-[0_0_30px_rgba(var(--primary),0.1)] scale-[1.02] z-10" 
                                   : "bg-secondary/20 border-white/5 hover:bg-white/5 hover:border-white/10"
@@ -913,7 +906,7 @@ export default function Home() {
                                 variant="ghost" 
                                 onClick={() => setStep(i * 2 + 1)} 
                                 className={cn(
-                                  "relative flex flex-col items-start justify-center px-4 h-16 rounded-xl border text-xs transition-all duration-300", 
+                                  "relative flex flex-col items-start justify-center px-4 h-14 sm:h-16 rounded-xl border text-xs transition-all duration-300", 
                                   viewIndex === i * 2 + 1 
                                     ? "bg-accent/20 border-accent text-foreground ring-1 ring-accent/30 shadow-[0_0_30px_rgba(var(--accent),0.1)] scale-[1.02] z-10" 
                                     : "bg-secondary/20 border-white/5 hover:bg-white/5 hover:border-white/10"
@@ -924,7 +917,7 @@ export default function Home() {
                                 {viewIndex === i * 2 + 1 && <div className="absolute left-0 top-1/4 bottom-1/4 w-1 bg-accent rounded-r" />}
                               </Button>
                             ) : (
-                              <div className="h-16 rounded-xl border border-dashed border-white/5 bg-transparent flex items-center justify-center opacity-20">
+                              <div className="h-14 sm:h-16 rounded-xl border border-dashed border-white/5 bg-transparent flex items-center justify-center opacity-20">
                                 <span className="text-[8px] font-black tracking-widest">PENDING</span>
                               </div>
                             )}
@@ -936,12 +929,12 @@ export default function Home() {
                 </div>
               </ScrollArea>
               
-              <footer className="p-6 border-t border-white/5 bg-secondary/10 flex items-center justify-between shrink-0">
+              <footer className="p-4 sm:p-6 border-t border-white/5 bg-secondary/10 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2">
                   <Activity className="w-3 h-3 text-primary animate-pulse" />
                   <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">{game.history.length} Manoeuvres Indexed</span>
                 </div>
-                <Button onClick={() => setIsLogOpen(false)} variant="secondary" className="h-10 font-black text-[10px] uppercase px-8 shadow-xl bg-foreground text-background hover:bg-foreground/90 rounded-full">
+                <Button onClick={() => setIsLogOpen(false)} variant="secondary" className="h-8 sm:h-10 font-black text-[10px] uppercase px-6 sm:px-8 shadow-xl bg-foreground text-background hover:bg-foreground/90 rounded-full">
                   {t.history_playback_back}
                 </Button>
               </footer>
