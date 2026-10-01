@@ -2,6 +2,24 @@
 
 All notable tactical upgrades to the 6x6 combat matrix are documented here.
 
+## [1.14.0] - Geometric Architecture & Tactical UI Refinement
+### Added
+- **Geometric Piece Set**: Introduced a new high-fidelity architectural piece set based on precise geometric silhouettes, featuring unified trapezoidal bases and distinct rank identifiers.
+- **Victory Review Protocol**: Integrated a "Review Game" button directly into the Game Over overlay for immediate tactical analysis.
+
+### Refactored & Improved
+- **Tactical Log Optimization**: Overhauled the log interface for better board visibility in landscape mode and unified playback controls.
+- **Accessibility Hardening**: Corrected Dialog landmarks for Yandex Games compatibility, ensuring screen readers properly identify DialogTitle and DialogHeader elements.
+- **Cinematic Victory Pacing**: Added a 1000ms delay to the victory protocol to improve visual flow at the conclusion of a mission.
+- **Dictionary Expansion**: Populated missing translation strings for rules and tactical heuristics in both English and Russian.
+
+### Removed
+- **Classical Piece Set**: Purged all legacy Classical piece assets and configurations to focus on the modular skin system.
+
+### Fixed
+- **Board Reference Leak**: Fixed a `ReferenceError` caused by mismatched skin prop naming in the Board component.
+- **UI Redundancy**: Removed duplicate close buttons in the Tactical Log modal.
+
 ## [1.13.0] - Educational Engine Heuristics & Novice Assistance
 ### Added
 - **Novice Strategy Logs**: Injected dynamic tactical tips into the Smart Engine analysis readout targeting entry-level strategic concepts.
@@ -11,46 +29,6 @@ All notable tactical upgrades to the 6x6 combat matrix are documented here.
 ### Added
 - **Inspect Mode Modals**: Re-engineered piece identification into a premium inspector modal dialog featuring live 3-part composite module assemblies and tactical parameters.
 - **King Skin Live Previewer**: Integrated a real-time reactive model preview directly within the Tactical Visuals section of the Command Settings HUD.
-
-### Refactored & Improved
-- **iPhone 8 Viewport Optimization**: Bound the portrait matrix configuration to fully reactive horizontal limits (`w-full`) to completely prevent edge cutoffs on legacy screens.
-- **Landscape Vector Heights**: Stabilized vertical bounds in widescreen mode to solve the board clipping issues on shorter desktop browser segments.
-- **Adaptive UI Trimming**: Modified contextual layout pipelines to automatically hide the ambient Engine Panel in portrait layouts, maximizing grid interaction bounds.
-- **Animation Loop Limiters**: Hardcoded the arrival pulse ripples and tactical vector streaming flows to terminate exactly after 3 cycles for balanced, non-fatiguing feedback.
-
-## [1.11.0] - Simple Set Default, High School Characters & Tactical Vision Comfort
-### Added
-- **Simple Piece Set**: Introduced a custom minimalistic geometric set with highly distinct rank identifiers and compact trapezoidal bodies. Set as the application's default visual skin configuration.
-- **Micro Pawns Optimization**: Formulated a 75% recursive scaling parameter exclusively for the Simple set pawns to distinguish them from senior pieces on the grid.
-- **High School Character Set**: Crafted an all-new illustrated piece set featuring character bobbleheads (Scout with hair bun, Locker Box Rook with stacked books, cap-wearing Knight, pom-pom beanie Bishop, smartphone Queen, and headphone/skateboard King).
-- **Bobblehead Geometry Modifier**: Scaled School head modules up to 130% and decreased bodies down to 75% for optimal cartoon silhouette detection.
-
-### Refactored & Improved
-- **Tactical Vision Eye-Comfort**: Relaxed the HSL values across Sunny, Galaxy, and Cookie palettes. Reduced contrast levels and saturation intensity to secure comfortable, non-fatiguing play hours.
-- **Manoeuvre Log Overhaul**: Restructured the playback layout into a persistent dual-column deck on desktop and unified mobile card layout to prevent overlaps. Added move status telemetry tags.
-
-### Removed
-- **Vanguard Legacy Framework**: Purged all assets, properties, configurations, and selection entries related to the legacy Vanguard theme.
-
-### Fixed
-- **PostCSS Evaluation Failure**: Fixed a `CssSyntaxError` caused by a non-existent `ring-6` utility class by mapping it back to the core template standard.
-- **Module Resolution Leak**: Rectified a broken imports definition string inside the configuration dialog component.
-
-## [1.10.0] - Refined Combat Feedback & Victory Protocol
-### Added
-- **Victory Protocol**: Introduced a celebratory board overlay and golden "Victory Pulse" effects for the checkmated King's square.
-- **Enhanced Check Visuals**: Added a crimson pulse grid highlight and a dynamic "!" alert badge for pieces under threat.
-- **Champion Status**: Refactored the status panel to adopt a celebratory theme upon victory, featuring animated party icons.
-
-### Fixed
-- **Visual Sync**: Synchronized the synthesized power-down audio with the new checkmate overlay for a cohesive mission conclusion.
-
-## [1.9.0] - Visual Re-Imaging & Modular Skins
-### Added
-- **Sunny, Galaxy, & Cookie Themes**: Refactored the Tactical Vision system with child-friendly HSL palettes, featuring warm pastels and vibrant cosmic tones.
-- **Composite Skin System**: Pieces are now modular units consisting of a Head, Body, and Base, allowing for thousands of avatar-style combinations.
-- **Soft Organic Skin**: Introduced a new piece set with bubbly, oval silhouettes for a friendly aesthetic.
-- **Enhanced Grid Occupancy**: Scaled all pieces to occupy 100% of the square dimensions for maximum visibility.
 
 ---
 *Operational History Log Generated by Tactical Six Engine*
