@@ -1,9 +1,8 @@
-
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { ChessGame, BOARD_SIZE, Position, Move, PieceType, PlayerColor } from '@/lib/chess-logic';
-import Piece, { PiecePartStyle } from './Piece';
+import Piece, { PieceSetStyle } from './Piece';
 import { cn } from '@/lib/utils';
 import { Trophy, Star, History } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -13,9 +12,9 @@ interface BoardProps {
   game: ChessGame;
   onMove: (move: Move) => void;
   hintMove?: Move | null;
-  headSkin?: PiecePartStyle;
-  bodySkin?: PiecePartStyle;
-  baseSkin?: PiecePartStyle;
+  headSkin?: PieceSetStyle;
+  bodySkin?: PieceSetStyle;
+  baseSkin?: PieceSetStyle;
   onPieceSelect?: (type: PieceType, color: PlayerColor) => void;
   inspectMode?: boolean;
   showVictory?: boolean;

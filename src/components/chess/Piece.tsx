@@ -24,8 +24,9 @@ const Piece: React.FC<PieceProps> = ({
   const prefix = isWhite ? 'w' : 'b';
   const pieceChar = type.toUpperCase();
   
+  // Use relative path for static export compatibility (e.g., Yandex Games)
   const set = headStyle === 'slimes' ? 'slimes' : 'geometric';
-  const src = `/pieces/${set}/${prefix}${pieceChar}.svg`;
+  const src = `./pieces/${set}/${prefix}${pieceChar}.svg`;
 
   return (
     <div className={cn(
@@ -40,6 +41,7 @@ const Piece: React.FC<PieceProps> = ({
         height={45}
         className="w-full h-full"
         priority
+        unoptimized
       />
     </div>
   );

@@ -1,15 +1,1 @@
-<svg viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg">
-  <g opacity="0.2"><ellipse cx="22.5" cy="38" rx="15" ry="4" fill="black"/></g>
-  <path d="M10 34 C10 38, 35 38, 35 34 Q22.5 40, 10 34 Z" fill="#f8fafc" stroke="#64748b" stroke-width="2.5"/>
-  <path d="M13.5 34 Q22.5 30, 31.5 34 L31.5 28 Q22.5 24, 13.5 28 Z" fill="#f8fafc" stroke="#64748b" stroke-width="2.5"/>
-  <path d="M13 28 C13 10, 32 10, 32 28" fill="#f8fafc" stroke="#64748b" stroke-width="2.5"/>
-  <g fill="#f8fafc" stroke="#64748b" stroke-width="2">
-    <path d="M12 22 C8 20, 6 25, 10 28" stroke-linecap="round"/>
-    <path d="M33 22 C37 20, 39 25, 35 28" stroke-linecap="round"/>
-  </g>
-  <path d="M22.5 6 A4 4 0 0 1 22.5 14" fill="none" stroke="#64748b" stroke-width="2"/>
-  <circle cx="17.5" cy="20" r="4.5" fill="white" stroke="#64748b" stroke-width="1.2"/>
-  <circle cx="17.5" cy="20" r="1.8" fill="#64748b"/>
-  <circle cx="27.5" cy="20" r="4.5" fill="white" stroke="#64748b" stroke-width="1.2"/>
-  <circle cx="27.5" cy="20" r="1.8" fill="#64748b"/>
-</svg>
+<svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 28C13 10 32 10 32 28" fill="#FFBF00" stroke="#2D2D2D" stroke-width="2.5"/><circle cx="17.5" cy="20" r="4.5" fill="white" stroke="#2D2D2D" stroke-width="1.2"/><circle cx="17.5" cy="20" r="1.8" fill="#2D2D2D"/><circle cx="27.5" cy="20" r="4.5" fill="white" stroke="#2D2D2D" stroke-width="1.2"/><circle cx="27.5" cy="20" r="1.8" fill="#2D2D2D"/><path d="M12 22C8 20 6 25 10 28" fill="#FFBF00" stroke="#2D2D2D" stroke-width="2"/><path d="M33 22C37 20 39 25 35 28" fill="#FFBF00" stroke="#2D2D2D" stroke-width="2"/><path d="M10 34C10 38 35 38 35 34Q22.5 40 10 34Z" fill="#FFBF00" stroke="#2D2D2D" stroke-width="2.5"/></svg>

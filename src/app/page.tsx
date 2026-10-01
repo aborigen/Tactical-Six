@@ -3,7 +3,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { ChessGame, Move, PieceType, PlayerColor } from '@/lib/chess-logic';
 import Board from '@/components/chess/Board';
-import Piece, { PiecePartStyle } from '@/components/chess/Piece';
+import { PieceSetStyle } from '@/components/chess/Piece';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -17,7 +17,7 @@ import { Progress } from '@/components/ui/progress';
 import { 
   RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, 
   Check, Copy, ChevronLeft, ChevronLast, ChevronFirst,
-  PlayCircle, Zap, X, Target, Swords, Activity, Star, PartyPopper, Info, BarChart3
+  PlayCircle, Zap, Target, Swords, Activity, Star, PartyPopper, Info, BarChart3
 } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
@@ -29,6 +29,7 @@ import RulesHelp from '@/components/help/RulesHelp';
 import SettingsDialog from '@/components/settings/SettingsDialog';
 import { soundManager } from '@/lib/sounds';
 import { initYandexSDK, showFullscreenAd, gameReady, setYandexLeaderboardScore } from '@/lib/yandex-sdk';
+import Piece from '@/components/chess/Piece';
 
 type GameMode = 'pvp' | 'pve';
 type Difficulty = 'recruit' | 'cadet' | 'specialist' | 'commander' | 'grandmaster';
@@ -59,9 +60,9 @@ export default function Home() {
   const [game, setGame] = useState(new ChessGame());
   const [gameMode, setGameMode] = useState<GameMode>('pve'); 
   const [difficulty, setDifficulty] = useState<Difficulty>('specialist');
-  const [headSkin, setHeadSkin] = useState<PiecePartStyle>('geometric');
-  const [bodySkin, setBodySkin] = useState<PiecePartStyle>('geometric');
-  const [baseSkin, setBaseSkin] = useState<PiecePartStyle>('geometric');
+  const [headSkin, setHeadSkin] = useState<PieceSetStyle>('geometric');
+  const [bodySkin, setBodySkin] = useState<PieceSetStyle>('geometric');
+  const [baseSkin, setBaseSkin] = useState<PieceSetStyle>('geometric');
   const [theme, setTheme] = useState<ThemeMode>('dark');
   const [hintMove, setHintMove] = useState<Move | null>(null);
   const [isSuggesting, setIsSuggesting] = useState(false);
@@ -106,11 +107,11 @@ export default function Home() {
       }
 
       const savedHead = localStorage.getItem(HEAD_SKIN_STORAGE_KEY);
-      if (savedHead) setHeadSkin(savedHead as PiecePartStyle);
+      if (savedHead) setHeadSkin(savedHead as PieceSetStyle);
       const savedBody = localStorage.getItem(BODY_SKIN_STORAGE_KEY);
-      if (savedBody) setBodySkin(savedBody as PiecePartStyle);
+      if (savedBody) setBodySkin(savedBody as PieceSetStyle);
       const savedBase = localStorage.getItem(BASE_SKIN_STORAGE_KEY);
-      if (savedBase) setBaseSkin(savedBase as PiecePartStyle);
+      if (savedBase) setBaseSkin(savedBase as PieceSetStyle);
 
       const savedMode = localStorage.getItem(GAME_MODE_STORAGE_KEY);
       if (savedMode) setGameMode(savedMode as GameMode);
