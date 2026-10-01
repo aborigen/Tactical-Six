@@ -2,7 +2,7 @@ import React from 'react';
 import { PieceType, PlayerColor } from '@/lib/chess-logic';
 import { CompositePieceHead, CompositePieceBody, CompositePieceBase } from './pieces/CompositePieceParts';
 
-export type PiecePartStyle = 'simple' | 'soft' | 'doodle' | 'school' | 'geometric';
+export type PiecePartStyle = 'simple' | 'slimes' | 'doodle' | 'school' | 'geometric';
 
 interface PieceProps {
   type: PieceType;

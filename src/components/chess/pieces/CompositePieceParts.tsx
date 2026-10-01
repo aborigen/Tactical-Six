@@ -21,7 +21,7 @@ const DoodleFace = ({ strokeColor }: { strokeColor: string }) => (
  * High-Command Head Modules
  */
 export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strokeColor, style }) => {
-  if (style === 'soft') {
+  if (style === 'slimes') {
     const EyePair = ({ cy = 22, r = 4 }: { cy?: number; r?: number }) => (
       <g>
         <circle cx="17.5" cy={cy} r={r} fill="white" stroke={strokeColor} strokeWidth="1.2" />
@@ -338,7 +338,7 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
  * Core Body Modules
  */
 export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strokeColor, style }) => {
-  if (style === 'soft') {
+  if (style === 'slimes') {
     const mainWidth = type === 'p' ? 12 : 18;
     return (
       <path 
@@ -445,7 +445,7 @@ export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strok
  * Stabilizer Base Modules
  */
 export const CompositePieceBase: React.FC<PartProps> = ({ type, fillColor, strokeColor, style }) => {
-  if (style === 'soft') {
+  if (style === 'slimes') {
     return (
       <g>
         <ellipse cx="22.5" cy="38" rx="15" ry="4" fill="black" opacity="0.2" />
