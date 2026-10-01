@@ -682,9 +682,10 @@ export default function Home() {
               bodySkin={bodySkin} 
               baseSkin={baseSkin} 
               onPieceSelect={handlePieceSelect}
-              inspectMode={isInspectMode}
+              isInspectMode={isInspectMode}
               showVictory={delayedGameOver}
               onReview={() => setIsLogOpen(true)}
+              onNewGame={startNewMission}
               lang={lang}
             />
             {(isReviewMode || isAdPlaying || isBriefingOpen) && (
@@ -821,7 +822,7 @@ export default function Home() {
                         bodySkin={bodySkin} 
                         baseSkin={baseSkin} 
                         onPieceSelect={handlePieceSelect}
-                        inspectMode={true}
+                        isInspectMode={true}
                         lang={lang}
                     />
                     <div className="absolute top-4 right-4 z-40 flex flex-col items-end gap-2">

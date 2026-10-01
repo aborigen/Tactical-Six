@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { ChessGame, BOARD_SIZE, Position, Move, PieceType, PlayerColor } from '@/lib/chess-logic';
 import Piece, { PieceSetStyle } from './Piece';
 import { cn } from '@/lib/utils';
-import { Trophy, Star, History } from 'lucide-react';
+import { Trophy, Star, History, RotateCcw, AlertCircle, Scale } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { translations, Language } from '@/lib/translations';
 
@@ -16,9 +16,10 @@ interface BoardProps {
   bodySkin?: PieceSetStyle;
   baseSkin?: PieceSetStyle;
   onPieceSelect?: (type: PieceType, color: PlayerColor) => void;
-  inspectMode?: boolean;
+  isInspectMode?: boolean;
   showVictory?: boolean;
   onReview?: () => void;
+  onNewGame?: () => void;
   lang?: Language;
 }
 
@@ -30,9 +31,10 @@ const Board: React.FC<BoardProps> = ({
   bodySkin = 'geometric',
   baseSkin = 'geometric',
   onPieceSelect,
-  inspectMode = false,
+  isInspectMode = false,
   showVictory = false,
   onReview,
+  onNewGame,
   lang = 'en'
 }) => {
   const [selectedSquare, setSelectedSquare] = useState<Position | null>(null);
@@ -84,7 +86,7 @@ const Board: React.FC<BoardProps> = ({
   const handleSquareClick = (row: number, col: number) => {
     const piece = game.board[row][col];
     
-    if (inspectMode) {
+    if (isInspectMode) {
       if (piece) {
         onPieceSelect?.(piece.type, piece.color);
       }
@@ -118,7 +120,7 @@ const Board: React.FC<BoardProps> = ({
   };
 
   const handleDragStart = (e: React.DragEvent, row: number, col: number) => {
-    if (game.isGameOver || inspectMode) {
+    if (game.isGameOver || isInspectMode) {
       e.preventDefault();
       return;
     }
@@ -134,13 +136,13 @@ const Board: React.FC<BoardProps> = ({
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    if (inspectMode) return;
+    if (isInspectMode) return;
     e.dataTransfer.dropEffect = "move";
   };
 
   const handleDrop = (e: React.DragEvent, row: number, col: number) => {
     e.preventDefault();
-    if (inspectMode) return;
+    if (isInspectMode) return;
     const data = e.dataTransfer.getData("text/plain");
     try {
       const fromPos = JSON.parse(data) as Position;
@@ -174,6 +176,10 @@ const Board: React.FC<BoardProps> = ({
     e.preventDefault();
   };
 
+  const isWhiteWin = game.isGameOver && game.status.toLowerCase().includes('white wins');
+  const isBlackWin = game.isGameOver && game.status.toLowerCase().includes('black wins');
+  const isDraw = game.isGameOver && !isWhiteWin && !isBlackWin;
+
   return (
     <div 
       onContextMenu={preventContextMenu}
@@ -203,12 +209,12 @@ const Board: React.FC<BoardProps> = ({
                 className={cn(
                   "relative transition-all duration-300 overflow-hidden",
                   isDark ? "square-dark" : "square-light",
-                  isSelected && !inspectMode && "square-highlight",
+                  isSelected && !isInspectMode && "square-highlight",
                   isHint && "square-hint animate-pulse-glow",
                   isCheck && "square-check",
                   isCheckmate && "square-checkmate",
                   (isLastMoveFrom || isLastMoveTo) && !isSelected && !isHint && !isCheck && !isCheckmate && "bg-primary/10",
-                  inspectMode && piece && "hover:bg-accent/10 cursor-help"
+                  isInspectMode && piece && "hover:bg-accent/10 cursor-help"
                 )}
               >
                 {col === 0 && (
@@ -246,12 +252,12 @@ const Board: React.FC<BoardProps> = ({
 
                 {piece && (
                   <div 
-                    draggable={!game.isGameOver && !inspectMode && piece.color === game.turn}
+                    draggable={!game.isGameOver && !isInspectMode && piece.color === game.turn}
                     onDragStart={(e) => handleDragStart(e, row, col)}
                     className={cn(
                       "w-full h-full p-0.5 flex items-center justify-center piece-interactive-lift",
-                      inspectMode ? "cursor-help" : (!game.isGameOver && piece.color === game.turn ? "cursor-grab active:cursor-grabbing" : "cursor-default"),
-                      isSelected && !inspectMode ? "scale-105 drop-shadow-2xl z-20" : "scale-100 drop-shadow-lg",
+                      isInspectMode ? "cursor-help" : (!game.isGameOver && piece.color === game.turn ? "cursor-grab active:cursor-grabbing" : "cursor-default"),
+                      isSelected && !isInspectMode ? "scale-105 drop-shadow-2xl z-20" : "scale-100 drop-shadow-lg",
                       isCheck || isCheckmate ? "animate-check-piece z-30" : "",
                       game.isGameOver && !isCheckmate ? "grayscale-[0.3]" : ""
                     )}
@@ -266,7 +272,7 @@ const Board: React.FC<BoardProps> = ({
                   </div>
                 )}
 
-                {isLegalDest && !inspectMode && (
+                {isLegalDest && !isInspectMode && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <div className={cn(
                       "rounded-full transition-all duration-500",
@@ -284,25 +290,50 @@ const Board: React.FC<BoardProps> = ({
         )}
       </div>
 
-      {showVictory && game.status.toLowerCase().includes('checkmate') && (
-        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/40 backdrop-blur-md animate-in fade-in duration-700">
-           <div className="flex flex-col items-center scale-up-center animate-in zoom-in-95 duration-500">
+      {showVictory && game.isGameOver && (
+        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-md animate-in fade-in duration-700">
+           <div className="flex flex-col items-center scale-up-center animate-in zoom-in-95 duration-500 px-6 text-center">
               <div className="relative mb-6">
-                <Trophy className="w-20 h-20 sm:w-24 sm:h-24 text-primary drop-shadow-[0_0_40px_rgba(255,191,0,0.9)] animate-bounce" />
-                <Star className="absolute -top-2 -right-2 w-8 h-8 text-white fill-white animate-pulse" />
-                <Star className="absolute -bottom-2 -left-2 w-6 h-6 text-white fill-white animate-pulse delay-150" />
-              </div>
-              <div className="bg-primary text-primary-foreground px-8 py-3 rounded-full font-black text-xl sm:text-2xl uppercase tracking-[0.25em] shadow-[0_0_60px_rgba(255,191,0,0.6)] border-2 border-white/30 transform -rotate-1 mb-8">
-                Victory!
+                {isWhiteWin ? (
+                  <>
+                    <Trophy className="w-20 h-20 sm:w-24 sm:h-24 text-primary drop-shadow-[0_0_40px_rgba(255,191,0,0.9)] animate-bounce" />
+                    <Star className="absolute -top-2 -right-2 w-8 h-8 text-white fill-white animate-pulse" />
+                    <Star className="absolute -bottom-2 -left-2 w-6 h-6 text-white fill-white animate-pulse delay-150" />
+                  </>
+                ) : isBlackWin ? (
+                  <AlertCircle className="w-20 h-20 sm:w-24 sm:h-24 text-destructive drop-shadow-[0_0_40px_rgba(var(--destructive),0.5)]" />
+                ) : (
+                  <Scale className="w-20 h-20 sm:w-24 sm:h-24 text-muted-foreground drop-shadow-[0_0_40px_rgba(255,255,255,0.2)]" />
+                )}
               </div>
               
-              <Button 
-                onClick={onReview}
-                className="bg-white text-black hover:bg-white/90 font-black uppercase text-[10px] sm:text-xs tracking-widest px-6 py-2 rounded-full shadow-2xl transition-transform hover:scale-105 active:scale-95 flex items-center gap-2"
-              >
-                <History className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                {t.review_game}
-              </Button>
+              <div className={cn(
+                "px-8 py-3 rounded-full font-black text-xl sm:text-2xl uppercase tracking-[0.25em] border-2 transform -rotate-1 mb-8 shadow-2xl",
+                isWhiteWin ? "bg-primary text-primary-foreground border-white/30 shadow-primary/40" : 
+                isBlackWin ? "bg-destructive text-destructive-foreground border-white/20 shadow-destructive/40" :
+                "bg-secondary text-secondary-foreground border-white/10 shadow-black/40"
+              )}>
+                {isWhiteWin ? "Victory!" : isBlackWin ? "Defeat" : "Draw"}
+              </div>
+              
+              <div className="flex flex-col gap-3 w-full max-w-[200px]">
+                <Button 
+                  onClick={onNewGame}
+                  className="w-full bg-primary text-white hover:bg-primary/90 font-black uppercase text-[10px] sm:text-xs tracking-widest px-6 py-2.5 rounded-full shadow-2xl transition-transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
+                >
+                  <RotateCcw className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  {t.replay}
+                </Button>
+                
+                <Button 
+                  onClick={onReview}
+                  variant="outline"
+                  className="w-full bg-white/10 border-white/20 text-white hover:bg-white/20 font-black uppercase text-[10px] sm:text-xs tracking-widest px-6 py-2.5 rounded-full shadow-2xl transition-transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
+                >
+                  <History className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  {t.review_game}
+                </Button>
+              </div>
            </div>
         </div>
       )}
