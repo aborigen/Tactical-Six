@@ -15,6 +15,7 @@ interface BoardProps {
   baseSkin?: PiecePartStyle;
   onPieceSelect?: (type: PieceType, color: PlayerColor) => void;
   inspectMode?: boolean;
+  showVictory?: boolean;
 }
 
 const Board: React.FC<BoardProps> = ({ 
@@ -25,7 +26,8 @@ const Board: React.FC<BoardProps> = ({
   bodySkin = 'simple',
   baseSkin = 'simple',
   onPieceSelect,
-  inspectMode = false
+  inspectMode = false,
+  showVictory = false
 }) => {
   const [selectedSquare, setSelectedSquare] = useState<Position | null>(null);
   const [legalMovesFromSelected, setLegalMovesFromSelected] = useState<Position[]>([]);
@@ -275,11 +277,17 @@ const Board: React.FC<BoardProps> = ({
         )}
       </div>
 
-      {game.isGameOver && game.status.toLowerCase().includes('checkmate') && (
-        <div className="absolute inset-0 z-50 pointer-events-none flex flex-col items-center justify-center bg-primary/10 backdrop-blur-[2px] animate-in fade-in zoom-in duration-500">
-           <Trophy className="w-20 h-20 text-primary drop-shadow-[0_0_30px_rgba(255,191,0,0.8)] animate-bounce mb-2" />
-           <div className="bg-primary text-primary-foreground px-6 py-2 rounded-full font-black text-lg uppercase tracking-[0.2em] shadow-[0_0_50px_rgba(255,191,0,0.5)] border-2 border-white/20">
-             Victory!
+      {showVictory && game.status.toLowerCase().includes('checkmate') && (
+        <div className="absolute inset-0 z-50 pointer-events-none flex flex-col items-center justify-center bg-black/40 backdrop-blur-md animate-in fade-in duration-700">
+           <div className="flex flex-col items-center scale-up-center animate-in zoom-in-95 duration-500">
+              <div className="relative mb-6">
+                <Trophy className="w-24 h-24 text-primary drop-shadow-[0_0_40px_rgba(255,191,0,0.9)] animate-bounce" />
+                <Star className="absolute -top-2 -right-2 w-8 h-8 text-white fill-white animate-pulse" />
+                <Star className="absolute -bottom-2 -left-2 w-6 h-6 text-white fill-white animate-pulse delay-150" />
+              </div>
+              <div className="bg-primary text-primary-foreground px-8 py-3 rounded-full font-black text-2xl uppercase tracking-[0.25em] shadow-[0_0_60px_rgba(255,191,0,0.6)] border-2 border-white/30 transform -rotate-1">
+                Victory!
+              </div>
            </div>
         </div>
       )}

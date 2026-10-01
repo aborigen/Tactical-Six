@@ -78,6 +78,7 @@ export default function Home() {
   const [isBriefingOpen, setIsBriefingOpen] = useState(false);
   const [isInspectMode, setIsInspectMode] = useState(false);
   const [selectedPieceInfo, setSelectedPieceInfo] = useState<{ type: PieceType; color: PlayerColor } | null>(null);
+  const [delayedGameOver, setDelayedGameOver] = useState(false);
   const { toast } = useToast();
 
   const t = translations[lang];
@@ -198,6 +199,17 @@ export default function Home() {
   }, [game.history, isInitialized]);
 
   useEffect(() => {
+    if (game.isGameOver) {
+      const timer = setTimeout(() => {
+        setDelayedGameOver(true);
+      }, 1000); // 1 second tactical delay for the UI transition
+      return () => clearTimeout(timer);
+    } else {
+      setDelayedGameOver(false);
+    }
+  }, [game.isGameOver]);
+
+  useEffect(() => {
     if (game.isGameOver && !gameCounted) {
       const status = game.status.toLowerCase();
       let nextScores = { ...scores };
@@ -279,6 +291,7 @@ export default function Home() {
     setViewIndex(-1);
     setSelectedPieceInfo(null);
     setIsInspectMode(false);
+    setDelayedGameOver(false);
     localStorage.removeItem(HISTORY_STORAGE_KEY);
     toast({
       title: t.toast_reset_title,
@@ -669,6 +682,7 @@ export default function Home() {
               baseSkin={baseSkin} 
               onPieceSelect={handlePieceSelect}
               inspectMode={isInspectMode}
+              showVictory={delayedGameOver}
             />
             {(isReviewMode || isAdPlaying || isBriefingOpen) && (
               <div className="absolute inset-0 bg-background/20 backdrop-blur-[1px] pointer-events-none z-10 rounded-2xl flex items-center justify-center">
@@ -682,11 +696,11 @@ export default function Home() {
           <div className="w-full max-w-[550px] mt-1 shrink-0 landscape:mt-0.5">
             <div className={cn(
               "px-3 py-1.5 sm:px-4 sm:py-3 rounded-xl border transition-all duration-500",
-              displayedGame.isGameOver 
+              delayedGameOver 
                 ? "bg-primary/30 border-primary shadow-[0_0_40px_rgba(255,191,0,0.3)] animate-in zoom-in duration-700" 
                 : "bg-secondary/40 border-white/5"
             )}>
-              {displayedGame.isGameOver ? (
+              {delayedGameOver ? (
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-1.5 sm:gap-3">
                     {displayedGame.status.toLowerCase().includes('checkmate') ? (
