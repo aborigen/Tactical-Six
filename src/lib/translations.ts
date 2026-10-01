@@ -134,6 +134,11 @@ export const translations = {
     briefing_mode_label: "Engagement Mode",
     briefing_difficulty_label: "Engine Complexity",
     briefing_engage: "Engage Mission",
+    stats_session_title: "Session Statistics",
+    stats_moves: "Moves",
+    stats_draws: "Draws",
+    stats_overview: "Engagement Overview",
+    stats_indexed: "Manoeuvres Indexed",
   },
   ru: {
     title: "TACTICAL SIX",
@@ -268,5 +273,10 @@ export const translations = {
     briefing_mode_label: "Режим боя",
     briefing_difficulty_label: "Сложность движка",
     briefing_engage: "Начать миссию",
+    stats_session_title: "Статистика сессии",
+    stats_moves: "Ходы",
+    stats_draws: "Ничьи",
+    stats_overview: "Обзор сражения",
+    stats_indexed: "Маневров зафиксировано",
   }
 };

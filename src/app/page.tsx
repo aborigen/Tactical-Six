@@ -774,14 +774,14 @@ export default function Home() {
           </Card>
           
           <Card className="shrink-0 bg-card border-border shadow-md p-4 space-y-3">
-            <p className="text-[8px] font-black text-muted-foreground uppercase tracking-widest">Session Statistics</p>
+            <p className="text-[8px] font-black text-muted-foreground uppercase tracking-widest">{t.stats_session_title}</p>
             <div className="grid grid-cols-2 gap-2">
               <div className="bg-secondary/30 p-2 rounded-lg border border-border/50">
-                <p className="text-[7px] font-black text-muted-foreground uppercase">Moves</p>
+                <p className="text-[7px] font-black text-muted-foreground uppercase">{t.stats_moves}</p>
                 <p className="text-xs font-black text-foreground">{game.history.length}</p>
               </div>
               <div className="bg-secondary/30 p-2 rounded-lg border border-border/50">
-                <p className="text-[7px] font-black text-muted-foreground uppercase">Draws</p>
+                <p className="text-[7px] font-black text-muted-foreground uppercase">{t.stats_draws}</p>
                 <p className="text-xs font-black text-foreground">{scores.draws}</p>
               </div>
             </div>
@@ -872,7 +872,7 @@ export default function Home() {
               <div className="p-4 sm:p-6 border-b border-white/5 bg-secondary/10 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <BarChart3 className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-[10px] font-black text-foreground uppercase tracking-widest">Engagement Overview</span>
+                  <span className="text-[10px] font-black text-foreground uppercase tracking-widest">{t.stats_overview}</span>
                 </div>
                 <Badge className="bg-accent/10 text-accent text-[8px] font-black border-accent/20">
                   {Math.ceil(game.history.length / 2)} FULL ROUNDS
@@ -946,7 +946,7 @@ export default function Home() {
               <footer className="p-4 sm:p-6 border-t border-white/5 bg-secondary/10 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2">
                   <Activity className="w-3 h-3 text-primary animate-pulse" />
-                  <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">{game.history.length} Manoeuvres Indexed</span>
+                  <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">{game.history.length} {t.stats_indexed}</span>
                 </div>
                 <Button onClick={() => setIsLogOpen(false)} variant="secondary" className="h-8 sm:h-10 font-black text-[10px] uppercase px-6 sm:px-8 shadow-xl bg-foreground text-background hover:bg-foreground/90 rounded-full">
                   {t.history_playback_back}
