@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import React from 'react';
 import {
@@ -18,19 +18,19 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { translations, Language } from '@/lib/translations';
 import { Settings, Globe, Volume2, VolumeX, ShieldCheck, Palette, Sun, Moon, Coffee, Eye, Cpu, Zap, Layout } from 'lucide-react';
-import Piece, { PiecePartStyle } from '@/components/chess/Piece';
+import Piece, { PieceSetStyle } from '@/components/chess/Piece';
 
 interface SettingsDialogProps {
   lang: Language;
   setLang: (lang: Language) => void;
   isMuted: boolean;
   setIsMuted: (muted: boolean) => void;
-  headSkin: PiecePartStyle;
-  setHeadSkin: (style: PiecePartStyle) => void;
-  bodySkin: PiecePartStyle;
-  setBodySkin: (style: PiecePartStyle) => void;
-  baseSkin: PiecePartStyle;
-  setBaseSkin: (style: PiecePartStyle) => void;
+  headSkin: PieceSetStyle;
+  setHeadSkin: (style: PieceSetStyle) => void;
+  bodySkin: PieceSetStyle;
+  setBodySkin: (style: PieceSetStyle) => void;
+  baseSkin: PieceSetStyle;
+  setBaseSkin: (style: PieceSetStyle) => void;
   theme: 'light' | 'dark' | 'brown';
   setTheme: (theme: 'light' | 'dark' | 'brown') => void;
 }
@@ -75,49 +75,6 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
     },
   ];
 
-  const SkinSelector = ({ 
-    label, 
-    value, 
-    onChange, 
-    icon: Icon 
-  }: { 
-    label: string, 
-    value: PiecePartStyle, 
-    onChange: (v: PiecePartStyle) => void,
-    icon: any 
-  }) => (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-          <Icon className="w-3 h-3" /> {label}
-        </Label>
-      </div>
-      <Tabs 
-        value={value} 
-        onValueChange={(v) => onChange(v as PiecePartStyle)}
-        className="w-full bg-secondary/40 border border-border p-1 rounded-xl"
-      >
-        <TabsList className="flex flex-wrap gap-1 bg-transparent h-auto p-1">
-          <TabsTrigger value="geometric" className="flex-1 min-w-[60px] data-[state=active]:bg-primary data-[state=active]:text-white font-bold rounded-lg py-1 px-1.5 text-[7px] uppercase">
-            {t.piece_set_geometric}
-          </TabsTrigger>
-          <TabsTrigger value="simple" className="flex-1 min-w-[60px] data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-bold rounded-lg py-1 px-1.5 text-[7px] uppercase">
-            {t.piece_set_simple}
-          </TabsTrigger>
-          <TabsTrigger value="school" className="flex-1 min-w-[60px] data-[state=active]:bg-blue-600 data-[state=active]:text-white font-bold rounded-lg py-1 px-1.5 text-[7px] uppercase">
-            {t.piece_set_school}
-          </TabsTrigger>
-          <TabsTrigger value="slimes" className="flex-1 min-w-[60px] data-[state=active]:bg-pink-500 data-[state=active]:text-white font-bold rounded-lg py-1 px-1.5 text-[7px] uppercase">
-            {t.piece_set_slimes}
-          </TabsTrigger>
-          <TabsTrigger value="doodle" className="flex-1 min-w-[60px] data-[state=active]:bg-orange-500 data-[state=active]:text-white font-bold rounded-lg py-1 px-1.5 text-[7px] uppercase">
-            {t.piece_set_doodle}
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
-    </div>
-  );
-
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -151,44 +108,24 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
         <ScrollArea className="max-h-[75vh]">
           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8">
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <Label className="text-[10px] sm:text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                  <Eye className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {t.settings_theme_label}
-                </Label>
-                <Badge variant="outline" className="text-[7px] sm:text-[8px] font-mono border-border text-muted-foreground uppercase px-1.5 py-0">
-                  VISION_MODE
-                </Badge>
-              </div>
-              
+              <Label className="text-[10px] sm:text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                <Eye className="w-3.5 h-3.5" /> {t.settings_theme_label}
+              </Label>
               <div className="grid grid-cols-3 gap-3">
                 {themeOptions.map((opt) => {
                   const Icon = opt.icon;
-                  const isActive = theme === opt.id;
-                  
                   return (
                     <Button
                       key={opt.id}
                       variant="outline"
                       onClick={() => setTheme(opt.id)}
                       className={cn(
-                        "h-auto py-4 px-2 flex flex-col gap-2 border-2 transition-all duration-200",
-                        isActive 
-                          ? "border-primary bg-primary/10 shadow-lg shadow-primary/20 scale-[1.02]" 
-                          : "border-transparent bg-secondary/20 hover:bg-secondary/40 hover:border-white/5"
+                        "h-auto py-4 flex flex-col gap-2 border-2",
+                        theme === opt.id ? "border-primary bg-primary/10" : "border-transparent bg-secondary/20"
                       )}
                     >
-                      <div className={cn(
-                        "w-10 h-10 rounded-full flex items-center justify-center border border-white/10 shadow-inner",
-                        opt.colorClass
-                      )}>
-                        <Icon className={cn("w-5 h-5", opt.iconClass)} />
-                      </div>
-                      <span className={cn(
-                        "text-[9px] font-black uppercase tracking-widest",
-                        isActive ? "text-primary" : "text-muted-foreground"
-                      )}>
-                        {opt.label}
-                      </span>
+                      <Icon className={cn("w-5 h-5", opt.iconClass)} />
+                      <span className="text-[9px] font-black uppercase">{opt.label}</span>
                     </Button>
                   );
                 })}
@@ -196,90 +133,42 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
             </div>
 
             <div className="space-y-4 border-t border-border pt-6">
-              <div className="flex items-center justify-between">
-                <Label className="text-[10px] sm:text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                  <Palette className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {t.settings_pieces_label}
-                </Label>
-                <Badge variant="outline" className="text-[7px] sm:text-[8px] font-mono border-border text-muted-foreground uppercase px-1.5 py-0">
-                  SKIN_COMPOSITE
-                </Badge>
-              </div>
-
-              <div className="flex flex-col items-center justify-center p-4 bg-secondary/20 border border-border rounded-xl gap-2 shadow-inner">
-                <div className="w-20 h-20 bg-card rounded-lg border border-border/50 p-2 flex items-center justify-center shadow-md">
-                  <Piece 
-                    type="k" 
-                    color="white" 
-                    headStyle={headSkin} 
-                    bodyStyle={bodySkin} 
-                    baseStyle={baseSkin} 
-                  />
+              <Label className="text-[10px] sm:text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                <Palette className="w-3.5 h-3.5" /> {t.settings_pieces_label}
+              </Label>
+              <div className="flex flex-col items-center p-4 bg-secondary/20 rounded-xl gap-2">
+                <div className="w-16 h-16 bg-card rounded-lg p-2 flex items-center justify-center">
+                  <Piece type="k" color="white" headStyle={headSkin} />
                 </div>
-                <span className="text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground">
-                  {t.rules_king_title} Preview
-                </span>
-              </div>
-              
-              <div className="space-y-4">
-                <SkinSelector label={t.settings_skin_head} value={headSkin} onChange={setHeadSkin} icon={Zap} />
-                <SkinSelector label={t.settings_skin_body} value={bodySkin} onChange={setBodySkin} icon={Cpu} />
-                <SkinSelector label={t.settings_skin_base} value={baseSkin} onChange={setBaseSkin} icon={Layout} />
+                <Tabs value={headSkin} onValueChange={(v) => {
+                  const s = v as PieceSetStyle;
+                  setHeadSkin(s); setBodySkin(s); setBaseSkin(s);
+                }} className="w-full">
+                  <TabsList className="grid grid-cols-2 gap-1 h-10">
+                    <TabsTrigger value="geometric" className="text-[9px] uppercase font-bold">Geometric</TabsTrigger>
+                    <TabsTrigger value="slimes" className="text-[9px] uppercase font-bold">Slimes</TabsTrigger>
+                  </TabsList>
+                </Tabs>
               </div>
             </div>
 
-            <div className="space-y-3 sm:space-y-4 border-t border-border pt-6">
-              <div className="flex items-center justify-between">
-                <Label className="text-[10px] sm:text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                  <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {t.settings_lang_label}
-                </Label>
-              </div>
-              <Tabs 
-                value={lang} 
-                onValueChange={(v) => setLang(v as Language)}
-                className="w-full bg-secondary/40 border border-border p-1 rounded-xl"
-              >
-                <TabsList className="grid grid-cols-2 bg-transparent gap-1 h-9 sm:h-10">
-                  <TabsTrigger value="en" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-2 text-[9px] sm:text-[10px]">
-                    English
-                  </TabsTrigger>
-                  <TabsTrigger value="ru" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-2 text-[9px] sm:text-[10px]">
-                    Русский
-                  </TabsTrigger>
+            <div className="space-y-4 border-t border-border pt-6">
+              <Label className="text-[10px] sm:text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                <Globe className="w-3.5 h-3.5" /> {t.settings_lang_label}
+              </Label>
+              <Tabs value={lang} onValueChange={(v) => setLang(v as Language)} className="w-full">
+                <TabsList className="grid grid-cols-2 gap-1 h-10">
+                  <TabsTrigger value="en" className="text-[9px] uppercase font-bold">English</TabsTrigger>
+                  <TabsTrigger value="ru" className="text-[9px] uppercase font-bold">Русский</TabsTrigger>
                 </TabsList>
               </Tabs>
             </div>
 
-            <div className="space-y-3 sm:space-y-4 border-t border-border pt-6">
-              <div className="flex items-center justify-between">
-                <Label className="text-[10px] sm:text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                  {isMuted ? <VolumeX className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> : <Volume2 className="w-3 h-3 sm:w-3.5 sm:h-3.5" />}
-                  {t.settings_sound_label}
-                </Label>
-              </div>
-              <div className="flex items-center justify-between p-3 sm:p-4 bg-secondary/30 rounded-xl border border-border">
-                <div className="flex flex-col">
-                  <span className="text-[10px] sm:text-xs font-bold text-foreground uppercase tracking-tight">Audio Synthesis</span>
-                  <span className="text-[8px] sm:text-[10px] text-muted-foreground">Web Audio API Protocols</span>
-                </div>
-                <Switch 
-                  checked={!isMuted} 
-                  onCheckedChange={(checked) => setIsMuted(!checked)} 
-                />
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-border">
-              <div className="flex items-center gap-3 p-3 sm:p-4 bg-secondary/10 rounded-xl border border-border">
-                <ShieldCheck className="w-4 h-4 sm:w-5 h-5 text-muted-foreground shrink-0" />
-                <div>
-                  <p className="text-[9px] sm:text-[10px] font-bold text-muted-foreground leading-tight uppercase tracking-wide">
-                    System integrity confirmed. 
-                  </p>
-                  <p className="text-[7px] sm:text-[8px] text-muted-foreground/40 font-mono uppercase">
-                    Skin Matrix Calibration: Active
-                  </p>
-                </div>
-              </div>
+            <div className="flex items-center justify-between border-t border-border pt-6">
+              <Label className="text-[10px] sm:text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                <Volume2 className="w-3.5 h-3.5" /> {t.settings_sound_label}
+              </Label>
+              <Switch checked={!isMuted} onCheckedChange={(c) => setIsMuted(!c)} />
             </div>
           </div>
         </ScrollArea>
