@@ -202,7 +202,7 @@ export default function Home() {
     if (game.isGameOver) {
       const timer = setTimeout(() => {
         setDelayedGameOver(true);
-      }, 1000); // 1 second tactical delay for the UI transition
+      }, 1000); 
       return () => clearTimeout(timer);
     } else {
       setDelayedGameOver(false);
@@ -801,13 +801,10 @@ export default function Home() {
                 <DialogDescription className="text-[9px] font-black text-primary uppercase tracking-[0.2em]">{t.history_btn} Protocol active</DialogDescription>
               </div>
             </div>
-            <div className="flex items-center gap-2 sm:gap-4">
+            <div className="flex items-center gap-2 sm:gap-4 pr-10 sm:pr-12">
                <Button variant="outline" size="sm" onClick={copyHistory} className="h-9 gap-2 font-black uppercase text-[10px] border-white/10 bg-secondary/20 hover:bg-secondary/40">
                 {hasCopied ? <Check className="w-4 h-4 text-accent" /> : <Copy className="w-4 h-4" />}
                 <span className="hidden sm:inline">{hasCopied ? "COPIED" : "COPY LOG"}</span>
-              </Button>
-              <Button variant="ghost" size="icon" onClick={() => setIsLogOpen(false)} className="h-10 w-10 hover:bg-white/5 rounded-full">
-                <X className="w-6 h-6" />
               </Button>
             </div>
           </DialogHeader>
