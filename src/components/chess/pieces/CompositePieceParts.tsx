@@ -196,17 +196,6 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
     }
   }
 
-  if (style === 'classical') {
-    switch (type) {
-      case 'p': return (<circle cx="22.5" cy="13" r="4.5" fill={fillColor} stroke={strokeColor} strokeWidth="2" />);
-      case 'r': return (<path d="M15 10h2v2h3v-2h3v2h3v-2h3v6H15z" fill={fillColor} stroke={strokeColor} strokeWidth="2" />);
-      case 'n': return (<g><path d="M16 16c0-3 2-6 6-6s6 3 6 6H16z" fill={fillColor} stroke={strokeColor} strokeWidth="2" /><circle cx="25" cy="12" r="1" fill={strokeColor} /></g>);
-      case 'b': return (<g><path d="M22.5 8c-2.5 0-4 3-4 5.5s1.5 4.5 4 4.5 4-2 4-4.5S25 8 22.5 8z" fill={fillColor} stroke={strokeColor} strokeWidth="2" /><circle cx="22.5" cy="7" r="1.2" fill={fillColor} stroke={strokeColor} strokeWidth="1" /></g>);
-      case 'q': return (<g><path d="M22.5 10l-3 4-4-2 2 5h10l2-5-4 2z" fill={fillColor} stroke={strokeColor} strokeWidth="2" /><circle cx="22.5" cy="9" r="1" fill={strokeColor} /><circle cx="15" cy="11" r="1" fill={strokeColor} /><circle cx="30" cy="11" r="1" fill={strokeColor} /></g>);
-      case 'k': return (<g><path d="M16 14c0-4 3-5 6.5-5s6.5 1 6.5 5H16z" fill={fillColor} stroke={strokeColor} strokeWidth="2" /><path d="M22.5 5v4M20.5 7h4" stroke={strokeColor} strokeWidth="2" /></g>);
-    }
-  }
-
   switch (type) {
     case 'p': return (<circle cx="22.5" cy="13.5" r="5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
     case 'r': return (<rect x="14" y="9" width="17" height="7" rx="3" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
@@ -298,7 +287,6 @@ export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strok
   }
 
   if (style === 'simple') return (<polygon points="20.5,15.5 24.5,15.5 33,36 12,36" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />);
-  if (style === 'classical') return (<path d="M19 17c1 4 1 11 0 14h7c-1-3-1-10 0-14H19z" fill={fillColor} stroke={strokeColor} strokeWidth="2" />);
   return (<ellipse cx="22.5" cy="24" rx="6.5" ry="8" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
 };
 
@@ -322,6 +310,5 @@ export const CompositePieceBase: React.FC<PartProps> = ({ type, fillColor, strok
   }
 
   if (style === 'simple') return (<rect x="10" y="35.5" width="25" height="3" rx="0.5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />);
-  if (style === 'classical') return (<g><path d="M11 37h23v-3H11v3z" fill={fillColor} stroke={strokeColor} strokeWidth="2" /><path d="M13 34h19v-2H13v2z" fill={fillColor} stroke={strokeColor} strokeWidth="1.5" /></g>);
   return (<rect x="10" y="32" width="25" height="7" rx="3.5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />);
 };
