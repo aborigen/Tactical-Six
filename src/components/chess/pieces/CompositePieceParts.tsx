@@ -40,17 +40,27 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
       case 'n':
         return (
           <g>
+            {/* Left profile piece */}
             <path 
-              d="M22.5 28v-12c0-3 3-5 7-5 0 0 0 10-7 17z" 
+              d="M21 28 C14 28, 14 10, 21 10 L21 28 Z" 
               fill={fillColor} 
               stroke={strokeColor} 
               strokeWidth="2.5" 
+              strokeLinejoin="round" 
+            />
+            {/* Right architectural arc */}
+            <path 
+              d="M25 7 A 11 11 0 0 1 25 27" 
+              fill="none" 
+              stroke={strokeColor} 
+              strokeWidth="3.5" 
+              strokeLinecap="butt" 
             />
             <path 
-              d="M22.5 10a8 8 0 0 0-8 8v10h8" 
-              fill={fillColor} 
+              d="M22.5 5.5 H26" 
               stroke={strokeColor} 
-              strokeWidth="2.5" 
+              strokeWidth="3.5" 
+              strokeLinecap="butt" 
             />
           </g>
         );
