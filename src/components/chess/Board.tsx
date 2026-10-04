@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -148,7 +149,7 @@ const Board: React.FC<BoardProps> = ({
       const fromPos = JSON.parse(data) as Position;
       if (fromPos) {
         const isLegal = game.getLegalMoves(game.turn).some(m => 
-          m.from.row === fromPos.row && fromPos.col === col &&
+          m.from.row === fromPos.row && m.from.col === fromPos.col &&
           m.to.row === row && m.to.col === col
         );
         if (isLegal) {
@@ -262,13 +263,15 @@ const Board: React.FC<BoardProps> = ({
                       game.isGameOver && !isCheckmate ? "grayscale-[0.3]" : ""
                     )}
                   >
-                    <Piece 
-                      type={piece.type} 
-                      color={piece.color} 
-                      headStyle={headSkin} 
-                      bodyStyle={bodySkin} 
-                      baseStyle={baseSkin} 
-                    />
+                    <div className="w-full h-full pointer-events-none">
+                      <Piece 
+                        type={piece.type} 
+                        color={piece.color} 
+                        headStyle={headSkin} 
+                        bodyStyle={bodySkin} 
+                        baseStyle={baseSkin} 
+                      />
+                    </div>
                   </div>
                 )}
 
