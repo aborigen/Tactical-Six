@@ -470,7 +470,8 @@ export default function Home() {
           setIsTitleScreenOpen(false);
           setIsBriefingOpen(true);
         }} 
-        lang={lang} 
+        lang={lang}
+        setLang={setLang}
       />
       
       <Dialog open={isBriefingOpen} onOpenChange={setIsBriefingOpen}>

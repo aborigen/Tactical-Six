@@ -7,16 +7,18 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { translations, Language } from '@/lib/translations';
-import { Zap, Target, Activity } from 'lucide-react';
+import { Zap, Target, Activity, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface TitleScreenProps {
   isOpen: boolean;
   onStart: () => void;
   lang: Language;
+  setLang: (lang: Language) => void;
 }
 
-export default function TitleScreen({ isOpen, onStart, lang }: TitleScreenProps) {
+export default function TitleScreen({ isOpen, onStart, lang, setLang }: TitleScreenProps) {
   const t = translations[lang];
   const [isInitializing, setIsInitializing] = useState(false);
 
@@ -35,6 +37,20 @@ export default function TitleScreen({ isOpen, onStart, lang }: TitleScreenProps)
         <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, hsl(var(--primary)) 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background" />
         
+        {/* Top-Right Language Switcher */}
+        <div className="absolute top-6 right-6 z-20 animate-in fade-in slide-in-from-top-4 duration-1000">
+          <Tabs value={lang} onValueChange={(v) => setLang(v as Language)} className="bg-secondary/40 backdrop-blur-md border border-white/5 p-1 rounded-xl shadow-2xl">
+            <TabsList className="bg-transparent gap-1 h-8">
+              <TabsTrigger value="en" className="data-[state=active]:bg-primary data-[state=active]:text-white font-black rounded-lg px-3 text-[9px] uppercase tracking-wider">
+                EN
+              </TabsTrigger>
+              <TabsTrigger value="ru" className="data-[state=active]:bg-primary data-[state=active]:text-white font-black rounded-lg px-3 text-[9px] uppercase tracking-wider">
+                RU
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
+
         <div className="relative z-10 flex flex-col items-center text-center space-y-12 animate-in fade-in zoom-in duration-1000 px-6">
           <div className="relative group">
             <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full scale-150 animate-pulse-glow" />
