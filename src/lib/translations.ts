@@ -139,6 +139,8 @@ export const translations = {
     stats_draws: "Draws",
     stats_overview: "Engagement Overview",
     stats_indexed: "Manoeuvres Indexed",
+    title_screen_cta: "INITIALIZE MISSION",
+    title_screen_status: "SYSTEMS ONLINE",
   },
   ru: {
     title: "TACTICAL SIX",
@@ -278,5 +280,7 @@ export const translations = {
     stats_draws: "Ничьи",
     stats_overview: "Обзор сражения",
     stats_indexed: "Маневров зафиксировано",
+    title_screen_cta: "ИНИЦИИРОВАТЬ МИССИЮ",
+    title_screen_status: "СИСТЕМЫ ОНЛАЙН",
   }
 };

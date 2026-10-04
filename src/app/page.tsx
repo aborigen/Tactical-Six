@@ -25,6 +25,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { translations, Language } from '@/lib/translations';
 import Onboarding from '@/components/onboarding/Onboarding';
+import TitleScreen from '@/components/title/TitleScreen';
 import RulesHelp from '@/components/help/RulesHelp';
 import SettingsDialog from '@/components/settings/SettingsDialog';
 import { soundManager } from '@/lib/sounds';
@@ -77,6 +78,7 @@ export default function Home() {
   const [viewIndex, setViewIndex] = useState<number>(-1); 
   const [isLogOpen, setIsLogOpen] = useState(false);
   const [isBriefingOpen, setIsBriefingOpen] = useState(false);
+  const [isTitleScreenOpen, setIsTitleScreenOpen] = useState(false);
   const [isInspectMode, setIsInspectMode] = useState(false);
   const [selectedPieceInfo, setSelectedPieceInfo] = useState<{ type: PieceType; color: PlayerColor } | null>(null);
   const [delayedGameOver, setDelayedGameOver] = useState(false);
@@ -131,7 +133,7 @@ export default function Home() {
           console.error('Failed to load history', e);
         }
       } else {
-        setIsBriefingOpen(true);
+        setIsTitleScreenOpen(true);
       }
 
       try {
@@ -461,6 +463,15 @@ export default function Home() {
       isAdPlaying ? "opacity-20 pointer-events-none" : "opacity-100"
     )}>
       <Onboarding lang={lang} />
+
+      <TitleScreen 
+        isOpen={isTitleScreenOpen} 
+        onStart={() => {
+          setIsTitleScreenOpen(false);
+          setIsBriefingOpen(true);
+        }} 
+        lang={lang} 
+      />
       
       <Dialog open={isBriefingOpen} onOpenChange={setIsBriefingOpen}>
         <DialogContent className="w-[95vw] sm:max-w-[550px] bg-card/95 backdrop-blur-xl border-border/50 shadow-2xl p-0 overflow-hidden ring-1 ring-white/10 max-h-[90vh] flex flex-col">
