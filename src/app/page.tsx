@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
@@ -823,10 +824,10 @@ export default function Home() {
             </div>
           </DialogHeader>
 
-          <div className="flex-1 min-h-0 grid grid-cols-1 landscape:grid-cols-2 lg:grid-cols-12 gap-4 sm:gap-6 p-4 sm:p-6 overflow-hidden">
-            <div className="lg:col-span-7 landscape:col-span-1 flex flex-col items-center justify-center space-y-2 sm:space-y-6 min-h-0">
-              <div className="relative h-full aspect-square flex items-center justify-center min-h-0 max-w-full">
-                 <div className="w-full h-full shadow-[0_40px_100px_rgba(0,0,0,0.6)] rounded-3xl overflow-hidden ring-1 ring-white/10 relative">
+          <div className="flex-1 min-h-0 flex flex-col landscape:grid landscape:grid-cols-2 lg:grid-cols-12 gap-4 sm:gap-6 p-4 sm:p-6 overflow-hidden">
+            <div className="flex flex-col items-center justify-center space-y-4 landscape:space-y-6 lg:col-span-7 landscape:col-span-1 min-h-0 shrink-0 landscape:shrink">
+              <div className="relative flex-1 w-full flex items-center justify-center min-h-0 max-h-[40vh] landscape:max-h-full">
+                 <div className="relative h-full aspect-square shadow-[0_40px_100px_rgba(0,0,0,0.6)] rounded-3xl overflow-hidden ring-1 ring-white/10">
                     <Board 
                         game={displayedGame} 
                         onMove={() => {}} 
@@ -837,18 +838,18 @@ export default function Home() {
                         isInspectMode={true}
                         lang={lang}
                     />
-                    <div className="absolute top-4 right-4 z-40 flex flex-col items-end gap-2">
-                      <Badge variant="outline" className="bg-background/80 backdrop-blur-md text-foreground font-black tracking-widest px-4 py-1.5 text-[10px] border-white/10 shadow-xl">
+                    <div className="absolute top-2 right-2 sm:top-4 sm:right-4 z-40 flex flex-col items-end gap-1 sm:gap-2">
+                      <Badge variant="outline" className="bg-background/80 backdrop-blur-md text-foreground font-black tracking-widest px-2 py-1 sm:px-4 sm:py-1.5 text-[8px] sm:text-[10px] border-white/10 shadow-xl">
                         {viewIndex === -1 ? `LIVE STATUS` : `FRAME ${viewIndex + 1}`}
                       </Badge>
-                      <div className="text-[8px] font-black text-white/40 uppercase tracking-[0.3em] bg-black/40 px-2 py-1 rounded">
+                      <div className="hidden sm:block text-[8px] font-black text-white/40 uppercase tracking-[0.3em] bg-black/40 px-2 py-1 rounded">
                         Vector Analysis Protocol
                       </div>
                     </div>
                  </div>
               </div>
 
-              <div className="w-full max-w-[500px] space-y-2 sm:space-y-4 landscape:space-y-2">
+              <div className="w-full max-w-[500px] space-y-2 sm:space-y-4 shrink-0">
                 <div className="px-2">
                   <div className="flex justify-between text-[8px] font-black text-muted-foreground uppercase tracking-widest mb-1.5">
                     <span>Tactical Progression</span>
@@ -862,31 +863,31 @@ export default function Home() {
                   />
                 </div>
                 
-                <div className="grid grid-cols-5 gap-2 p-2 bg-secondary/30 rounded-2xl border border-white/5 backdrop-blur-md shadow-inner">
-                  <Button variant="ghost" size="icon" className="h-10 sm:h-12 w-full hover:bg-white/5 transition-colors" onClick={() => setStep(0)} disabled={viewIndex === 0 || game.history.length === 0}>
-                    <ChevronFirst className="w-5 h-5" />
+                <div className="grid grid-cols-5 gap-1.5 sm:gap-2 p-1.5 sm:p-2 bg-secondary/30 rounded-2xl border border-white/5 backdrop-blur-md shadow-inner">
+                  <Button variant="ghost" size="icon" className="h-9 sm:h-12 w-full hover:bg-white/5 transition-colors" onClick={() => setStep(0)} disabled={viewIndex === 0 || game.history.length === 0}>
+                    <ChevronFirst className="w-4 h-4 sm:w-5 h-5" />
                   </Button>
-                  <Button variant="ghost" size="icon" className="h-10 sm:h-12 w-full hover:bg-white/5 transition-colors" onClick={() => setStep(Math.max(0, (viewIndex === -1 ? game.history.length - 1 : viewIndex) - 1))} disabled={viewIndex === 0 || game.history.length === 0}>
-                    <ChevronLeft className="w-5 h-5" />
+                  <Button variant="ghost" size="icon" className="h-9 sm:h-12 w-full hover:bg-white/5 transition-colors" onClick={() => setStep(Math.max(0, (viewIndex === -1 ? game.history.length - 1 : viewIndex) - 1))} disabled={viewIndex === 0 || game.history.length === 0}>
+                    <ChevronLeft className="w-4 h-4 sm:w-5 h-5" />
                   </Button>
-                  <Button variant={viewIndex === -1 ? "default" : "secondary"} size="icon" className={cn("h-10 sm:h-12 w-full font-black shadow-xl transition-all", viewIndex === -1 && "bg-primary text-white scale-105")} onClick={setLive}>
-                    <PlayCircle className="w-5 h-5" />
+                  <Button variant={viewIndex === -1 ? "default" : "secondary"} size="icon" className={cn("h-9 sm:h-12 w-full font-black shadow-xl transition-all", viewIndex === -1 && "bg-primary text-white scale-105")} onClick={setLive}>
+                    <PlayCircle className="w-4 h-4 sm:w-5 h-5" />
                   </Button>
-                  <Button variant="ghost" size="icon" className="h-10 sm:h-12 w-full hover:bg-white/5 transition-colors" onClick={() => setStep(Math.min(game.history.length - 1, (viewIndex === -1 ? game.history.length - 1 : viewIndex) + 1))} disabled={viewIndex === -1 || viewIndex === game.history.length - 1 || game.history.length === 0}>
-                    <ChevronRight className="w-5 h-5" />
+                  <Button variant="ghost" size="icon" className="h-9 sm:h-12 w-full hover:bg-white/5 transition-colors" onClick={() => setStep(Math.min(game.history.length - 1, (viewIndex === -1 ? game.history.length - 1 : viewIndex) + 1))} disabled={viewIndex === -1 || viewIndex === game.history.length - 1 || game.history.length === 0}>
+                    <ChevronRight className="w-4 h-4 sm:w-5 h-5" />
                   </Button>
-                  <Button variant="ghost" size="icon" className="h-10 sm:h-12 w-full hover:bg-white/5 transition-colors" onClick={() => setStep(game.history.length - 1)} disabled={viewIndex === game.history.length - 1 || game.history.length === 0}>
-                    <ChevronLast className="w-5 h-5" />
+                  <Button variant="ghost" size="icon" className="h-9 sm:h-12 w-full hover:bg-white/5 transition-colors" onClick={() => setStep(game.history.length - 1)} disabled={viewIndex === game.history.length - 1 || game.history.length === 0}>
+                    <ChevronLast className="w-4 h-4 sm:w-5 h-5" />
                   </Button>
                 </div>
               </div>
             </div>
 
-            <div className="lg:col-span-5 landscape:col-span-1 flex flex-col bg-card/20 border-l border-white/5 overflow-hidden min-h-0">
-              <div className="p-4 sm:p-6 border-b border-white/5 bg-secondary/10 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <BarChart3 className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-[10px] font-black text-foreground uppercase tracking-widest">{t.stats_overview}</span>
+            <div className="flex flex-col bg-card/20 border-t landscape:border-t-0 landscape:border-l border-white/5 overflow-hidden lg:col-span-5 landscape:col-span-1 min-h-0 flex-1">
+              <div className="p-3 sm:p-6 border-b border-white/5 bg-secondary/10 flex items-center justify-between shrink-0">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <BarChart3 className="w-3.5 h-3.5 sm:w-4 h-4 text-muted-foreground" />
+                  <span className="text-[9px] sm:text-[10px] font-black text-foreground uppercase tracking-widest">{t.stats_overview}</span>
                 </div>
                 <Badge className="bg-accent/10 text-accent text-[8px] font-black border-accent/20">
                   {Math.ceil(game.history.length / 2)} FULL ROUNDS
@@ -894,7 +895,7 @@ export default function Home() {
               </div>
               
               <ScrollArea className="flex-1">
-                <div className="p-4 sm:p-6">
+                <div className="p-3 sm:p-6">
                   {game.history.length === 0 ? (
                     <div className="h-full flex flex-col items-center justify-center py-12 sm:py-24 text-center space-y-6">
                       <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-secondary/20 flex items-center justify-center border border-dashed border-white/10">
@@ -908,25 +909,25 @@ export default function Home() {
                   ) : (
                     <div className="space-y-3 pb-8">
                       {Array.from({ length: Math.ceil(game.history.length / 2) }).map((_, i) => (
-                        <div key={i} className="flex gap-4 items-start group/row">
-                          <div className="w-8 pt-4 flex flex-col items-center gap-1 opacity-30">
-                            <span className="text-[10px] font-black text-muted-foreground font-mono">{String(i + 1).padStart(2, '0')}</span>
-                            <div className="w-px h-full bg-border grow min-h-[40px]" />
+                        <div key={i} className="flex gap-2 sm:gap-4 items-start group/row">
+                          <div className="w-6 sm:w-8 pt-3 sm:pt-4 flex flex-col items-center gap-1 opacity-30">
+                            <span className="text-[8px] sm:text-[10px] font-black text-muted-foreground font-mono">{String(i + 1).padStart(2, '0')}</span>
+                            <div className="w-px h-full bg-border grow min-h-[30px] sm:min-h-[40px]" />
                           </div>
-                          <div className="flex-1 grid grid-cols-2 gap-3">
+                          <div className="flex-1 grid grid-cols-2 gap-2 sm:gap-3">
                             <Button 
                               variant="ghost" 
                               onClick={() => setStep(i * 2)} 
                               className={cn(
-                                "relative flex flex-col items-start justify-center px-4 h-14 sm:h-16 rounded-xl border text-xs transition-all duration-300", 
+                                "relative flex flex-col items-start justify-center px-3 sm:px-4 h-12 sm:h-16 rounded-xl border text-[10px] sm:text-xs transition-all duration-300", 
                                 viewIndex === i * 2 
                                   ? "bg-primary/20 border-primary text-foreground ring-1 ring-primary/30 shadow-[0_0_30px_rgba(var(--primary),0.1)] scale-[1.02] z-10" 
                                   : "bg-secondary/20 border-white/5 hover:bg-white/5 hover:border-white/10"
                               )}
                             >
-                              <span className={cn("text-[7px] font-black uppercase tracking-[0.2em] mb-1", viewIndex === i * 2 ? "text-primary" : "text-muted-foreground/60")}>White Unit</span>
-                              <span className="font-black text-sm tracking-tight">{ChessGame.toAlgebraic(game.history[i * 2])}</span>
-                              {viewIndex === i * 2 && <div className="absolute left-0 top-1/4 bottom-1/4 w-1 bg-primary rounded-r" />}
+                              <span className={cn("text-[6px] sm:text-[7px] font-black uppercase tracking-[0.2em] mb-0.5 sm:mb-1", viewIndex === i * 2 ? "text-primary" : "text-muted-foreground/60")}>White Unit</span>
+                              <span className="font-black text-xs sm:text-sm tracking-tight">{ChessGame.toAlgebraic(game.history[i * 2])}</span>
+                              {viewIndex === i * 2 && <div className="absolute left-0 top-1/4 bottom-1/4 w-0.5 sm:w-1 bg-primary rounded-r" />}
                             </Button>
                             
                             {game.history[i * 2 + 1] ? (
@@ -934,19 +935,19 @@ export default function Home() {
                                 variant="ghost" 
                                 onClick={() => setStep(i * 2 + 1)} 
                                 className={cn(
-                                  "relative flex flex-col items-start justify-center px-4 h-14 sm:h-16 rounded-xl border text-xs transition-all duration-300", 
+                                  "relative flex flex-col items-start justify-center px-3 sm:px-4 h-12 sm:h-16 rounded-xl border text-[10px] sm:text-xs transition-all duration-300", 
                                   viewIndex === i * 2 + 1 
                                     ? "bg-accent/20 border-accent text-foreground ring-1 ring-accent/30 shadow-[0_0_30px_rgba(var(--accent),0.1)] scale-[1.02] z-10" 
                                     : "bg-secondary/20 border-white/5 hover:bg-white/5 hover:border-white/10"
                                 )}
                               >
-                                <span className={cn("text-[7px] font-black uppercase tracking-[0.2em] mb-1", viewIndex === i * 2 + 1 ? "text-accent" : "text-accent/40")}>Black Unit</span>
-                                <span className="font-black text-sm tracking-tight">{ChessGame.toAlgebraic(game.history[i * 2 + 1])}</span>
-                                {viewIndex === i * 2 + 1 && <div className="absolute left-0 top-1/4 bottom-1/4 w-1 bg-accent rounded-r" />}
+                                <span className={cn("text-[6px] sm:text-[7px] font-black uppercase tracking-[0.2em] mb-0.5 sm:mb-1", viewIndex === i * 2 + 1 ? "text-accent" : "text-accent/40")}>Black Unit</span>
+                                <span className="font-black text-xs sm:text-sm tracking-tight">{ChessGame.toAlgebraic(game.history[i * 2 + 1])}</span>
+                                {viewIndex === i * 2 + 1 && <div className="absolute left-0 top-1/4 bottom-1/4 w-0.5 sm:w-1 bg-accent rounded-r" />}
                               </Button>
                             ) : (
-                              <div className="h-14 sm:h-16 rounded-xl border border-dashed border-white/5 bg-transparent flex items-center justify-center opacity-20">
-                                <span className="text-[8px] font-black tracking-widest">PENDING</span>
+                              <div className="h-12 sm:h-16 rounded-xl border border-dashed border-white/5 bg-transparent flex items-center justify-center opacity-20">
+                                <span className="text-[7px] sm:text-[8px] font-black tracking-widest">PENDING</span>
                               </div>
                             )}
                           </div>
@@ -957,12 +958,12 @@ export default function Home() {
                 </div>
               </ScrollArea>
               
-              <footer className="p-4 sm:p-6 border-t border-white/5 bg-secondary/10 flex items-center justify-between shrink-0">
+              <footer className="p-3 sm:p-6 border-t border-white/5 bg-secondary/10 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2">
                   <Activity className="w-3 h-3 text-primary animate-pulse" />
-                  <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">{game.history.length} {t.stats_indexed}</span>
+                  <span className="text-[8px] sm:text-[9px] font-black text-muted-foreground uppercase tracking-widest">{game.history.length} {t.stats_indexed}</span>
                 </div>
-                <Button onClick={() => setIsLogOpen(false)} variant="secondary" className="h-8 sm:h-10 font-black text-[10px] uppercase px-6 sm:px-8 shadow-xl bg-foreground text-background hover:bg-foreground/90 rounded-full">
+                <Button onClick={() => setIsLogOpen(false)} variant="secondary" className="h-8 sm:h-10 font-black text-[9px] sm:text-[10px] uppercase px-4 sm:px-8 shadow-xl bg-foreground text-background hover:bg-foreground/90 rounded-full">
                   {t.history_playback_back}
                 </Button>
               </footer>
