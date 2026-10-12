@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { PieceType, PlayerColor } from '@/lib/chess-logic';
 import Image from 'next/image';
@@ -31,7 +33,9 @@ const Piece: React.FC<PieceProps> = ({
   return (
     <div className={cn(
       "w-full h-full piece-shadow transition-transform duration-300 flex items-center justify-center",
-      type === 'p' && (set === 'geometric' || set === 'slimes') && "scale-[0.85] origin-bottom",
+      // Apply a base 0.9 scale to all pieces (scale-90).
+      // For pawns which were already reduced by 0.85: 0.85 * 0.9 = 0.765.
+      type === 'p' && (set === 'geometric' || set === 'slimes') ? "scale-[0.765] origin-bottom" : "scale-90",
       className
     )}>
       <Image 
