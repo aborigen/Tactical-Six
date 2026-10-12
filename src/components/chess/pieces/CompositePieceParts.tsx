@@ -1,12 +1,12 @@
 import React from 'react';
 import { PieceType } from '@/lib/chess-logic';
-import { PiecePartStyle } from '../Piece';
+import { PieceSetStyle } from '../Piece';
 
 interface PartProps {
   type: PieceType;
   fillColor: string;
   strokeColor: string;
-  style: PiecePartStyle;
+  style: PieceSetStyle;
 }
 
 const DoodleFace = ({ strokeColor }: { strokeColor: string }) => (
@@ -42,15 +42,15 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
       case 'p':
         return (
           <g>
-            <path d="M15 28 C15 15, 30 15, 30 28" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
+            <path d="M15 28 C15 12, 30 12, 30 28" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
+            <circle cx="22.5" cy="12" r="3" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
             <EyePair cy={22} r={3} />
           </g>
         );
       case 'r':
         return (
           <g>
-            <path d="M13 28 V12 H32 V28" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
-            <path d="M13 12 L16 8 H29 L32 12" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
+            <path d="M12 28 V14 H16 V10 H20 V14 H25 V10 H29 V14 H33 V28 Z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />
             <EyePair cy={20} r={3.5} />
             <circle cx="22.5" cy="16" r="1.5" fill={strokeColor} />
           </g>
@@ -58,24 +58,25 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
       case 'n':
         return (
           <g>
-            <path d="M14 28 C14 10, 32 10, 32 28" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
-            <path d="M31 15 C36 12, 38 18, 33 22" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
-            <EyePair cy={21} r={3.5} />
+            <path d="M14 28 C14 8, 28 8, 34 18 C30 18, 28 22, 28 28 Z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
+            <path d="M22 8 L24 4 L28 8" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
+            <EyePair cy={18} r={3.5} />
           </g>
         );
       case 'b':
         return (
           <g>
-            <path d="M22.5 8 C15 18, 15 28, 22.5 28 C30 28, 30 18, 22.5 8 Z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
+            <path d="M22.5 6 C14 18, 14 28, 22.5 28 C31 28, 31 18, 22.5 6 Z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
+            <path d="M19 14 L26 18" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
             <EyePair cy={18} r={3.5} />
           </g>
         );
       case 'q':
         return (
           <g>
-            <path d="M13 28 C13 10, 32 10, 32 28" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
+            <path d="M12 28 C12 10, 33 10, 33 28" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
             <Tentacles />
-            <path d="M22.5 6 A4 4 0 0 1 22.5 14" fill="none" stroke={strokeColor} strokeWidth="2" />
+            <path d="M14 10 L18 6 L22.5 10 L27 6 L31 10" fill="none" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
             <EyePair cy={20} r={4.5} />
           </g>
         );
@@ -84,7 +85,7 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
           <g>
             <path d="M12 28 C12 8, 33 8, 33 28" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
             <Tentacles />
-            <path d="M18 8 L22.5 4 L27 8" fill="none" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
+            <path d="M22.5 2 V8 M19.5 5 H25.5" stroke={strokeColor} strokeWidth="3" strokeLinecap="round" />
             <EyePair cy={18} r={5} />
           </g>
         );
