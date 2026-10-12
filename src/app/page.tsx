@@ -673,8 +673,12 @@ export default function Home() {
             <div className="flex items-center gap-3">
               <Activity className="w-4 h-4 text-accent animate-pulse" />
               <div>
-                <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest leading-none mb-1">Link integrity</p>
-                <p className="text-[10px] font-bold text-foreground">ENCRYPTED_SYNC_STABLE</p>
+                <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest leading-none mb-1">
+                  {t.link_integrity_label}
+                </p>
+                <p className="text-[10px] font-bold text-foreground">
+                  {gameMode === 'pve' ? `AI_SYNC_${difficulty.toUpperCase()}` : 'P2P_LOCAL_SECURE'}
+                </p>
               </div>
             </div>
           </Card>

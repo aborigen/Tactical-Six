@@ -145,6 +145,7 @@ export const translations = {
     overlay_victory: "Victory!",
     overlay_defeat: "Defeat",
     overlay_draw: "Draw",
+    link_integrity_label: "Link Integrity",
   },
   ru: {
     title: "TACTICAL SIX",
@@ -290,5 +291,6 @@ export const translations = {
     overlay_victory: "Победа!",
     overlay_defeat: "Поражение",
     overlay_draw: "Ничья",
+    link_integrity_label: "Канал связи",
   }
 };
