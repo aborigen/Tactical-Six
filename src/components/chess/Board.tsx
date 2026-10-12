@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -316,7 +315,7 @@ const Board: React.FC<BoardProps> = ({
                 isBlackWin ? "bg-destructive text-destructive-foreground border-white/20 shadow-destructive/40" :
                 "bg-secondary text-secondary-foreground border-white/10 shadow-black/40"
               )}>
-                {isWhiteWin ? "Victory!" : isBlackWin ? "Defeat" : "Draw"}
+                {isWhiteWin ? t.overlay_victory : isBlackWin ? t.overlay_defeat : t.overlay_draw}
               </div>
               
               <div className="flex flex-col gap-3 w-full max-w-[200px]">
