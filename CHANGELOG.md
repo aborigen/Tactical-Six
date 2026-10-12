@@ -2,6 +2,18 @@
 
 All notable tactical upgrades to the 6x6 combat matrix are documented here.
 
+## [1.17.0] - Deployment & Interface Optimization
+### Added
+- **Title Protocol**: Introduced a cinematic Title Screen with integrated language selection (EN/RU).
+- **Mission Flow**: Optimized the initialization sequence to move from Title Screen to Mission Briefing.
+
+### Fixed & Improved
+- **Tactical Log Responsiveness**: Completely refactored the Log interface for optimal portrait and landscape display on mobile devices.
+- **Capture Logic**: Fixed a critical error in the drag-and-drop capture protocol that blocked non-vertical maneuvers.
+- **Localization Matrix**: Finalized localization for Game Over outcomes, Piece Inspector dismissals, and Link Integrity telemetry.
+- **Visual Hierarchy**: Refined all piece scales to 0.9 coefficient for improved spatial clarity on the 6x6 grid.
+- **Technical Stability**: Added `next-env.d.ts` to resolve CSS module type declaration conflicts.
+
 ## [1.16.0] - Geometric Hierarchy Refinement
 ### Fixed & Improved
 - **Pawn Scaling**: Refined the Geometric piece set to reduce the visual scale of Pawns by 15%, establishing a clearer tactical hierarchy between infantry and major figures.
