@@ -870,9 +870,24 @@ export default function Home() {
                   <Button variant="ghost" size="icon" className="h-9 sm:h-12 w-full hover:bg-white/5 transition-colors" onClick={() => setStep(Math.max(0, (viewIndex === -1 ? game.history.length - 1 : viewIndex) - 1))} disabled={viewIndex === 0 || game.history.length === 0}>
                     <ChevronLeft className="w-4 h-4 sm:w-5 h-5" />
                   </Button>
-                  <Button variant={viewIndex === -1 ? "default" : "secondary"} size="icon" className={cn("h-9 sm:h-12 w-full font-black shadow-xl transition-all", viewIndex === -1 && "bg-primary text-white scale-105")} onClick={setLive}>
-                    <PlayCircle className="w-4 h-4 sm:w-5 h-5" />
+                  
+                  <Button 
+                    variant={viewIndex === -1 ? "default" : "secondary"} 
+                    size="icon" 
+                    className={cn(
+                      "h-9 sm:h-12 w-full font-black transition-all group/live relative overflow-hidden", 
+                      viewIndex === -1 
+                        ? "bg-primary text-primary-foreground shadow-[0_0_25px_rgba(var(--primary),0.3)] ring-2 ring-primary/50 scale-105 z-20" 
+                        : "bg-secondary/40 text-muted-foreground border-white/5 hover:text-foreground"
+                    )} 
+                    onClick={setLive}
+                  >
+                    {viewIndex === -1 && (
+                      <span className="absolute inset-0 bg-white/10 animate-pulse" />
+                    )}
+                    <Zap className={cn("w-4 h-4 sm:w-5 h-5 transition-transform relative z-10", viewIndex === -1 ? "fill-current scale-110 animate-pulse" : "group-hover/live:scale-110")} />
                   </Button>
+
                   <Button variant="ghost" size="icon" className="h-9 sm:h-12 w-full hover:bg-white/5 transition-colors" onClick={() => setStep(Math.min(game.history.length - 1, (viewIndex === -1 ? game.history.length - 1 : viewIndex) + 1))} disabled={viewIndex === -1 || viewIndex === game.history.length - 1 || game.history.length === 0}>
                     <ChevronRight className="w-4 h-4 sm:w-5 h-5" />
                   </Button>
