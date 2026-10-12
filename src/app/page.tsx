@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
@@ -578,7 +577,7 @@ export default function Home() {
                 </DialogDescription>
               </DialogHeader>
               <Button size="sm" className="w-full h-9 bg-primary hover:bg-primary/90 text-white font-black text-xs uppercase rounded-xl tracking-wider" onClick={() => setSelectedPieceInfo(null)}>
-                Dismiss
+                {t.inspect_dismiss}
               </Button>
             </>
           )}
