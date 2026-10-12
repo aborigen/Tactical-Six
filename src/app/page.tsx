@@ -608,10 +608,6 @@ export default function Home() {
         </div>
 
         <div className="flex items-center gap-0.5 sm:gap-1">
-          <Button variant="outline" size="sm" onClick={() => setIsLogOpen(true)} className="border-primary/20 bg-primary/5 hover:bg-primary/10 font-bold text-primary h-8 px-1.5 sm:px-3 text-[10px]">
-            <History className="w-3.5 h-3.5 sm:mr-2" />
-            <span className="hidden sm:inline">{t.history_btn}</span>
-          </Button>
           <RulesHelp lang={lang} />
           <SettingsDialog 
             lang={lang} 
