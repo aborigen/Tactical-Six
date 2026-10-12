@@ -182,8 +182,9 @@ export default function Home() {
 
   useEffect(() => {
     const html = document.documentElement;
-    html.classList.remove('dark', 'brown');
-    if (theme !== 'light') {
+    html.classList.remove('light', 'brown');
+    // Default is dark (Galaxy), so only add classes for others
+    if (theme !== 'dark') {
       html.classList.add(theme);
     }
     

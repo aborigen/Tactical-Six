@@ -21,8 +21,8 @@ export default function RootLayout({
               (function() {
                 try {
                   const theme = localStorage.getItem('tactical_six_theme') || 'dark';
-                  document.documentElement.classList.remove('dark', 'brown');
-                  if (theme !== 'light') {
+                  document.documentElement.classList.remove('light', 'brown');
+                  if (theme !== 'dark') {
                     document.documentElement.classList.add(theme);
                   }
                 } catch (e) {}

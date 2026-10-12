@@ -53,18 +53,18 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
 
   const themeOptions = [
     { 
-      id: 'light' as const, 
-      icon: Sun, 
-      label: t.theme_light, 
-      colorClass: "bg-[#f8f9fa]", 
-      iconClass: "text-slate-600" 
-    },
-    { 
       id: 'dark' as const, 
       icon: Moon, 
       label: t.theme_dark, 
       colorClass: "bg-[#0f172a]", 
       iconClass: "text-slate-200" 
+    },
+    { 
+      id: 'light' as const, 
+      icon: Sun, 
+      label: t.theme_light, 
+      colorClass: "bg-[#f8f9fa]", 
+      iconClass: "text-slate-600" 
     },
     { 
       id: 'brown' as const, 
