@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { PieceType } from '@/lib/chess-logic';
 import { PieceSetStyle } from '../Piece';
