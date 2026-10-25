@@ -343,6 +343,7 @@ export default function Home() {
             boardState: boardStr,
             currentPlayer: game.turn,
             legalMoves: legalMoves,
+            positionHistory: game.positionHistory, // Pass history for repetition detection
             depth: DIFFICULTY_MAP[difficulty],
             lang: lang
           });
@@ -382,6 +383,7 @@ export default function Home() {
         boardState: boardStr,
         currentPlayer: game.turn,
         legalMoves: legalMoves,
+        positionHistory: game.positionHistory,
         depth: DIFFICULTY_MAP[difficulty],
         lang: lang
       });

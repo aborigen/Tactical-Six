@@ -10,6 +10,7 @@ export interface AIMoveSuggestionInput {
   boardState: string;
   currentPlayer: 'white' | 'black';
   legalMoves: string[];
+  positionHistory?: string[];
   depth?: number;
   lang?: Language;
 }
@@ -50,6 +51,11 @@ export async function aiMoveSuggestion(input: AIMoveSuggestionInput): Promise<AI
     }
   }
   game.turn = input.currentPlayer;
+  
+  // Restore position history for draw detection awareness
+  if (input.positionHistory) {
+    game.positionHistory = [...input.positionHistory];
+  }
 
   const result = game.getBestMove(searchDepth);
   

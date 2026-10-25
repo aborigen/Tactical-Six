@@ -106,7 +106,7 @@ export class ChessGame {
     this.status = 'White to move';
   }
 
-  private getPositionHash(): string {
+  public getPositionHash(): string {
     return this.exportToString() + '|' + this.turn;
   }
 
@@ -380,6 +380,10 @@ export class ChessGame {
     return false;
   }
 
+  /**
+   * Evaluates if the current board position (including player turn)
+   * has occurred 3 or more times during the game history.
+   */
   isThreefoldRepetition(): boolean {
     const currentHash = this.getPositionHash();
     let count = 0;
@@ -429,8 +433,9 @@ export class ChessGame {
     for (const move of moves) {
       const cloned = this.clone();
       cloned.makeMoveInternal(move);
+      // Pushing the hash to support repetition detection during search
+      cloned.positionHistory.push(cloned.getPositionHash());
 
-      // Pass the current turn to minimax; it will decide if it needs to maximize or minimize
       const score = this.minimax(cloned, depth - 1, -Infinity, Infinity, cloned.turn === 'white');
       
       if (this.turn === 'white') {
@@ -452,11 +457,15 @@ export class ChessGame {
   private minimax(game: ChessGame, depth: number, alpha: number, beta: number, isMaximizing: boolean): number {
     if (depth === 0) return game.evaluate();
 
+    // Check for Threefold Repetition during search
+    if (game.isThreefoldRepetition()) {
+      return 0; // Tactical Draw
+    }
+
     const moves = game.getLegalMoves(game.turn);
     
     if (moves.length === 0) {
       if (game.isInCheck(game.turn)) {
-        // Return a score that favors faster checkmates
         return isMaximizing ? -CHECKMATE_VALUE - depth : CHECKMATE_VALUE + depth;
       }
       return 0; // Stalemate
@@ -467,6 +476,7 @@ export class ChessGame {
       for (const move of moves) {
         const cloned = game.clone();
         cloned.makeMoveInternal(move);
+        cloned.positionHistory.push(cloned.getPositionHash());
         const evaluation = this.minimax(cloned, depth - 1, alpha, beta, false);
         maxEval = Math.max(maxEval, evaluation);
         alpha = Math.max(alpha, evaluation);
@@ -478,6 +488,7 @@ export class ChessGame {
       for (const move of moves) {
         const cloned = game.clone();
         cloned.makeMoveInternal(move);
+        cloned.positionHistory.push(cloned.getPositionHash());
         const evaluation = this.minimax(cloned, depth - 1, alpha, beta, true);
         minEval = Math.min(minEval, evaluation);
         beta = Math.min(beta, evaluation);
