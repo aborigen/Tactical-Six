@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
@@ -333,7 +334,7 @@ export default function Home() {
     if (isEngineTurn && !game.isGameOver && !isSuggesting && !isReviewMode && !isAdPlaying && !isBriefingOpen) {
       const triggerAiOpponent = async () => {
         setIsSuggesting(true);
-        // Reduced delay for AI vs AI to keep the action moving
+        // Calibrated 1s delay for AI vs AI (Spectate) mode
         await new Promise(resolve => setTimeout(resolve, gameMode === 'eve' ? 1000 : 2000));
         
         try {
@@ -343,7 +344,7 @@ export default function Home() {
             boardState: boardStr,
             currentPlayer: game.turn,
             legalMoves: legalMoves,
-            positionHistory: game.positionHistory, // Pass history for repetition detection
+            positionHistory: game.positionHistory,
             depth: DIFFICULTY_MAP[difficulty],
             lang: lang
           });
