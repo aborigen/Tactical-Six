@@ -32,7 +32,7 @@ import { soundManager } from '@/lib/sounds';
 import { initYandexSDK, showFullscreenAd, gameReady, setYandexLeaderboardScore } from '@/lib/yandex-sdk';
 import Piece from '@/components/chess/Piece';
 
-type GameMode = 'pvp' | 'pve';
+type GameMode = 'pvp' | 'pve' | 'eve';
 type Difficulty = 'recruit' | 'cadet' | 'specialist' | 'commander' | 'grandmaster';
 type Score = { white: number; black: number; draws: number; tacticalPoints: number };
 type ThemeMode = 'light' | 'dark' | 'brown';
@@ -183,7 +183,6 @@ export default function Home() {
   useEffect(() => {
     const html = document.documentElement;
     html.classList.remove('light', 'brown');
-    // Default is dark (Galaxy), so only add classes for others
     if (theme !== 'dark') {
       html.classList.add(theme);
     }
@@ -328,17 +327,20 @@ export default function Home() {
   }, [game, isMuted, isReviewMode, isAdPlaying]);
 
   useEffect(() => {
-    if (gameMode === 'pve' && game.turn === 'black' && !game.isGameOver && !isSuggesting && !isReviewMode && !isAdPlaying && !isBriefingOpen) {
+    const isEngineTurn = (gameMode === 'pve' && game.turn === 'black') || (gameMode === 'eve');
+    
+    if (isEngineTurn && !game.isGameOver && !isSuggesting && !isReviewMode && !isAdPlaying && !isBriefingOpen) {
       const triggerAiOpponent = async () => {
         setIsSuggesting(true);
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        // Reduced delay for AI vs AI to keep the action moving
+        await new Promise(resolve => setTimeout(resolve, gameMode === 'eve' ? 1000 : 2000));
         
         try {
           const boardStr = game.exportToString();
           const legalMoves = game.getLegalMoves(game.turn).map(ChessGame.toAlgebraic);
           const suggestion = await aiMoveSuggestion({
             boardState: boardStr,
-            currentPlayer: 'black',
+            currentPlayer: game.turn,
             legalMoves: legalMoves,
             depth: DIFFICULTY_MAP[difficulty],
             lang: lang
@@ -500,12 +502,15 @@ export default function Home() {
                   <Swords className="w-3.5 h-3.5" /> {t.briefing_mode_label}
                 </Label>
                 <Tabs value={gameMode} onValueChange={(v) => setGameMode(v as GameMode)} className="w-full bg-secondary/40 border border-white/5 p-1 rounded-xl">
-                  <TabsList className="grid grid-cols-2 bg-transparent gap-1 h-9 sm:h-10">
+                  <TabsList className="grid grid-cols-3 bg-transparent gap-1 h-9 sm:h-10">
                     <TabsTrigger value="pve" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-2 uppercase text-[9px] sm:text-[10px]">
                       <Cpu className="w-3.5 h-3.5 mr-2" /> {t.mode_ai}
                     </TabsTrigger>
                     <TabsTrigger value="pvp" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-2 uppercase text-[9px] sm:text-[10px]">
                       <Users className="w-3.5 h-3.5 mr-2" /> {t.mode_2p}
+                    </TabsTrigger>
+                    <TabsTrigger value="eve" className="data-[state=active]:bg-foreground data-[state=active]:text-background font-bold rounded-lg px-2 uppercase text-[9px] sm:text-[10px]">
+                      <Activity className="w-3.5 h-3.5 mr-2" /> {t.mode_eve}
                     </TabsTrigger>
                   </TabsList>
                 </Tabs>
@@ -678,7 +683,7 @@ export default function Home() {
                   {t.link_integrity_label}
                 </p>
                 <p className="text-[10px] font-bold text-foreground">
-                  {gameMode === 'pve' ? `AI_SYNC_${difficulty.toUpperCase()}` : 'P2P_LOCAL_SECURE'}
+                  {gameMode === 'pve' ? `AI_SYNC_${difficulty.toUpperCase()}` : gameMode === 'eve' ? `SPECTATE_${difficulty.toUpperCase()}` : 'P2P_LOCAL_SECURE'}
                 </p>
               </div>
             </div>
@@ -740,7 +745,7 @@ export default function Home() {
                     <div className="flex items-center gap-1.5">
                       <div className={cn("w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-primary", !isReviewMode && "animate-ping")} />
                       <span className="text-[9px] sm:text-[11px] font-bold text-foreground/90 italic tracking-tight uppercase leading-none">
-                        {isSuggesting && gameMode === 'pve' && displayedGame.turn === 'black' && !isReviewMode
+                        {isSuggesting && !isReviewMode
                           ? t.engine_calculating
                           : getLocalizedStatus(displayedGame.status)
                         }
