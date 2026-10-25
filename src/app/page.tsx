@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
@@ -15,10 +14,11 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
+import { Switch } from '@/components/ui/switch';
 import { 
   RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, 
   Check, Copy, ChevronLeft, ChevronLast, ChevronFirst,
-  PlayCircle, Zap, Target, Swords, Activity, Star, PartyPopper, Info, BarChart3
+  PlayCircle, Zap, Target, Swords, Activity, Star, PartyPopper, Info, BarChart3, Pause, Play
 } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
@@ -71,6 +71,7 @@ export default function Home() {
   const [explanation, setExplanation] = useState<string | null>(null);
   const [lang, setLang] = useState<Language>('en');
   const [isMuted, setIsMuted] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [isAdPlaying, setIsAdPlaying] = useState(false);
   const [scores, setScores] = useState<Score>({ white: 0, black: 0, draws: 0, tacticalPoints: 0 });
   const [gameCounted, setGameCounted] = useState(false);
@@ -283,6 +284,7 @@ export default function Home() {
 
   const startNewMission = () => {
     setIsBriefingOpen(false);
+    setIsPaused(false);
     
     showFullscreenAd({
       onOpen: () => setIsAdPlaying(true),
@@ -331,7 +333,7 @@ export default function Home() {
   useEffect(() => {
     const isEngineTurn = (gameMode === 'pve' && game.turn === 'black') || (gameMode === 'eve');
     
-    if (isEngineTurn && !game.isGameOver && !isSuggesting && !isReviewMode && !isAdPlaying && !isBriefingOpen) {
+    if (isEngineTurn && !isPaused && !game.isGameOver && !isSuggesting && !isReviewMode && !isAdPlaying && !isBriefingOpen) {
       const triggerAiOpponent = async () => {
         setIsSuggesting(true);
         // Calibrated 1s delay for AI vs AI (Spectate) mode
@@ -368,7 +370,7 @@ export default function Home() {
 
       triggerAiOpponent();
     }
-  }, [game.turn, gameMode, game.isGameOver, handleMove, toast, game, t, isSuggesting, isReviewMode, difficulty, isAdPlaying, isBriefingOpen, lang]);
+  }, [game.turn, gameMode, game.isGameOver, handleMove, toast, game, t, isSuggesting, isReviewMode, difficulty, isAdPlaying, isBriefingOpen, lang, isPaused]);
 
   const getAiHint = async () => {
     if (game.isGameOver || isSuggesting || isReviewMode || isAdPlaying) return;
@@ -747,15 +749,27 @@ export default function Home() {
                 <div className="flex flex-col gap-1 sm:gap-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5">
-                      <div className={cn("w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-primary", !isReviewMode && "animate-ping")} />
+                      <div className={cn("w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-primary", !isReviewMode && !isPaused && "animate-ping")} />
                       <span className="text-[9px] sm:text-[11px] font-bold text-foreground/90 italic tracking-tight uppercase leading-none">
                         {isSuggesting && !isReviewMode
                           ? t.engine_calculating
-                          : getLocalizedStatus(displayedGame.status)
+                          : isPaused && gameMode === 'eve' 
+                            ? "TACTICAL PAUSE ACTIVE"
+                            : getLocalizedStatus(displayedGame.status)
                         }
                       </span>
                     </div>
                     <div className="flex items-center gap-1.5">
+                      {gameMode === 'eve' && !game.isGameOver && !isReviewMode && (
+                        <div className="flex items-center gap-2 mr-2">
+                          <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest">{isPaused ? t.resume : t.pause}</span>
+                          <Switch 
+                            checked={!isPaused} 
+                            onCheckedChange={(c) => setIsPaused(!c)}
+                            className="h-5 w-9 data-[state=checked]:bg-accent"
+                          />
+                        </div>
+                      )}
                       <Button
                         size="sm"
                         variant={isInspectMode ? "default" : "outline"}
