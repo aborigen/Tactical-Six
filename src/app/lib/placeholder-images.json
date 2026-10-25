@@ -4,73 +4,73 @@
     {
       "id": "geometric-white-p",
       "description": "Geometric White Pawn",
-      "imageUrl": "/pieces/geometric/white-p.svg",
+      "imageUrl": "/pieces/geometric/wP.svg",
       "imageHint": "white pawn"
     },
     {
       "id": "geometric-white-r",
       "description": "Geometric White Rook",
-      "imageUrl": "/pieces/geometric/white-r.svg",
+      "imageUrl": "/pieces/geometric/wR.svg",
       "imageHint": "white rook"
     },
     {
       "id": "geometric-white-n",
       "description": "Geometric White Knight",
-      "imageUrl": "/pieces/geometric/white-n.svg",
+      "imageUrl": "/pieces/geometric/wN.svg",
       "imageHint": "white knight"
     },
     {
       "id": "geometric-white-b",
       "description": "Geometric White Bishop",
-      "imageUrl": "/pieces/geometric/white-b.svg",
+      "imageUrl": "/pieces/geometric/wB.svg",
       "imageHint": "white bishop"
     },
     {
       "id": "geometric-white-q",
       "description": "Geometric White Queen",
-      "imageUrl": "/pieces/geometric/white-q.svg",
+      "imageUrl": "/pieces/geometric/wQ.svg",
       "imageHint": "white queen"
     },
     {
       "id": "geometric-white-k",
       "description": "Geometric White King",
-      "imageUrl": "/pieces/geometric/white-k.svg",
+      "imageUrl": "/pieces/geometric/wK.svg",
       "imageHint": "white king"
     },
     {
       "id": "geometric-black-p",
       "description": "Geometric Black Pawn",
-      "imageUrl": "/pieces/geometric/black-p.svg",
+      "imageUrl": "/pieces/geometric/bP.svg",
       "imageHint": "black pawn"
     },
     {
       "id": "geometric-black-r",
       "description": "Geometric Black Rook",
-      "imageUrl": "/pieces/geometric/black-r.svg",
+      "imageUrl": "/pieces/geometric/bR.svg",
       "imageHint": "black rook"
     },
     {
       "id": "geometric-black-n",
       "description": "Geometric Black Knight",
-      "imageUrl": "/pieces/geometric/black-n.svg",
+      "imageUrl": "/pieces/geometric/bN.svg",
       "imageHint": "black knight"
     },
     {
       "id": "geometric-black-b",
       "description": "Geometric Black Bishop",
-      "imageUrl": "/pieces/geometric/black-b.svg",
+      "imageUrl": "/pieces/geometric/bB.svg",
       "imageHint": "black bishop"
     },
     {
       "id": "geometric-black-q",
       "description": "Geometric Black Queen",
-      "imageUrl": "/pieces/geometric/black-q.svg",
+      "imageUrl": "/pieces/geometric/bQ.svg",
       "imageHint": "black queen"
     },
     {
       "id": "geometric-black-k",
       "description": "Geometric Black King",
-      "imageUrl": "/pieces/geometric/black-k.svg",
+      "imageUrl": "/pieces/geometric/bK.svg",
       "imageHint": "black king"
     }
   ]

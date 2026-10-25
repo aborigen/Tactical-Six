@@ -33,7 +33,7 @@ const Piece: React.FC<PieceProps> = ({
   const fillColor = isWhite ? '#FFFFFF' : '#333333';
   const strokeColor = isWhite ? '#000000' : '#FFFFFF';
 
-  // If the user requested Geometric, we use the specific image assets
+  // If the user requested Geometric, we use the specific image assets mapped in placeholder-images.json
   if (headStyle === 'geometric') {
     const imageId = `geometric-${color}-${type}`;
     const imageData = PlaceHolderImages.find(img => img.id === imageId);
