@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
@@ -30,7 +31,8 @@ import TitleScreen from '@/components/title/TitleScreen';
 import RulesHelp from '@/components/help/RulesHelp';
 import SettingsDialog from '@/components/settings/SettingsDialog';
 import { soundManager } from '@/lib/sounds';
-import { initYandexSDK, showFullscreenAd, gameReady, setYandexLeaderboardScore } from '@/lib/yandex-sdk';
+import { PlatformSDK } from '@/lib/platform-sdk';
+import { getYandexSDK } from '@/lib/yandex-sdk';
 import Piece from '@/components/chess/Piece';
 
 type GameMode = 'pvp' | 'pve' | 'eve';
@@ -139,22 +141,19 @@ export default function Home() {
       }
 
       try {
-        const sdk = await initYandexSDK();
-        if (sdk) {
-          const sdkLang = sdk.environment.i18n.lang.split('-')[0];
+        await PlatformSDK.initialize();
+        const ySdk = getYandexSDK();
+        if (ySdk) {
+          const sdkLang = ySdk.environment.i18n.lang.split('-')[0];
           setLang(sdkLang === 'ru' ? 'ru' : 'en');
-          
-          showFullscreenAd({
-            onOpen: () => setIsAdPlaying(true),
-            onClose: () => setIsAdPlaying(false)
-          });
         }
+        PlatformSDK.showFullscreenAd();
       } catch (sdkError) {
-        console.warn('Yandex SDK initialization skipped or failed:', sdkError);
+        console.warn('Platform SDK initialization failed:', sdkError);
       }
 
       setIsInitialized(true);
-      gameReady();
+      PlatformSDK.gameReady();
     };
 
     initializeApp();
@@ -232,13 +231,10 @@ export default function Home() {
       setScores(nextScores);
       setGameCounted(true);
 
-      setYandexLeaderboardScore('TACTICALLEADERBOARD', nextScores.tacticalPoints);
+      PlatformSDK.setLeaderboardScore('TACTICALLEADERBOARD', nextScores.tacticalPoints);
       
       const adTimeout = setTimeout(() => {
-        showFullscreenAd({
-          onOpen: () => setIsAdPlaying(true),
-          onClose: () => setIsAdPlaying(false)
-        });
+        PlatformSDK.showFullscreenAd();
       }, 3000);
       return () => clearTimeout(adTimeout);
     }
@@ -286,10 +282,7 @@ export default function Home() {
     setIsBriefingOpen(false);
     setIsPaused(false);
     
-    showFullscreenAd({
-      onOpen: () => setIsAdPlaying(true),
-      onClose: () => setIsAdPlaying(false)
-    });
+    PlatformSDK.showFullscreenAd();
     
     setGame(new ChessGame());
     setHintMove(null);
@@ -336,7 +329,6 @@ export default function Home() {
     if (isEngineTurn && !isPaused && !game.isGameOver && !isSuggesting && !isReviewMode && !isAdPlaying && !isBriefingOpen) {
       const triggerAiOpponent = async () => {
         setIsSuggesting(true);
-        // Calibrated 1s delay for AI vs AI (Spectate) mode
         await new Promise(resolve => setTimeout(resolve, gameMode === 'eve' ? 1000 : 2000));
         
         try {

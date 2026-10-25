@@ -1,6 +1,8 @@
+
 import type {Metadata} from 'next';
 import Script from 'next/script';
 import './globals.css';
+import { CURRENT_PLATFORM, PLATFORM_DETAILS } from '@/lib/platform-config';
 
 export const metadata: Metadata = {
   title: 'Tactical Six | 6x6 Advanced Chess',
@@ -12,6 +14,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const platformScript = PLATFORM_DETAILS[CURRENT_PLATFORM].script;
+
   return (
     <html lang="en">
       <head>
@@ -32,10 +36,12 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased bg-background text-foreground min-h-screen font-sans">
-        <Script 
-          src="https://yandex.ru/games/sdk/v2" 
-          strategy="beforeInteractive"
-        />
+        {platformScript && (
+          <Script 
+            src={platformScript} 
+            strategy="beforeInteractive"
+          />
+        )}
         {children}
       </body>
     </html>

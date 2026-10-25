@@ -1,12 +1,16 @@
+
 {
   "name": "tactical_six",
-  "version": "1.16.0",
+  "version": "1.20.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack -p 9002",
     "genkit:dev": "genkit start -- tsx src/ai/dev.ts",
     "genkit:watch": "genkit start -- tsx --watch src/ai/dev.ts",
     "build": "NODE_ENV=production next build",
+    "build:yandex": "NEXT_PUBLIC_PLATFORM=yandex npm run build",
+    "build:vk": "NEXT_PUBLIC_PLATFORM=vk npm run build",
+    "build:sber": "NEXT_PUBLIC_PLATFORM=sber npm run build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
