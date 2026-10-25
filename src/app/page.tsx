@@ -222,7 +222,7 @@ export default function Home() {
         nextScores.tacticalPoints += WIN_POINTS;
       } else if (status.includes('black wins')) {
         nextScores.black += 1;
-      } else if (status.includes('draw') || status.includes('stalemate') || status.includes('insufficient material')) {
+      } else if (status.includes('draw') || status.includes('stalemate') || status.includes('insufficient material') || status.includes('threefold repetition')) {
         nextScores.draws += 1;
         nextScores.tacticalPoints += DRAW_POINTS;
       }
@@ -256,6 +256,7 @@ export default function Home() {
       return status.includes('White') ? t.status_checkmate_white : t.status_checkmate_black;
     }
     if (status.includes('Insufficient material')) return t.status_draw_material;
+    if (status.includes('Threefold repetition')) return t.status_draw_repetition;
     if (status.includes('Draw')) return t.status_draw;
     
     const isCheck = status.includes('(Check!)');

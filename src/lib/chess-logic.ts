@@ -93,6 +93,7 @@ export class ChessGame {
   board: BoardState;
   turn: PlayerColor;
   history: Move[];
+  positionHistory: string[];
   isGameOver: boolean;
   status: string;
 
@@ -100,8 +101,13 @@ export class ChessGame {
     this.board = this.initializeBoard();
     this.turn = 'white';
     this.history = [];
+    this.positionHistory = [this.getPositionHash()];
     this.isGameOver = false;
     this.status = 'White to move';
+  }
+
+  private getPositionHash(): string {
+    return this.exportToString() + '|' + this.turn;
   }
 
   private initializeBoard(): BoardState {
@@ -125,6 +131,7 @@ export class ChessGame {
     const newGame = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
     newGame.board = this.board.map(row => row.map(p => p ? { ...p } : null));
     newGame.history = [...this.history];
+    newGame.positionHistory = [...this.positionHistory];
     return newGame;
   }
 
@@ -318,6 +325,7 @@ export class ChessGame {
 
     this.makeMoveInternal(move);
     this.history.push(move);
+    this.positionHistory.push(this.getPositionHash());
     this.updateStatus();
     return true;
   }
@@ -348,6 +356,9 @@ export class ChessGame {
     } else if (this.isInsufficientMaterial()) {
       this.isGameOver = true;
       this.status = 'Draw! Insufficient material.';
+    } else if (this.isThreefoldRepetition()) {
+      this.isGameOver = true;
+      this.status = 'Draw! Threefold repetition.';
     } else {
       this.status = `${this.turn.charAt(0).toUpperCase() + this.turn.slice(1)} to move${inCheck ? ' (Check!)' : ''}`;
     }
@@ -367,6 +378,15 @@ export class ChessGame {
       if (minorPieces.length === 1) return true;
     }
     return false;
+  }
+
+  isThreefoldRepetition(): boolean {
+    const currentHash = this.getPositionHash();
+    let count = 0;
+    for (const hash of this.positionHistory) {
+      if (hash === currentHash) count++;
+    }
+    return count >= 3;
   }
 
   evaluate(): number {
