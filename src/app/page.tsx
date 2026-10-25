@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
@@ -19,7 +18,7 @@ import { Switch } from '@/components/ui/switch';
 import { 
   RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, 
   Check, Copy, ChevronLeft, ChevronLast, ChevronFirst,
-  PlayCircle, Zap, Target, Swords, Activity, Star, PartyPopper, Info, BarChart3, Pause, Play
+  Zap, Swords, Activity, PartyPopper, Info, BarChart3
 } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';
@@ -302,10 +301,6 @@ export default function Home() {
   const handleMove = useCallback((move: Move) => {
     if (isReviewMode || isAdPlaying) return;
 
-    const isCapture = !!game.board[move.row][move.col]; // Adjusted from board[move.to.row][move.to.col] to fix logic from user code if needed, but logic in handleMove was previously correct. 
-    // Wait, the handleMove implementation in context was:
-    // const isCapture = !!game.board[move.to.row][move.to.col];
-    // Re-applying consistent handleMove logic from previous turns:
     const isCaptureOrig = !!game.board[move.to.row][move.to.col];
     const nextGame = game.clone();
     const success = nextGame.makeMove(move);
@@ -333,7 +328,6 @@ export default function Home() {
     if (isEngineTurn && !isPaused && !game.isGameOver && !isSuggesting && !isReviewMode && !isAdPlaying && !isBriefingOpen) {
       const triggerAiOpponent = async () => {
         setIsSuggesting(true);
-        // Calibrated 2-second delay for autonomous maneuvers
         await new Promise(resolve => setTimeout(resolve, 2000));
         
         try {
@@ -845,7 +839,6 @@ export default function Home() {
           </DialogHeader>
 
           <div className="flex-1 min-h-0 flex flex-col landscape:grid landscape:grid-cols-2 lg:grid-cols-12 gap-4 sm:gap-6 p-4 sm:p-6 overflow-hidden">
-            {/* Board Area: Occupies more space (8/12 on LG) */}
             <div className="flex flex-col items-center justify-center space-y-4 landscape:space-y-6 lg:col-span-8 landscape:col-span-1 min-h-0 shrink-0 landscape:shrink">
               <div className="relative flex-1 w-full flex items-center justify-center min-h-0 max-h-[50vh] landscape:max-h-full">
                  <div className="relative h-full aspect-square shadow-[0_40px_100px_rgba(0,0,0,0.6)] rounded-3xl overflow-hidden ring-1 ring-white/10">
@@ -919,7 +912,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* History List Area: Occupies less space (4/12 on LG) */}
             <div className="flex flex-col bg-card/20 border-t landscape:border-t-0 landscape:border-l border-white/5 overflow-hidden lg:col-span-4 landscape:col-span-1 min-h-0 flex-1">
               <div className="p-3 sm:p-6 border-b border-white/5 bg-secondary/10 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2 sm:gap-3">
@@ -998,9 +990,6 @@ export default function Home() {
                   <Activity className="w-3 h-3 text-primary animate-pulse" />
                   <span className="text-[8px] sm:text-[9px] font-black text-muted-foreground uppercase tracking-widest">{game.history.length} {t.stats_indexed}</span>
                 </div>
-                <Button onClick={() => setIsLogOpen(false)} variant="secondary" className="h-8 sm:h-10 font-black text-[9px] sm:text-[10px] uppercase px-4 sm:px-8 shadow-xl bg-foreground text-background hover:bg-foreground/90 rounded-full">
-                  {t.history_playback_back}
-                </Button>
               </footer>
             </div>
           </div>
