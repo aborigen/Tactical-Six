@@ -2,6 +2,19 @@
 
 All notable tactical upgrades to the 6x6 combat matrix are documented here.
 
+## [1.18.0] - Advanced Engine Protocols & UI Refinement
+### Added
+- **Spectate Mode**: Introduced 'AI vs AI' (Spectate) engagement mode, allowing for autonomous engine battles.
+- **Threefold Repetition**: Implemented the classic chess rule where the same board position occurring three times results in a tactical draw.
+- **Dynamic Link Integrity**: The HUD telemetry now displays localized sync codes based on active difficulty and game mode.
+
+### Fixed & Improved
+- **Default Visuals**: Established 'Galaxy' (Dark) as the system default theme to ensure immediate tactical readiness.
+- **Geometric Asset Migration**: Refactored Geometric visuals to utilize high-fidelity SVG assets from the local repository (`wP.svg`, `bK.svg`, etc.).
+- **Interface Streamlining**: Removed the Log trigger from the main HUD, centralizing tactical analysis within the Victory Review protocol.
+- **Localization Completion**: Finalized all mission-critical strings, including Game Over outcomes, Inspector dismissals, and engine search evaluations.
+- **Piece Scaling**: Calibrated all tactical units to a 0.9 scale coefficient for improved spatial breathing on the 6x6 grid.
+
 ## [1.17.0] - Deployment & Interface Optimization
 ### Added
 - **Title Protocol**: Introduced a cinematic Title Screen with integrated language selection (EN/RU).
