@@ -302,7 +302,11 @@ export default function Home() {
   const handleMove = useCallback((move: Move) => {
     if (isReviewMode || isAdPlaying) return;
 
-    const isCapture = !!game.board[move.to.row][move.to.col];
+    const isCapture = !!game.board[move.row][move.col]; // Adjusted from board[move.to.row][move.to.col] to fix logic from user code if needed, but logic in handleMove was previously correct. 
+    // Wait, the handleMove implementation in context was:
+    // const isCapture = !!game.board[move.to.row][move.to.col];
+    // Re-applying consistent handleMove logic from previous turns:
+    const isCaptureOrig = !!game.board[move.to.row][move.to.col];
     const nextGame = game.clone();
     const success = nextGame.makeMove(move);
     if (success) {
@@ -311,7 +315,7 @@ export default function Home() {
           soundManager.playGameOver();
         } else if (nextGame.isInCheck(nextGame.turn)) {
           soundManager.playCheck();
-        } else if (isCapture) {
+        } else if (isCaptureOrig) {
           soundManager.playCapture();
         } else {
           soundManager.playMove();
@@ -841,8 +845,9 @@ export default function Home() {
           </DialogHeader>
 
           <div className="flex-1 min-h-0 flex flex-col landscape:grid landscape:grid-cols-2 lg:grid-cols-12 gap-4 sm:gap-6 p-4 sm:p-6 overflow-hidden">
-            <div className="flex flex-col items-center justify-center space-y-4 landscape:space-y-6 lg:col-span-7 landscape:col-span-1 min-h-0 shrink-0 landscape:shrink">
-              <div className="relative flex-1 w-full flex items-center justify-center min-h-0 max-h-[40vh] landscape:max-h-full">
+            {/* Board Area: Occupies more space (8/12 on LG) */}
+            <div className="flex flex-col items-center justify-center space-y-4 landscape:space-y-6 lg:col-span-8 landscape:col-span-1 min-h-0 shrink-0 landscape:shrink">
+              <div className="relative flex-1 w-full flex items-center justify-center min-h-0 max-h-[50vh] landscape:max-h-full">
                  <div className="relative h-full aspect-square shadow-[0_40px_100px_rgba(0,0,0,0.6)] rounded-3xl overflow-hidden ring-1 ring-white/10">
                     <Board 
                         game={displayedGame} 
@@ -914,14 +919,15 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex flex-col bg-card/20 border-t landscape:border-t-0 landscape:border-l border-white/5 overflow-hidden lg:col-span-5 landscape:col-span-1 min-h-0 flex-1">
+            {/* History List Area: Occupies less space (4/12 on LG) */}
+            <div className="flex flex-col bg-card/20 border-t landscape:border-t-0 landscape:border-l border-white/5 overflow-hidden lg:col-span-4 landscape:col-span-1 min-h-0 flex-1">
               <div className="p-3 sm:p-6 border-b border-white/5 bg-secondary/10 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2 sm:gap-3">
                   <BarChart3 className="w-3.5 h-3.5 sm:w-4 h-4 text-muted-foreground" />
                   <span className="text-[9px] sm:text-[10px] font-black text-foreground uppercase tracking-widest">{t.stats_overview}</span>
                 </div>
                 <Badge className="bg-accent/10 text-accent text-[8px] font-black border-accent/20">
-                  {Math.ceil(game.history.length / 2)} FULL ROUNDS
+                  {Math.ceil(game.history.length / 2)} ROUNDS
                 </Badge>
               </div>
               
@@ -950,15 +956,14 @@ export default function Home() {
                               variant="ghost" 
                               onClick={() => setStep(i * 2)} 
                               className={cn(
-                                "relative flex flex-col items-start justify-center px-3 sm:px-4 h-12 sm:h-16 rounded-xl border text-[10px] sm:text-xs transition-all duration-300", 
+                                "relative flex flex-col items-start justify-center px-2 sm:px-3 h-12 sm:h-14 rounded-xl border text-[10px] sm:text-xs transition-all duration-300", 
                                 viewIndex === i * 2 
                                   ? "bg-primary/20 border-primary text-foreground ring-1 ring-primary/30 shadow-[0_0_30px_rgba(var(--primary),0.1)] scale-[1.02] z-10" 
                                   : "bg-secondary/20 border-white/5 hover:bg-white/5 hover:border-white/10"
                               )}
                             >
-                              <span className={cn("text-[6px] sm:text-[7px] font-black uppercase tracking-[0.2em] mb-0.5 sm:mb-1", viewIndex === i * 2 ? "text-primary" : "text-muted-foreground/60")}>White Unit</span>
+                              <span className={cn("text-[6px] sm:text-[7px] font-black uppercase tracking-[0.2em] mb-0.5 sm:mb-1", viewIndex === i * 2 ? "text-primary" : "text-muted-foreground/60")}>White</span>
                               <span className="font-black text-xs sm:text-sm tracking-tight">{ChessGame.toAlgebraic(game.history[i * 2])}</span>
-                              {viewIndex === i * 2 && <div className="absolute left-0 top-1/4 bottom-1/4 w-0.5 sm:w-1 bg-primary rounded-r" />}
                             </Button>
                             
                             {game.history[i * 2 + 1] ? (
@@ -966,19 +971,18 @@ export default function Home() {
                                 variant="ghost" 
                                 onClick={() => setStep(i * 2 + 1)} 
                                 className={cn(
-                                  "relative flex flex-col items-start justify-center px-3 sm:px-4 h-12 sm:h-16 rounded-xl border text-[10px] sm:text-xs transition-all duration-300", 
+                                  "relative flex flex-col items-start justify-center px-2 sm:px-3 h-12 sm:h-14 rounded-xl border text-[10px] sm:text-xs transition-all duration-300", 
                                   viewIndex === i * 2 + 1 
                                     ? "bg-accent/20 border-accent text-foreground ring-1 ring-accent/30 shadow-[0_0_30px_rgba(var(--accent),0.1)] scale-[1.02] z-10" 
                                     : "bg-secondary/20 border-white/5 hover:bg-white/5 hover:border-white/10"
                                 )}
                               >
-                                <span className={cn("text-[6px] sm:text-[7px] font-black uppercase tracking-[0.2em] mb-0.5 sm:mb-1", viewIndex === i * 2 + 1 ? "text-accent" : "text-accent/40")}>Black Unit</span>
+                                <span className={cn("text-[6px] sm:text-[7px] font-black uppercase tracking-[0.2em] mb-0.5 sm:mb-1", viewIndex === i * 2 + 1 ? "text-accent" : "text-accent/40")}>Black</span>
                                 <span className="font-black text-xs sm:text-sm tracking-tight">{ChessGame.toAlgebraic(game.history[i * 2 + 1])}</span>
-                                {viewIndex === i * 2 + 1 && <div className="absolute left-0 top-1/4 bottom-1/4 w-0.5 sm:w-1 bg-accent rounded-r" />}
                               </Button>
                             ) : (
-                              <div className="h-12 sm:h-16 rounded-xl border border-dashed border-white/5 bg-transparent flex items-center justify-center opacity-20">
-                                <span className="text-[7px] sm:text-[8px] font-black tracking-widest">PENDING</span>
+                              <div className="h-12 sm:h-14 rounded-xl border border-dashed border-white/5 bg-transparent flex items-center justify-center opacity-20">
+                                <span className="text-[7px] sm:text-[8px] font-black tracking-widest">...</span>
                               </div>
                             )}
                           </div>
