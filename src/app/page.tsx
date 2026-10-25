@@ -329,7 +329,8 @@ export default function Home() {
     if (isEngineTurn && !isPaused && !game.isGameOver && !isSuggesting && !isReviewMode && !isAdPlaying && !isBriefingOpen) {
       const triggerAiOpponent = async () => {
         setIsSuggesting(true);
-        await new Promise(resolve => setTimeout(resolve, gameMode === 'eve' ? 1000 : 2000));
+        // Calibrated 2-second delay for autonomous maneuvers
+        await new Promise(resolve => setTimeout(resolve, 2000));
         
         try {
           const boardStr = game.exportToString();

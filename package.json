@@ -16,6 +16,7 @@
     "typecheck": "tsc --noEmit",
     "release": "bash scripts/package.sh"
   },
+  "homepage": ".",
   "dependencies": {
     "@genkit-ai/google-genai": "^1.28.0",
     "@hookform/resolvers": "^4.1.3",

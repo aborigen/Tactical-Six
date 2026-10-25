@@ -6,7 +6,7 @@ All notable tactical upgrades to the 6x6 combat matrix are documented here.
 ## [1.19.0] - Spectate Calibration & Tactical Pause
 ### Added
 - **Tactical Pause**: Introduced a manual Pause/Resume switch for 'AI vs AI' (Spectate) engagement mode.
-- **Timing Protocol**: Calibrated the "AI vs AI" mode with a precise 1-second delay between moves for improved strategic observation.
+- **Timing Protocol**: Calibrated the "AI vs AI" mode with an increased 2-second delay between moves for improved strategic observation.
 - **Threefold Repetition Protocol**: Fully documented the position-hashing draw logic in `docs/THREEFOLD_REPETITION.md`.
 
 ### Fixed & Improved
