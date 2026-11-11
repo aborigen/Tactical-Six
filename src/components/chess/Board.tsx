@@ -331,7 +331,7 @@ const Board: React.FC<BoardProps> = ({
                 zIndex: isSelected ? 40 : 20,
               }}
               className={cn(
-                "p-0.5 flex items-center justify-center piece-interactive-lift pointer-events-auto",
+                "p-0.5 flex items-end justify-center piece-interactive-lift pointer-events-auto",
                 isInspectMode ? "cursor-help" : (!game.isGameOver && piece.color === game.turn ? "cursor-grab active:cursor-grabbing" : "cursor-default"),
                 isSelected && !isInspectMode ? "scale-105 drop-shadow-2xl" : "scale-100 drop-shadow-lg",
                 isCheck || isCheckmate ? "animate-check-piece" : "",

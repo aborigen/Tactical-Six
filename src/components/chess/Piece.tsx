@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -43,9 +42,9 @@ const Piece: React.FC<PieceProps> = ({
     if (imageData) {
       return (
         <div className={cn(
-          "w-full h-full piece-shadow transition-transform duration-300 flex items-center justify-center",
+          "w-full h-full piece-shadow transition-transform duration-300 flex items-end justify-center",
           colorClass,
-          type === 'p' ? "scale-[0.765] origin-bottom" : "scale-90",
+          type === 'p' ? "scale-[0.765] origin-bottom" : "scale-90 origin-bottom",
           className
         )}>
           <Image 
@@ -53,7 +52,7 @@ const Piece: React.FC<PieceProps> = ({
             alt={imageData.description}
             width={45}
             height={45}
-            className="w-full h-full object-contain"
+            className="w-full h-full object-contain object-bottom"
             data-ai-hint={imageData.imageHint}
             priority
           />
@@ -65,12 +64,12 @@ const Piece: React.FC<PieceProps> = ({
   // Fallback to composite SVG system for other styles
   return (
     <div className={cn(
-      "w-full h-full piece-shadow transition-transform duration-300 flex items-center justify-center",
+      "w-full h-full piece-shadow transition-transform duration-300 flex items-end justify-center",
       colorClass,
-      type === 'p' ? "scale-[0.765] origin-bottom" : "scale-90",
+      type === 'p' ? "scale-[0.765] origin-bottom" : "scale-90 origin-bottom",
       className
     )}>
-      <svg viewBox="0 0 45 45" className="w-full h-full drop-shadow-sm">
+      <svg viewBox="0 0 45 45" className="w-full h-full drop-shadow-sm overflow-visible">
         <CompositePieceBase type={type} fillColor={fillColor} strokeColor={strokeColor} style={baseStyle || headStyle} />
         <CompositePieceBody type={type} fillColor={fillColor} strokeColor={strokeColor} style={bodyStyle || headStyle} />
         <CompositePieceHead type={type} fillColor={fillColor} strokeColor={strokeColor} style={headStyle} />
