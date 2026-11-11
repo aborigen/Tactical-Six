@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -54,6 +55,7 @@ const Piece: React.FC<PieceProps> = ({
             height={45}
             className="w-full h-full object-contain"
             data-ai-hint={imageData.imageHint}
+            priority
           />
         </div>
       );

@@ -1,11 +1,15 @@
+
 # Tactical Six | Changelog
 
 All notable tactical upgrades to the 6x6 combat matrix are documented here.
 
-## [1.23.0] - AI Intel & Interaction Refinement
+## [1.23.0] - LCP Optimization & AI Intel Refinement
 ### Added
 - **AI Engine Intel**: Created `docs/AI_ENGINE.md` to document the minimax search algorithm and 6x6 specific evaluation heuristics.
 - **Interaction Layer Sync**: Integrated unit interaction directly into the piece layer, ensuring captures and selection work flawlessly with absolute positioning.
+
+### Refined
+- **LCP Performance**: Added `priority` property to chess piece images in the `Piece` component to optimize Largest Contentful Paint for core tactical assets.
 
 ### Fixed
 - **Tactical Capture**: Resolved an issue where enemy units were intercepting input events, preventing capture maneuvers.
