@@ -2,6 +2,7 @@ export type PieceType = 'p' | 'r' | 'n' | 'b' | 'q' | 'k';
 export type PlayerColor = 'white' | 'black';
 
 export interface Piece {
+  id: string;
   type: PieceType;
   color: PlayerColor;
 }
@@ -31,10 +32,6 @@ const PIECE_VALUES: Record<PieceType, number> = {
 
 const CHECKMATE_VALUE = 50000;
 
-/**
- * Piece-Square Tables (PST) for the 6x6 matrix.
- * Positive values favor White, negative favor Black.
- */
 const PAWN_PST = [
   [0,  0,  0,  0,  0,  0],
   [50, 50, 50, 50, 50, 50],
@@ -115,13 +112,13 @@ export class ChessGame {
     const backRank: PieceType[] = ['r', 'n', 'b', 'q', 'k', 'r'];
 
     for (let i = 0; i < BOARD_SIZE; i++) {
-      board[0][i] = { type: backRank[i], color: 'black' };
-      board[1][i] = { type: 'p', color: 'black' };
+      board[0][i] = { id: `black-back-${i}`, type: backRank[i], color: 'black' };
+      board[1][i] = { id: `black-pawn-${i}`, type: 'p', color: 'black' };
     }
 
     for (let i = 0; i < BOARD_SIZE; i++) {
-      board[4][i] = { type: 'p', color: 'white' };
-      board[5][i] = { type: backRank[i], color: 'white' };
+      board[4][i] = { id: `white-pawn-${i}`, type: 'p', color: 'white' };
+      board[5][i] = { id: `white-back-${i}`, type: backRank[i], color: 'white' };
     }
 
     return board;
@@ -172,11 +169,9 @@ export class ChessGame {
       const pieceB = this.board[b.from.row][b.from.col];
       const targetB = this.board[b.to.row][b.to.col];
 
-      // MVV-LVA (Most Valuable Victim - Least Valuable Attacker)
       if (targetA) scoreA = 10 * PIECE_VALUES[targetA.type] - PIECE_VALUES[pieceA!.type];
       if (targetB) scoreB = 10 * PIECE_VALUES[targetB.type] - PIECE_VALUES[pieceB!.type];
 
-      // Pawn promotion priority
       if (pieceA?.type === 'p' && (a.to.row === 0 || a.to.row === 5)) scoreA += 800;
       if (pieceB?.type === 'p' && (b.to.row === 0 || b.to.row === 5)) scoreB += 800;
 
@@ -380,10 +375,6 @@ export class ChessGame {
     return false;
   }
 
-  /**
-   * Evaluates if the current board position (including player turn)
-   * has occurred 3 or more times during the game history.
-   */
   isThreefoldRepetition(): boolean {
     const currentHash = this.getPositionHash();
     let count = 0;
@@ -433,7 +424,6 @@ export class ChessGame {
     for (const move of moves) {
       const cloned = this.clone();
       cloned.makeMoveInternal(move);
-      // Pushing the hash to support repetition detection during search
       cloned.positionHistory.push(cloned.getPositionHash());
 
       const score = this.minimax(cloned, depth - 1, -Infinity, Infinity, cloned.turn === 'white');
@@ -457,9 +447,8 @@ export class ChessGame {
   private minimax(game: ChessGame, depth: number, alpha: number, beta: number, isMaximizing: boolean): number {
     if (depth === 0) return game.evaluate();
 
-    // Check for Threefold Repetition during search
     if (game.isThreefoldRepetition()) {
-      return 0; // Tactical Draw
+      return 0;
     }
 
     const moves = game.getLegalMoves(game.turn);
@@ -468,7 +457,7 @@ export class ChessGame {
       if (game.isInCheck(game.turn)) {
         return isMaximizing ? -CHECKMATE_VALUE - depth : CHECKMATE_VALUE + depth;
       }
-      return 0; // Stalemate
+      return 0;
     }
 
     if (isMaximizing) {

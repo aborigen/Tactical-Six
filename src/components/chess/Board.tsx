@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -24,9 +23,6 @@ interface BoardProps {
   lang?: Language;
 }
 
-/**
- * Renders the victory screen with tactical analysis triggers.
- */
 const VictoryOverlay: React.FC<{
   status: string;
   isWhiteWin: boolean;
@@ -82,9 +78,6 @@ const VictoryOverlay: React.FC<{
   </div>
 );
 
-/**
- * Coordinate labels for the 6x6 grid.
- */
 const CoordinateLabels: React.FC<{ row: number; col: number; isDark: boolean }> = ({ row, col, isDark }) => (
   <>
     {col === 0 && (
@@ -155,6 +148,17 @@ const Board: React.FC<BoardProps> = ({
     return null;
   }, [game]);
 
+  const activePieces = useMemo(() => {
+    const list: { piece: any; row: number; col: number }[] = [];
+    for (let r = 0; r < BOARD_SIZE; r++) {
+      for (let c = 0; c < BOARD_SIZE; c++) {
+        const p = game.board[r][c];
+        if (p) list.push({ piece: p, row: r, col: c });
+      }
+    }
+    return list;
+  }, [game]);
+
   useEffect(() => {
     if (selectedSquare) {
       const moves = game.getLegalMoves(game.turn)
@@ -169,12 +173,7 @@ const Board: React.FC<BoardProps> = ({
   const handleSquareClick = (row: number, col: number) => {
     const piece = game.board[row][col];
     
-    if (isInspectMode) {
-      if (piece) onPieceSelect?.(piece.type, piece.color);
-      return;
-    }
-
-    if (game.isGameOver) {
+    if (isInspectMode || game.isGameOver) {
       if (piece) onPieceSelect?.(piece.type, piece.color);
       return;
     }
@@ -234,7 +233,7 @@ const Board: React.FC<BoardProps> = ({
         }
       }
     } catch (err) {
-      console.error("Tactical Error: Move synchronization failed during drop sequence.", err);
+      console.error("Move sync failed", err);
     }
     setSelectedSquare(null);
   };
@@ -255,9 +254,9 @@ const Board: React.FC<BoardProps> = ({
         "h-full w-auto portrait:h-auto portrait:w-full max-h-full max-w-full"
       )}
     >
-      <div className="chess-board-grid w-full h-full">
-        {game.board.map((rowArr, row) =>
-          rowArr.map((piece, col) => {
+      <div className="chess-board-grid w-full h-full absolute inset-0">
+        {Array.from({ length: BOARD_SIZE }).map((_, row) =>
+          Array.from({ length: BOARD_SIZE }).map((_, col) => {
             const isDark = (row + col) % 2 === 1;
             const isSelected = selectedSquare?.row === row && selectedSquare?.col === col;
             const isLegalDest = legalMovesFromSelected.some(m => m.row === row && m.col === col);
@@ -266,10 +265,11 @@ const Board: React.FC<BoardProps> = ({
             const isLastMoveTo = lastMove?.to.row === row && lastMove?.to.col === col;
             const isCheck = checkSquare?.row === row && checkSquare?.col === col;
             const isCheckmate = checkmateSquare?.row === row && checkmateSquare?.col === col;
+            const piece = game.board[row][col];
 
             return (
               <div
-                key={`${row}-${col}`}
+                key={`sq-${row}-${col}`}
                 onClick={() => handleSquareClick(row, col)}
                 onDragOver={handleDragOver}
                 onDrop={(e) => handleDrop(e, row, col)}
@@ -285,63 +285,70 @@ const Board: React.FC<BoardProps> = ({
                 )}
               >
                 <CoordinateLabels row={row} col={col} isDark={isDark} />
-
                 {isCheck && (
-                  <div className="absolute top-0.5 right-0.5 bg-destructive text-destructive-foreground text-[8px] font-black rounded-full w-3.5 h-3.5 flex items-center justify-center animate-bounce shadow-lg border border-white/20 z-40">
-                    !
-                  </div>
+                  <div className="absolute top-0.5 right-0.5 bg-destructive text-destructive-foreground text-[8px] font-black rounded-full w-3.5 h-3.5 flex items-center justify-center animate-bounce shadow-lg border border-white/20 z-40">!</div>
                 )}
-
                 {isCheckmate && (
                   <div className="absolute inset-0 flex items-center justify-center z-40">
                     <Star className="w-6 h-6 text-primary fill-primary animate-spin" />
                   </div>
                 )}
-
-                {isLastMoveTo && !game.isGameOver && (
-                  <div className="landing-pulse-aura" />
-                )}
-
-                {piece && (
-                  <div 
-                    draggable={!game.isGameOver && !isInspectMode && piece.color === game.turn}
-                    onDragStart={(e) => handleDragStart(e, row, col)}
-                    className={cn(
-                      "w-full h-full p-0.5 flex items-center justify-center piece-interactive-lift",
-                      isInspectMode ? "cursor-help" : (!game.isGameOver && piece.color === game.turn ? "cursor-grab active:cursor-grabbing" : "cursor-default"),
-                      isSelected && !isInspectMode ? "scale-105 drop-shadow-2xl z-20" : "scale-100 drop-shadow-lg",
-                      isCheck || isCheckmate ? "animate-check-piece z-30" : "",
-                      game.isGameOver && !isCheckmate ? "grayscale-[0.3]" : ""
-                    )}
-                  >
-                    <div className="w-full h-full pointer-events-none">
-                      <Piece 
-                        type={piece.type} 
-                        color={piece.color} 
-                        headStyle={headSkin} 
-                        bodyStyle={bodySkin} 
-                        baseStyle={baseSkin} 
-                      />
-                    </div>
-                  </div>
-                )}
-
+                {isLastMoveTo && !game.isGameOver && <div className="landing-pulse-aura" />}
                 {isLegalDest && !isInspectMode && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <div className={cn(
                       "rounded-full transition-all duration-500",
-                      piece 
-                        ? "w-[92%] h-[92%] border-[2px] border-accent/40 animate-pulse scale-100" 
-                        : "w-2.5 h-2.5 bg-accent/40 shadow-[0_0_8px_rgba(96,222,222,0.4)]"
+                      piece ? "w-[92%] h-[92%] border-[2px] border-accent/40 animate-pulse scale-100" : "w-2.5 h-2.5 bg-accent/40 shadow-[0_0_8px_rgba(96,222,222,0.4)]"
                     )} />
                   </div>
                 )}
-                
                 <div className="absolute inset-0 border border-white/[0.02] pointer-events-none" />
               </div>
             );
           })
         )}
+      </div>
+
+      <div className="absolute inset-0 pointer-events-none">
+        {activePieces.map(({ piece, row, col }) => {
+          const isSelected = selectedSquare?.row === row && selectedSquare?.col === col;
+          const isCheck = checkSquare?.row === row && checkSquare?.col === col;
+          const isCheckmate = checkmateSquare?.row === row && checkmateSquare?.col === col;
+
+          return (
+            <div
+              key={piece.id}
+              draggable={!game.isGameOver && !isInspectMode && piece.color === game.turn}
+              onDragStart={(e) => handleDragStart(e, row, col)}
+              style={{
+                position: 'absolute',
+                top: `${(row * 100) / BOARD_SIZE}%`,
+                left: `${(col * 100) / BOARD_SIZE}%`,
+                width: `${100 / BOARD_SIZE}%`,
+                height: `${100 / BOARD_SIZE}%`,
+                transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                zIndex: isSelected ? 40 : 20,
+              }}
+              className={cn(
+                "p-0.5 flex items-center justify-center piece-interactive-lift pointer-events-auto",
+                isInspectMode ? "cursor-help" : (!game.isGameOver && piece.color === game.turn ? "cursor-grab active:cursor-grabbing" : "cursor-default"),
+                isSelected && !isInspectMode ? "scale-105 drop-shadow-2xl" : "scale-100 drop-shadow-lg",
+                isCheck || isCheckmate ? "animate-check-piece" : "",
+                game.isGameOver && !isCheckmate ? "grayscale-[0.3]" : ""
+              )}
+            >
+              <div className="w-full h-full pointer-events-none">
+                <Piece 
+                  type={piece.type} 
+                  color={piece.color} 
+                  headStyle={headSkin} 
+                  bodyStyle={bodySkin} 
+                  baseStyle={baseSkin} 
+                />
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {showVictory && game.isGameOver && (
