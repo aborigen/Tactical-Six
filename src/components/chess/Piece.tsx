@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -33,6 +32,8 @@ const Piece: React.FC<PieceProps> = ({
   const fillColor = isWhite ? '#FFFFFF' : '#333333';
   const strokeColor = isWhite ? '#000000' : '#FFFFFF';
 
+  const colorClass = isWhite ? "piece-white" : "piece-black";
+
   // If the user requested Geometric, we use the specific image assets mapped in placeholder-images.json
   if (headStyle === 'geometric') {
     const imageId = `geometric-${color}-${type}`;
@@ -42,6 +43,7 @@ const Piece: React.FC<PieceProps> = ({
       return (
         <div className={cn(
           "w-full h-full piece-shadow transition-transform duration-300 flex items-center justify-center",
+          colorClass,
           type === 'p' ? "scale-[0.765] origin-bottom" : "scale-90",
           className
         )}>
@@ -62,6 +64,7 @@ const Piece: React.FC<PieceProps> = ({
   return (
     <div className={cn(
       "w-full h-full piece-shadow transition-transform duration-300 flex items-center justify-center",
+      colorClass,
       type === 'p' ? "scale-[0.765] origin-bottom" : "scale-90",
       className
     )}>
