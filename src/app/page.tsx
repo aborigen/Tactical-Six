@@ -18,7 +18,7 @@ import { Switch } from '@/components/ui/switch';
 import { 
   RotateCcw, Lightbulb, Trophy, History, Cpu, Users, ChevronRight, 
   Check, Copy, ChevronLeft, ChevronLast, ChevronFirst,
-  Zap, Swords, Activity, PartyPopper, Info, BarChart3
+  Zap, Swords, Activity, PartyPopper, Info, BarChart3, Target
 } from 'lucide-react';
 import { aiMoveSuggestion } from '@/ai/flows/ai-move-suggestion';
 import { Toaster } from '@/components/ui/toaster';

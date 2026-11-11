@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -22,6 +23,88 @@ interface BoardProps {
   onNewGame?: () => void;
   lang?: Language;
 }
+
+/**
+ * Renders the victory screen with tactical analysis triggers.
+ */
+const VictoryOverlay: React.FC<{
+  status: string;
+  isWhiteWin: boolean;
+  isBlackWin: boolean;
+  onNewGame?: () => void;
+  onReview?: () => void;
+  t: any;
+}> = ({ status, isWhiteWin, isBlackWin, onNewGame, onReview, t }) => (
+  <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-md animate-in fade-in duration-700">
+    <div className="flex flex-col items-center scale-up-center animate-in zoom-in-95 duration-500 px-6 text-center">
+      <div className="relative mb-6">
+        {isWhiteWin ? (
+          <>
+            <Trophy className="w-20 h-20 sm:w-24 sm:h-24 text-primary drop-shadow-[0_0_40px_rgba(255,191,0,0.9)] animate-bounce" />
+            <Star className="absolute -top-2 -right-2 w-8 h-8 text-white fill-white animate-pulse" />
+            <Star className="absolute -bottom-2 -left-2 w-6 h-6 text-white fill-white animate-pulse delay-150" />
+          </>
+        ) : isBlackWin ? (
+          <AlertCircle className="w-20 h-20 sm:w-24 sm:h-24 text-destructive drop-shadow-[0_0_40px_rgba(var(--destructive),0.5)]" />
+        ) : (
+          <Scale className="w-20 h-20 sm:w-24 sm:h-24 text-muted-foreground drop-shadow-[0_0_40px_rgba(255,255,255,0.2)]" />
+        )}
+      </div>
+      
+      <div className={cn(
+        "px-8 py-3 rounded-full font-black text-xl sm:text-2xl uppercase tracking-[0.25em] border-2 transform -rotate-1 mb-8 shadow-2xl",
+        isWhiteWin ? "bg-primary text-primary-foreground border-white/30 shadow-primary/40" : 
+        isBlackWin ? "bg-destructive text-destructive-foreground border-white/20 shadow-destructive/40" :
+        "bg-secondary text-secondary-foreground border-white/10 shadow-black/40"
+      )}>
+        {isWhiteWin ? t.overlay_victory : isBlackWin ? t.overlay_defeat : t.overlay_draw}
+      </div>
+      
+      <div className="flex flex-col gap-3 w-full max-w-[200px]">
+        <Button 
+          onClick={onNewGame}
+          className="w-full bg-primary text-white hover:bg-primary/90 font-black uppercase text-[10px] sm:text-xs tracking-widest px-6 py-2.5 rounded-full shadow-2xl transition-transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
+        >
+          <RotateCcw className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          {t.replay}
+        </Button>
+        
+        <Button 
+          onClick={onReview}
+          variant="outline"
+          className="w-full bg-white/10 border-white/20 text-white hover:bg-white/20 font-black uppercase text-[10px] sm:text-xs tracking-widest px-6 py-2.5 rounded-full shadow-2xl transition-transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
+        >
+          <History className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          {t.review_game}
+        </Button>
+      </div>
+    </div>
+  </div>
+);
+
+/**
+ * Coordinate labels for the 6x6 grid.
+ */
+const CoordinateLabels: React.FC<{ row: number; col: number; isDark: boolean }> = ({ row, col, isDark }) => (
+  <>
+    {col === 0 && (
+      <span className={cn(
+        "absolute top-0.5 left-1 text-[8px] font-black opacity-30 transition-opacity group-hover:opacity-50 pointer-events-none",
+        isDark ? "text-slate-400" : "text-slate-600"
+      )}>
+        {BOARD_SIZE - row}
+      </span>
+    )}
+    {row === BOARD_SIZE - 1 && (
+      <span className={cn(
+        "absolute bottom-0.5 right-1 text-[8px] font-black opacity-30 transition-opacity group-hover:opacity-50 pointer-events-none",
+        isDark ? "text-slate-400" : "text-slate-600"
+      )}>
+        {String.fromCharCode(97 + col).toUpperCase()}
+      </span>
+    )}
+  </>
+);
 
 const Board: React.FC<BoardProps> = ({ 
   game, 
@@ -87,16 +170,12 @@ const Board: React.FC<BoardProps> = ({
     const piece = game.board[row][col];
     
     if (isInspectMode) {
-      if (piece) {
-        onPieceSelect?.(piece.type, piece.color);
-      }
+      if (piece) onPieceSelect?.(piece.type, piece.color);
       return;
     }
 
     if (game.isGameOver) {
-      if (piece) {
-        onPieceSelect?.(piece.type, piece.color);
-      }
+      if (piece) onPieceSelect?.(piece.type, piece.color);
       return;
     }
 
@@ -136,8 +215,7 @@ const Board: React.FC<BoardProps> = ({
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    if (isInspectMode) return;
-    e.dataTransfer.dropEffect = "move";
+    if (!isInspectMode) e.dataTransfer.dropEffect = "move";
   };
 
   const handleDrop = (e: React.DragEvent, row: number, col: number) => {
@@ -156,15 +234,9 @@ const Board: React.FC<BoardProps> = ({
         }
       }
     } catch (err) {
-      console.error("Failed to process drop:", err);
+      console.error("Tactical Error: Move synchronization failed during drop sequence.", err);
     }
     setSelectedSquare(null);
-  };
-
-  const isSquareHint = (row: number, col: number) => {
-    if (!hintMove) return false;
-    return (hintMove.from.row === row && hintMove.from.col === col) ||
-           (hintMove.to.row === row && hintMove.to.col === col);
   };
 
   const getSquareCenter = (pos: Position) => ({
@@ -172,17 +244,12 @@ const Board: React.FC<BoardProps> = ({
     y: ((pos.row + 0.5) * 100) / BOARD_SIZE,
   });
 
-  const preventContextMenu = (e: React.MouseEvent) => {
-    e.preventDefault();
-  };
-
   const isWhiteWin = game.isGameOver && game.status.toLowerCase().includes('white wins');
   const isBlackWin = game.isGameOver && game.status.toLowerCase().includes('black wins');
-  const isDraw = game.isGameOver && !isWhiteWin && !isBlackWin;
 
   return (
     <div 
-      onContextMenu={preventContextMenu}
+      onContextMenu={(e) => e.preventDefault()}
       className={cn(
         "relative aspect-square select-none rounded-xl sm:rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-4 sm:border-[12px] border-card/80 bg-card ring-1 ring-white/10 group touch-none mx-auto transition-all duration-300",
         "h-full w-auto portrait:h-auto portrait:w-full max-h-full max-w-full"
@@ -194,7 +261,7 @@ const Board: React.FC<BoardProps> = ({
             const isDark = (row + col) % 2 === 1;
             const isSelected = selectedSquare?.row === row && selectedSquare?.col === col;
             const isLegalDest = legalMovesFromSelected.some(m => m.row === row && m.col === col);
-            const isHint = isSquareHint(row, col);
+            const isHint = hintMove && ((hintMove.from.row === row && hintMove.from.col === col) || (hintMove.to.row === row && hintMove.to.col === col));
             const isLastMoveFrom = lastMove?.from.row === row && lastMove?.from.col === col;
             const isLastMoveTo = lastMove?.to.row === row && lastMove?.to.col === col;
             const isCheck = checkSquare?.row === row && checkSquare?.col === col;
@@ -217,22 +284,7 @@ const Board: React.FC<BoardProps> = ({
                   isInspectMode && piece && "hover:bg-accent/10 cursor-help"
                 )}
               >
-                {col === 0 && (
-                  <span className={cn(
-                    "absolute top-0.5 left-1 text-[8px] font-black opacity-30 transition-opacity group-hover:opacity-50",
-                    isDark ? "text-slate-400" : "text-slate-600"
-                  )}>
-                    {BOARD_SIZE - row}
-                  </span>
-                )}
-                {row === BOARD_SIZE - 1 && (
-                  <span className={cn(
-                    "absolute bottom-0.5 right-1 text-[8px] font-black opacity-30 transition-opacity group-hover:opacity-50",
-                    isDark ? "text-slate-400" : "text-slate-600"
-                  )}>
-                    {String.fromCharCode(97 + col).toUpperCase()}
-                  </span>
-                )}
+                <CoordinateLabels row={row} col={col} isDark={isDark} />
 
                 {isCheck && (
                   <div className="absolute top-0.5 right-0.5 bg-destructive text-destructive-foreground text-[8px] font-black rounded-full w-3.5 h-3.5 flex items-center justify-center animate-bounce shadow-lg border border-white/20 z-40">
@@ -293,69 +345,21 @@ const Board: React.FC<BoardProps> = ({
       </div>
 
       {showVictory && game.isGameOver && (
-        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-md animate-in fade-in duration-700">
-           <div className="flex flex-col items-center scale-up-center animate-in zoom-in-95 duration-500 px-6 text-center">
-              <div className="relative mb-6">
-                {isWhiteWin ? (
-                  <>
-                    <Trophy className="w-20 h-20 sm:w-24 sm:h-24 text-primary drop-shadow-[0_0_40px_rgba(255,191,0,0.9)] animate-bounce" />
-                    <Star className="absolute -top-2 -right-2 w-8 h-8 text-white fill-white animate-pulse" />
-                    <Star className="absolute -bottom-2 -left-2 w-6 h-6 text-white fill-white animate-pulse delay-150" />
-                  </>
-                ) : isBlackWin ? (
-                  <AlertCircle className="w-20 h-20 sm:w-24 sm:h-24 text-destructive drop-shadow-[0_0_40px_rgba(var(--destructive),0.5)]" />
-                ) : (
-                  <Scale className="w-20 h-20 sm:w-24 sm:h-24 text-muted-foreground drop-shadow-[0_0_40px_rgba(255,255,255,0.2)]" />
-                )}
-              </div>
-              
-              <div className={cn(
-                "px-8 py-3 rounded-full font-black text-xl sm:text-2xl uppercase tracking-[0.25em] border-2 transform -rotate-1 mb-8 shadow-2xl",
-                isWhiteWin ? "bg-primary text-primary-foreground border-white/30 shadow-primary/40" : 
-                isBlackWin ? "bg-destructive text-destructive-foreground border-white/20 shadow-destructive/40" :
-                "bg-secondary text-secondary-foreground border-white/10 shadow-black/40"
-              )}>
-                {isWhiteWin ? t.overlay_victory : isBlackWin ? t.overlay_defeat : t.overlay_draw}
-              </div>
-              
-              <div className="flex flex-col gap-3 w-full max-w-[200px]">
-                <Button 
-                  onClick={onNewGame}
-                  className="w-full bg-primary text-white hover:bg-primary/90 font-black uppercase text-[10px] sm:text-xs tracking-widest px-6 py-2.5 rounded-full shadow-2xl transition-transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
-                >
-                  <RotateCcw className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  {t.replay}
-                </Button>
-                
-                <Button 
-                  onClick={onReview}
-                  variant="outline"
-                  className="w-full bg-white/10 border-white/20 text-white hover:bg-white/20 font-black uppercase text-[10px] sm:text-xs tracking-widest px-6 py-2.5 rounded-full shadow-2xl transition-transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
-                >
-                  <History className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  {t.review_game}
-                </Button>
-              </div>
-           </div>
-        </div>
+        <VictoryOverlay 
+          status={game.status}
+          isWhiteWin={isWhiteWin}
+          isBlackWin={isBlackWin}
+          onNewGame={onNewGame}
+          onReview={onReview}
+          t={t}
+        />
       )}
 
       {lastMove && !game.isGameOver && (
         <svg className="absolute inset-0 pointer-events-none z-30 w-full h-full overflow-visible drop-shadow-[0_0_8px_rgba(46,117,184,0.4)]">
           <defs>
-            <marker
-              id="arrowhead"
-              markerWidth="8"
-              markerHeight="6"
-              refX="7"
-              refY="3"
-              orient="auto"
-            >
-              <polygon 
-                points="0 0, 8 3, 0 6" 
-                fill="hsl(var(--primary))" 
-                className="opacity-70"
-              />
+            <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="hsl(var(--primary))" className="opacity-70" />
             </marker>
           </defs>
           <line
