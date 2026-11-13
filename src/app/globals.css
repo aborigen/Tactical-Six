@@ -30,7 +30,7 @@
     /* Tactical Unit Colors - Galaxy Theme */
     --piece-white-fill: #FFFFFF;
     --piece-white-stroke: #000000;
-    --piece-black-fill: #0a0a0c;
+    --piece-black-fill: #120a1a; /* Dark Obsidian-Violet */
     --piece-black-stroke: #c084fc; /* Tinted to match primary */
   }
 
@@ -180,7 +180,8 @@
 
 .dark .piece-black {
   /* Rim light to separate black pieces from dark squares in Galaxy theme */
-  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.45)) drop-shadow(0 6px 12px rgba(0, 0, 0, 0.6));
+  /* Added a subtle violet glow to match the primary tactical palette */
+  filter: drop-shadow(0 0 2px rgba(192, 132, 252, 0.6)) drop-shadow(0 6px 12px rgba(0, 0, 0, 0.6));
 }
 
 .dark .piece-white {
