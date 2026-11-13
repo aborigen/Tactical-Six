@@ -1,11 +1,9 @@
 "use client";
 
 import React from 'react';
-import Image from 'next/image';
 import { PieceType, PlayerColor } from '@/lib/chess-logic';
 import { cn } from '@/lib/utils';
 import { CompositePieceHead, CompositePieceBody, CompositePieceBase } from './pieces/CompositePieceParts';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export type PieceSetStyle = 'geometric' | 'slimes' | 'doodle' | 'school' | 'simple';
 
@@ -18,6 +16,11 @@ interface PieceProps {
   className?: string;
 }
 
+/**
+ * Tactical Unit Renderer
+ * Programmatically constructs the visual representation of a chess piece.
+ * Utilizes CSS variables for theme-aware dynamic coloring.
+ */
 const Piece: React.FC<PieceProps> = ({ 
   type, 
   color, 
@@ -29,40 +32,12 @@ const Piece: React.FC<PieceProps> = ({
   const isWhite = color === 'white';
   
   // Tactical color parameters for composite rendering
-  // Now utilizing CSS variables defined in globals.css for theme-aware tactical visibility
+  // Utilizing CSS variables defined in globals.css for high-fidelity theme integration
   const fillColor = isWhite ? 'var(--piece-white-fill)' : 'var(--piece-black-fill)';
   const strokeColor = isWhite ? 'var(--piece-white-stroke)' : 'var(--piece-black-stroke)';
 
   const colorClass = isWhite ? "piece-white" : "piece-black";
 
-  // If the user requested Geometric, we use the specific image assets mapped in placeholder-images.json
-  if (headStyle === 'geometric') {
-    const imageId = `geometric-${color}-${type}`;
-    const imageData = PlaceHolderImages.find(img => img.id === imageId);
-    
-    if (imageData) {
-      return (
-        <div className={cn(
-          "w-full h-full piece-shadow transition-transform duration-300 flex items-end justify-center",
-          colorClass,
-          type === 'p' ? "scale-[0.765] origin-bottom" : "scale-90 origin-bottom",
-          className
-        )}>
-          <Image 
-            src={imageData.imageUrl} 
-            alt={imageData.description}
-            width={45}
-            height={45}
-            className="w-full h-full object-contain object-bottom"
-            data-ai-hint={imageData.imageHint}
-            priority
-          />
-        </div>
-      );
-    }
-  }
-
-  // Fallback to composite SVG system for other styles
   return (
     <div className={cn(
       "w-full h-full piece-shadow transition-transform duration-300 flex items-end justify-center",
