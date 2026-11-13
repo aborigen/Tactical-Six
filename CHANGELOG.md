@@ -3,6 +3,11 @@
 
 All notable tactical upgrades to the 6x6 combat matrix are documented here.
 
+## [1.24.0] - Visual Contrast & Tactical Depth Calibration
+### Refined
+- **Galaxy Theme**: Deepened board squares and background colors for a more intense tactical atmosphere.
+- **Unit Rendering**: Darkened the fill color for black tactical units to increase contrast against light squares and enhance the rim-lighting effect.
+
 ## [1.23.0] - LCP Optimization & AI Intel Refinement
 ### Added
 - **AI Engine Intel**: Created `docs/AI_ENGINE.md` to document the minimax search algorithm and 6x6 specific evaluation heuristics.

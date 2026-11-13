@@ -29,7 +29,8 @@ const Piece: React.FC<PieceProps> = ({
   const isWhite = color === 'white';
   
   // Tactical color parameters for composite rendering
-  const fillColor = isWhite ? '#FFFFFF' : '#333333';
+  // Darkened black fill from #333333 to #111111 for higher strategic contrast
+  const fillColor = isWhite ? '#FFFFFF' : '#111111';
   const strokeColor = isWhite ? '#000000' : '#FFFFFF';
 
   const colorClass = isWhite ? "piece-white" : "piece-black";
