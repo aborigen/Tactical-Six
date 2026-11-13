@@ -3,11 +3,10 @@ import React from 'react';
 import { PieceIconProps } from '../types';
 
 /**
- * Geometric Pawn: Clean, circular head with a trapezoidal base.
- * Follows the high-fidelity tactical grid specifications.
+ * Refined Geometric Pawn: Clean circular unit on a unified tactical base.
  */
 export const GeometricPawn: React.FC<PieceIconProps> = ({ fillColor, strokeColor }) => (
-  <svg viewBox="0 0 45 45" className="w-full h-full">
+  <svg viewBox="0 0 45 45" className="w-full h-full overflow-visible">
     <polygon 
       points="12,40 33,40 28,30 17,30" 
       fill={fillColor} 
