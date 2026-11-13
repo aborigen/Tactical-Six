@@ -26,6 +26,12 @@
     --radius: 1.5rem;
     --square-light: 260 15% 26%;
     --square-dark: 260 20% 8%;
+
+    /* Tactical Unit Colors - Galaxy Theme */
+    --piece-white-fill: #FFFFFF;
+    --piece-white-stroke: #000000;
+    --piece-black-fill: #0a0a0c;
+    --piece-black-stroke: #c084fc; /* Tinted to match primary */
   }
 
   .light {
@@ -50,6 +56,12 @@
     --ring: 45 60% 50%;
     --square-light: 48 30% 94%;
     --square-dark: 48 25% 86%;
+
+    /* Tactical Unit Colors - Sunny Theme */
+    --piece-white-fill: #FFFFFF;
+    --piece-white-stroke: #4a5568;
+    --piece-black-fill: #2d3748;
+    --piece-black-stroke: #ffffff;
   }
 
   .brown {
@@ -74,6 +86,12 @@
     --ring: 32 45% 45%;
     --square-light: 35 30% 90%;
     --square-dark: 32 25% 82%;
+
+    /* Tactical Unit Colors - Cookie Theme */
+    --piece-white-fill: #fffaf0;
+    --piece-white-stroke: #4e342e;
+    --piece-black-fill: #3e2723;
+    --piece-black-stroke: #efebe9;
   }
 }
 
