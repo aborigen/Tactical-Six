@@ -93,81 +93,15 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
     }
   }
 
+  // Fallback Geometric Head for Compositing
   if (style === 'geometric') {
     switch (type) {
-      case 'p':
-        return (
-          <circle cx="22.5" cy="20" r="9" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
-        );
-      case 'r':
-        return (
-          <path 
-            d="M14 28V10h3v4h5v-4h5v4h4v14H14z" 
-            fill={fillColor} 
-            stroke={strokeColor} 
-            strokeWidth="2.5" 
-            strokeLinejoin="round" 
-          />
-        );
-      case 'n':
-        return (
-          <g>
-            <path 
-              d="M26 28 L14 28 C14 28, 14 10, 26 10 L26 28 Z" 
-              fill={fillColor} 
-              stroke={strokeColor} 
-              strokeWidth="2.5" 
-              strokeLinejoin="round" 
-            />
-            <path 
-              d="M26 5 A 11 11 0 0 1 26 27" 
-              fill="none" 
-              stroke={strokeColor} 
-              strokeWidth="3.5" 
-              strokeLinecap="butt" 
-            />
-            <path 
-              d="M22 5.5 H28" 
-              stroke={strokeColor} 
-              strokeWidth="3.5" 
-              strokeLinecap="butt" 
-            />
-          </g>
-        );
-      case 'b':
-        return (
-          <path 
-            d="M22.5 7c-6 10-6 21 0 21s6-11 0-21z" 
-            fill={fillColor} 
-            stroke={strokeColor} 
-            strokeWidth="2.5" 
-            strokeLinejoin="round" 
-          />
-        );
-      case 'q':
-        return (
-          <g>
-            <path 
-              d="M22.5 11a9 9 0 1 0 0 17 9 9 0 0 0 0-17z" 
-              fill={fillColor} 
-              stroke={strokeColor} 
-              strokeWidth="2.5" 
-            />
-            <circle cx="22.5" cy="9" r="2.5" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
-          </g>
-        );
-      case 'k':
-        return (
-          <g>
-            <path 
-              d="M22.5 11a9 9 0 1 0 0 17 9 9 0 0 0 0-17z" 
-              fill={fillColor} 
-              stroke={strokeColor} 
-              strokeWidth="2.5" 
-            />
-            <path d="M22.5 4v6M19.5 7h6" stroke={strokeColor} strokeWidth="2.5" strokeLinecap="round" />
-          </g>
-        );
+      case 'p': return <circle cx="22.5" cy="20" r="8" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />;
+      case 'r': return <path d="M14 28V10h3v4h5v-4h5v4h4v14H14z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />;
+      case 'n': return <path d="M26 28 L14 28 C14 28, 14 10, 26 10 L26 28 Z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />;
+      case 'b': return <path d="M22.5 7c-6 10-6 21 0 21s6-11 0-21z" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" />;
+      case 'q': return <circle cx="22.5" cy="20" r="9" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />;
+      case 'k': return <circle cx="22.5" cy="20" r="9" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />;
     }
   }
 
@@ -306,7 +240,7 @@ export const CompositePieceHead: React.FC<PartProps> = ({ type, fillColor, strok
         return (
           <g>
             <rect x="14" y="10" width="17" height="15" fill={fillColor} stroke={strokeColor} strokeWidth="2" />
-            <path d="M14 10v-3h4v3 M22 10v-3h4v3 M28 10v-3h3v3" fill="none" stroke={strokeColor} strokeWidth="2" />
+            <path d="M14 10v-3h4v3h4v-3h4v3h3v-3h4v3" fill="none" stroke={strokeColor} strokeWidth="2" />
           </g>
         );
       case 'n':
@@ -378,7 +312,7 @@ export const CompositePieceBody: React.FC<PartProps> = ({ type, fillColor, strok
               <circle cx="18" cy="24" r="1.5" fill={strokeColor} />
               <circle cx="27" cy="24" r="1.5" fill={strokeColor} />
               <path d="M21 28c1 .5 2 .5 3 0" stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" fill="none" />
-              <rect x="33" y="21" width="2" height="6" fill="#ef4444" stroke={strokeColor} strokeWidth="1" />
+              <rect x="33" y="21" width="2" height="6" fill="#ef4444" stroke={strokeColor} strokeWidth="1.5" />
             </g>
           );
         case 'n': 
