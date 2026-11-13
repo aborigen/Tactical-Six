@@ -320,6 +320,8 @@ const Board: React.FC<BoardProps> = ({
               key={piece.id}
               draggable={!game.isGameOver && !isInspectMode && piece.color === game.turn}
               onDragStart={(e) => handleDragStart(e, row, col)}
+              onDragOver={handleDragOver}
+              onDrop={(e) => handleDrop(e, row, col)}
               onClick={() => handleSquareClick(row, col)}
               style={{
                 position: 'absolute',

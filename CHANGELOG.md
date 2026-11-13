@@ -3,6 +3,10 @@
 
 All notable tactical upgrades to the 6x6 combat matrix are documented here.
 
+## [1.25.0] - Drag-and-Drop Capture Calibration
+### Fixed
+- **Tactical Capture**: Resolved an issue where opponent units were intercepting drag-and-drop drop events, preventing captures. Added event listeners to pieces to proxy drop logic to the underlying matrix squares.
+
 ## [1.24.0] - Visual Contrast & Tactical Depth Calibration
 ### Refined
 - **Galaxy Theme**: Deepened board squares and background colors for a more intense tactical atmosphere.
