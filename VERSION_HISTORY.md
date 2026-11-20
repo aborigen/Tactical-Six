@@ -2,6 +2,23 @@
 
 This document tracks the iterative deployment of the 6x6 tactical arena and its internal search engine.
 
+## [1.29.0] - Visual Intelligence & Portrait Optimization
+**Release Date: 2024-07-25**
+### Added
+- **Tactical Visuals Manual**: Deployed `docs/TACTICAL_VISUALS.md` detailing the SVG architecture.
+- **Portrait Refinement**: Re-engineered the Tactical Log interface for mobile devices, increasing board visibility by 40% in portrait orientation.
+
+## [1.28.0] - High-Fidelity Tactical Refinement
+**Release Date: 2024-07-22**
+### Added
+- **AI Engine Manual**: Deployed `docs/AI_ENGINE.md` detailing the search-and-evaluate architecture.
+- **Violet Tactical Tint**: Integrated theme-aware violet highlights for the Galaxy vision protocol.
+- **Programmatic SVG pieces**: Migrated the Geometric set to a fully componentized vector architecture for zero-latency rendering.
+
+### Refinements
+- **Audio Matrix**: Recalibrated synthesized sound effects for move, capture, and check alerts.
+- **Capture Logic**: Resolved interaction blocking issues during drag-and-drop engagement.
+
 ## [1.14.0] - Geometric Architecture & Tactical UI Refinement
 **Release Date: 2024-07-10**
 ### Added
