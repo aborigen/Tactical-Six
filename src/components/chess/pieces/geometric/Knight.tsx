@@ -16,7 +16,7 @@ export const GeometricKnight: React.FC<PieceIconProps> = ({ fillColor, strokeCol
     />
     <rect x="14" y="28" width="17" height="2.5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
     <path 
-      d="M14 28V10h12l4 6-8 2v10H14z" 
+      d="M17 28V10h12l4 6-8 2v10H14z" 
       fill={fillColor} 
       stroke={strokeColor} 
       strokeWidth="2.5" 

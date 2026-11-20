@@ -16,7 +16,7 @@ export const GeometricRook: React.FC<PieceIconProps> = ({ fillColor, strokeColor
     />
     <rect x="14" y="28" width="17" height="2.5" fill={fillColor} stroke={strokeColor} strokeWidth="2.5" />
     <path 
-      d="M13 28V10h4v3h2v-3h2v3h2v-3h4v18H13z" 
+      d="M16 28V10h4v3h2v-3h2v3h2v-3h4v18H13z" 
       fill={fillColor} 
       stroke={strokeColor} 
       strokeWidth="2.5" 
