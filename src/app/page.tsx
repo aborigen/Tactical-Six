@@ -838,9 +838,9 @@ export default function Home() {
             </div>
           </DialogHeader>
 
-          <div className="flex-1 min-h-0 flex flex-col landscape:grid landscape:grid-cols-2 lg:grid-cols-12 gap-4 sm:gap-6 p-4 sm:p-6 overflow-hidden">
-            <div className="flex flex-col items-center justify-center space-y-4 landscape:space-y-6 lg:col-span-8 landscape:col-span-1 min-h-0 shrink-0 landscape:shrink">
-              <div className="relative flex-1 w-full flex items-center justify-center min-h-0 max-h-[50vh] landscape:max-h-full">
+          <div className="flex-1 min-h-0 flex flex-col landscape:grid landscape:grid-cols-2 lg:grid-cols-12 gap-3 sm:gap-6 p-2 sm:p-6 overflow-hidden">
+            <div className="flex flex-col items-center justify-center space-y-2 sm:space-y-4 landscape:space-y-6 lg:col-span-8 landscape:col-span-1 min-h-0 shrink-0 landscape:shrink flex-[1.5] sm:flex-1">
+              <div className="relative flex-1 w-full flex items-center justify-center min-h-0 max-h-[60vh] sm:max-h-[50vh] landscape:max-h-full">
                  <div className="relative h-full aspect-square shadow-[0_40px_100px_rgba(0,0,0,0.6)] rounded-3xl overflow-hidden ring-1 ring-white/10">
                     <Board 
                         game={displayedGame} 
@@ -863,7 +863,7 @@ export default function Home() {
                  </div>
               </div>
 
-              <div className="w-full max-w-[500px] space-y-2 sm:space-y-4 shrink-0">
+              <div className="w-full max-w-[500px] space-y-2 sm:space-y-4 shrink-0 px-2 sm:px-0">
                 <div className="px-2">
                   <div className="flex justify-between text-[8px] font-black text-muted-foreground uppercase tracking-widest mb-1.5">
                     <span>Tactical Progression</span>
@@ -939,7 +939,7 @@ export default function Home() {
                     <div className="space-y-3 pb-8">
                       {Array.from({ length: Math.ceil(game.history.length / 2) }).map((_, i) => (
                         <div key={i} className="flex gap-2 sm:gap-4 items-start group/row">
-                          <div className="w-6 sm:w-8 pt-3 sm:pt-4 flex flex-col items-center gap-1 opacity-30">
+                          <div className="w-6 sm:w-8 pt-2 sm:pt-4 flex flex-col items-center gap-1 opacity-30">
                             <span className="text-[8px] sm:text-[10px] font-black text-muted-foreground font-mono">{String(i + 1).padStart(2, '0')}</span>
                             <div className="w-px h-full bg-border grow min-h-[30px] sm:min-h-[40px]" />
                           </div>
@@ -948,7 +948,7 @@ export default function Home() {
                               variant="ghost" 
                               onClick={() => setStep(i * 2)} 
                               className={cn(
-                                "relative flex flex-col items-start justify-center px-2 sm:px-3 h-12 sm:h-14 rounded-xl border text-[10px] sm:text-xs transition-all duration-300", 
+                                "relative flex flex-col items-start justify-center px-2 sm:px-3 h-10 sm:h-14 rounded-xl border text-[10px] sm:text-xs transition-all duration-300", 
                                 viewIndex === i * 2 
                                   ? "bg-primary/20 border-primary text-foreground ring-1 ring-primary/30 shadow-[0_0_30px_rgba(var(--primary),0.1)] scale-[1.02] z-10" 
                                   : "bg-secondary/20 border-white/5 hover:bg-white/5 hover:border-white/10"
@@ -963,7 +963,7 @@ export default function Home() {
                                 variant="ghost" 
                                 onClick={() => setStep(i * 2 + 1)} 
                                 className={cn(
-                                  "relative flex flex-col items-start justify-center px-2 sm:px-3 h-12 sm:h-14 rounded-xl border text-[10px] sm:text-xs transition-all duration-300", 
+                                  "relative flex flex-col items-start justify-center px-2 sm:px-3 h-10 sm:h-14 rounded-xl border text-[10px] sm:text-xs transition-all duration-300", 
                                   viewIndex === i * 2 + 1 
                                     ? "bg-accent/20 border-accent text-foreground ring-1 ring-accent/30 shadow-[0_0_30px_rgba(var(--accent),0.1)] scale-[1.02] z-10" 
                                     : "bg-secondary/20 border-white/5 hover:bg-white/5 hover:border-white/10"
@@ -973,7 +973,7 @@ export default function Home() {
                                 <span className="font-black text-xs sm:text-sm tracking-tight">{ChessGame.toAlgebraic(game.history[i * 2 + 1])}</span>
                               </Button>
                             ) : (
-                              <div className="h-12 sm:h-14 rounded-xl border border-dashed border-white/5 bg-transparent flex items-center justify-center opacity-20">
+                              <div className="h-10 sm:h-14 rounded-xl border border-dashed border-white/5 bg-transparent flex items-center justify-center opacity-20">
                                 <span className="text-[7px] sm:text-[8px] font-black tracking-widest">...</span>
                               </div>
                             )}
