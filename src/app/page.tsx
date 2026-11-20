@@ -912,7 +912,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex flex-col bg-card/20 border-t landscape:border-t-0 landscape:border-l border-white/5 overflow-hidden lg:col-span-4 landscape:col-span-1 min-h-0 flex-1">
+            <div className="hidden landscape:flex flex-col bg-card/20 border-t landscape:border-t-0 landscape:border-l border-white/5 overflow-hidden lg:col-span-4 landscape:col-span-1 min-h-0 flex-1">
               <div className="p-3 sm:p-6 border-b border-white/5 bg-secondary/10 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2 sm:gap-3">
                   <BarChart3 className="w-3.5 h-3.5 sm:w-4 h-4 text-muted-foreground" />
